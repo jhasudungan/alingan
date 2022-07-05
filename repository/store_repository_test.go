@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"alingan/core/entity"
 	"log"
 	"testing"
 
@@ -20,9 +21,9 @@ func TestStoreRepostiroy(t *testing.T) {
 			t.FailNow()
 		}
 
-		assert.Equal(t, "str-002", stores[0]["storeId"])
-		assert.Equal(t, "Store 2 Smart Veggies", stores[0]["storeName"])
-		assert.Equal(t, true, stores[0]["isActive"])
+		assert.Equal(t, "str-002", stores[0].StoreId)
+		assert.Equal(t, "Store 2 Smart Veggies", stores[0].StoreName)
+		assert.Equal(t, true, stores[0].IsActive)
 	})
 
 	t.Run("TestFindStoreById", func(t *testing.T) {
@@ -36,19 +37,17 @@ func TestStoreRepostiroy(t *testing.T) {
 			t.FailNow()
 		}
 
-		assert.Equal(t, "str-001", store["storeId"])
-		assert.Equal(t, "Store 1 Smart Veggies", store["storeName"])
+		assert.Equal(t, "str-001", store.StoreId)
+		assert.Equal(t, "Store 1 Smart Veggies", store.StoreName)
 
 	})
 
 	t.Run("TestInsert", func(t *testing.T) {
 
-		data := make(map[string]interface{})
-
-		data["storeId"] = "str-test"
-		data["ownerId"] = "owner-001"
-		data["storeName"] = "Test Store"
-		data["storeAddress"] = "Test Store Address"
+		data := entity.Store{}
+		data.StoreId = "str-test"
+		data.StoreName = "Test Store"
+		data.StoreAddress = "Test Store Address"
 
 		storeRepository := &StoreRepositoryImpl{}
 
@@ -66,18 +65,18 @@ func TestStoreRepostiroy(t *testing.T) {
 			t.FailNow()
 		}
 
-		assert.Equal(t, "str-test", store["storeId"])
-		assert.Equal(t, "Test Store", store["storeName"])
-		assert.Equal(t, "Test Store Address", data["storeAddress"])
-		assert.Equal(t, true, store["isActive"])
+		assert.Equal(t, "str-test", store.StoreId)
+		assert.Equal(t, "Test Store", store.StoreName)
+		assert.Equal(t, "Test Store Address", store.StoreAddress)
+		assert.Equal(t, true, store.IsActive)
 	})
 
 	t.Run("TestUpdate", func(t *testing.T) {
 
-		data := make(map[string]interface{})
-
-		data["storeName"] = "Test Store Update"
-		data["storeAddress"] = "Test Store Update Address"
+		data := entity.Store{}
+		data.StoreId = "str-test"
+		data.StoreName = "Test Store Update"
+		data.StoreAddress = "Test Store Update Address"
 
 		storeRepository := &StoreRepositoryImpl{}
 
@@ -95,10 +94,10 @@ func TestStoreRepostiroy(t *testing.T) {
 			t.FailNow()
 		}
 
-		assert.Equal(t, "str-test", store["storeId"])
-		assert.Equal(t, "Test Store Update", store["storeName"])
-		assert.Equal(t, "Test Store Update Address", store["storeAddress"])
-		assert.Equal(t, true, store["isActive"])
+		assert.Equal(t, "str-test", store.StoreId)
+		assert.Equal(t, "Test Store Update", store.StoreName)
+		assert.Equal(t, "Test Store Update Address", store.StoreAddress)
+		assert.Equal(t, true, store.IsActive)
 	})
 
 	t.Run("TestSetInactive", func(t *testing.T) {
@@ -119,7 +118,43 @@ func TestStoreRepostiroy(t *testing.T) {
 			t.FailNow()
 		}
 
-		assert.Equal(t, false, store["isActive"])
+		assert.Equal(t, false, store.IsActive)
+
+	})
+
+	t.Run("TestCheckExist", func(t *testing.T) {
+
+		storeRepository := &StoreRepositoryImpl{}
+
+		result, err := storeRepository.CheckExist("str-test")
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		assert.Equal(t, true, result)
+	})
+
+	t.Run("TestDelete", func(t *testing.T) {
+
+		storeRepository := &StoreRepositoryImpl{}
+
+		err := storeRepository.Delete("str-test")
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		result, err := storeRepository.CheckExist("str-test")
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		assert.Equal(t, false, result)
 
 	})
 
