@@ -45,7 +45,7 @@ func TestTransactionRepository(t *testing.T) {
 		data.TransactionDate = date
 		data.StoreId = "str-001"
 		data.AgentId = "agent-001"
-		data.TransactionTotal = float64(30000)
+		data.TransactionTotal = float64(45000)
 
 		err = transactionRepository.Insert(data)
 
@@ -62,5 +62,51 @@ func TestTransactionRepository(t *testing.T) {
 		}
 
 		assert.Equal(t, "trx-test", transaction.TransactionId)
+	})
+
+	t.Run("FindTransactionItemByTransactionId", func(t *testing.T) {
+
+		transactionItemRepository := &TransactionItemRepositoryImpl{}
+
+		items, err := transactionItemRepository.FindByTransactionId("trx-001")
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		assert.Equal(t, "trx-item-001", items[0].TransactionItemId)
+		assert.Equal(t, "prd-001", items[0].ProductId)
+		assert.Equal(t, int64(2), items[0].BuyQuantity)
+		assert.Equal(t, float64(15000), items[0].UsedPrice)
+
+	})
+
+	t.Run("TestInsertTransactionItem", func(t *testing.T) {
+
+		transactionItemRepository := &TransactionItemRepositoryImpl{}
+
+		item := entity.TransactionItem{}
+
+		item.TransactionItemId = "trx-item-test"
+		item.TransactionId = "trx-test"
+		item.ProductId = "prd-001"
+		item.BuyQuantity = int64(3)
+		item.UsedPrice = float64(15000)
+
+		err := transactionItemRepository.Insert(item)
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		items, err := transactionItemRepository.FindByTransactionId("trx-test")
+
+		assert.Equal(t, "trx-item-test", items[0].TransactionItemId)
+		assert.Equal(t, "prd-001", items[0].ProductId)
+		assert.Equal(t, int64(3), items[0].BuyQuantity)
+		assert.Equal(t, float64(15000), items[0].UsedPrice)
+
 	})
 }
