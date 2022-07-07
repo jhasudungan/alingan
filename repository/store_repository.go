@@ -7,7 +7,7 @@ import (
 
 type StoreRepository interface {
 	Insert(data entity.Store) error
-	Update(data entity.Store) error
+	Update(data entity.Store, storeId string) error
 	FindStoresByOwnerId(ownerId string) ([]entity.Store, error)
 	FindStoreById(storeId string) (entity.Store, error)
 	SetInactive(storeId string) error
