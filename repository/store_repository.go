@@ -68,7 +68,7 @@ func (s *StoreRepositoryImpl) FindStoresByOwnerId(ownerId string) ([]entity.Stor
 		return stores, err
 	}
 
-	sql := "select s.store_id, s.owner_id, s.store_name, s.store_address, s.is_active, s.created_date, s.last_modified from core.store s where s.owner_id = $1 order by s.store_id desc"
+	sql := "select s.store_id, s.owner_id, s.store_name, s.store_address, s.is_active, s.created_date, s.last_modified from core.store s where s.owner_id = $1 order by created_date desc"
 
 	rows, err := con.Query(sql, ownerId)
 
