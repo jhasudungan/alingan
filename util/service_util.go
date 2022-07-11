@@ -2,13 +2,13 @@ package util
 
 import (
 	"fmt"
-	"time"
+
+	"github.com/google/uuid"
 )
 
 func GenerateId(key string) string {
 
-	now := time.Now().Format("20060102150405")
-	id := fmt.Sprintf("%v%v", key, now)
+	id := fmt.Sprintf("%v%v", key, uuid.New().String())
 
 	return id
 }
