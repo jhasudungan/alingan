@@ -26,7 +26,7 @@ func (t *TestingRepository) DeleteAllStoreByOwner(ownerId string) error {
 	return nil
 }
 
-func (t *TestingRepository) DeleteAllProductByOwnerA(ownerId string) error {
+func (t *TestingRepository) DeleteAllProductByOwner(ownerId string) error {
 
 	con, err := config.CreateDBConnection()
 	defer con.Close()
