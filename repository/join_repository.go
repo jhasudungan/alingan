@@ -2,18 +2,18 @@ package repository
 
 import (
 	"alingan/core/config"
-	"time"
+	"alingan/core/model"
 )
 
 type JoinRepository interface {
-	FindTransactionByOwnerId(ownerId string) ([]map[string]interface{}, error)
+	FindTransactionByOwnerId(ownerId string) ([]model.FindTransactionByOwnerIdDTO, error)
 }
 
 type JoinRepositoryImpl struct{}
 
-func (j *JoinRepositoryImpl) FindTransactionByOwnerId(ownerId string) ([]map[string]interface{}, error) {
+func (j *JoinRepositoryImpl) FindTransactionByOwnerId(ownerId string) ([]model.FindTransactionByOwnerIdDTO, error) {
 
-	results := make([]map[string]interface{}, 0)
+	results := make([]model.FindTransactionByOwnerIdDTO, 0)
 
 	con, err := config.CreateDBConnection()
 	defer con.Close()
@@ -34,33 +34,18 @@ func (j *JoinRepositoryImpl) FindTransactionByOwnerId(ownerId string) ([]map[str
 
 	for rows.Next() {
 
-		transactionId := ""
-		transactionDate := time.Now()
-		storeName := ""
-		storeId := ""
-		agentId := ""
-		agentName := ""
-		transactionTotal := float64(0)
+		transaction := model.FindTransactionByOwnerIdDTO{}
 
 		err = rows.Scan(
-			&transactionId,
-			&transactionDate,
-			&storeName,
-			&storeId,
-			&agentId,
-			&agentName,
-			&transactionTotal)
+			&transaction.TransactionId,
+			&transaction.TransactionDate,
+			&transaction.StoreName,
+			&transaction.StoreId,
+			&transaction.AgentId,
+			&transaction.AgentName,
+			&transaction.TransactionTotal)
 
-		data := make(map[string]interface{})
-		data["transactionId"] = transactionId
-		data["transactionDate"] = transactionDate
-		data["storeName"] = storeName
-		data["storeId"] = storeId
-		data["agentId"] = agentId
-		data["agentName"] = agentName
-		data["transactionTotal"] = transactionTotal
-
-		results = append(results, data)
+		results = append(results, transaction)
 	}
 
 	return results, nil

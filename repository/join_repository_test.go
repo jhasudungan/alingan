@@ -20,8 +20,8 @@ func TestJoinRepository(t *testing.T) {
 			t.FailNow()
 		}
 
-		assert.Equal(t, "trx-001", results[0]["transactionId"])
-		assert.Equal(t, "agent-001", results[0]["agentId"])
-		assert.Equal(t, "str-001", results[0]["storeId"])
+		assert.Equal(t, "trx-001", results[0].TransactionId)
+		assert.Equal(t, "agent-001", results[0].AgentId)
+		assert.Equal(t, "str-001", results[0].StoreId)
 	})
 }
