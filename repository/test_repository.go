@@ -86,7 +86,7 @@ func (t *TestingRepository) DeleteAllTransactionByStore(storeId string) error {
 	return nil
 }
 
-func (t *TestingRepository) DeleteAllTransactionItemByTransaction(transactionId string) error {
+func (t *TestingRepository) DeleteAllTransactionItemByStore(storeId string) error {
 
 	con, err := config.CreateDBConnection()
 	defer con.Close()
@@ -95,9 +95,9 @@ func (t *TestingRepository) DeleteAllTransactionItemByTransaction(transactionId 
 		return err
 	}
 
-	sql := "delete from core.transaction_item where transaction_id = $1"
+	sql := "delete from core.transaction_item where transaction_id in (select transaction_id from core.transaction where store_id = $1)"
 
-	_, err = con.Exec(sql, transactionId)
+	_, err = con.Exec(sql, storeId)
 
 	if err != nil {
 		return err
