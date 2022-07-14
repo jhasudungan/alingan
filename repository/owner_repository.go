@@ -9,6 +9,7 @@ type OwnerRepository interface {
 	Insert(data entity.Owner) error
 	Update(data entity.Owner, ownerId string) error
 	FindById(ownerId string) (entity.Owner, error)
+	FindByOwnerEmail(ownerId string) (entity.Owner, error)
 	CheckExist(ownerId string) (bool, error)
 	CheckEmailExist(ownerEmail string) (bool, error)
 	SetInactive(ownerId string) error
@@ -77,6 +78,38 @@ func (o *OwnerRepositoryImpl) FindById(ownerId string) (entity.Owner, error) {
 	}
 
 	sql := "select owner_id, owner_name, owner_type, owner_email, password, is_active, created_date, last_modified from core.owner where owner_id = $1"
+
+	row := con.QueryRow(sql, ownerId)
+
+	err = row.Scan(
+		&owner.OwnerId,
+		&owner.OwnerName,
+		&owner.OwnerType,
+		&owner.OwnerEmail,
+		&owner.Password,
+		&owner.IsActive,
+		&owner.CreatedDate,
+		&owner.LastModified)
+
+	if err != nil {
+		return owner, err
+	}
+
+	return owner, nil
+}
+
+func (o *OwnerRepositoryImpl) FindByOwnerEmail(ownerId string) (entity.Owner, error) {
+
+	owner := entity.Owner{}
+
+	con, err := config.CreateDBConnection()
+	defer con.Close()
+
+	if err != nil {
+		return owner, err
+	}
+
+	sql := "select owner_id, owner_name, owner_type, owner_email, password, is_active, created_date, last_modified from core.owner where owner_email = $1"
 
 	row := con.QueryRow(sql, ownerId)
 

@@ -29,6 +29,25 @@ func TestOwnerRepository(t *testing.T) {
 
 	})
 
+	t.Run("TestFindByOwnerEmail", func(t *testing.T) {
+
+		ownerRepository := &OwnerRepositoryImpl{}
+
+		owner, err := ownerRepository.FindByOwnerEmail("admin@smartveggiesmart.com")
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		assert.Equal(t, "owner-001", owner.OwnerId)
+		assert.Equal(t, "Smart Veggies Mart", owner.OwnerName)
+		assert.Equal(t, "admin@smartveggiesmart.com", owner.OwnerEmail)
+		assert.Equal(t, "organization", owner.OwnerType)
+		assert.Equal(t, "smartveggies", owner.Password)
+
+	})
+
 	t.Run("TestInsert", func(t *testing.T) {
 
 		ownerRepository := &OwnerRepositoryImpl{}
