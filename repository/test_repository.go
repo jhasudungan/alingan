@@ -55,7 +55,7 @@ func (t *TestingRepository) DeleteAllAgentByStore(storeId string) error {
 		return err
 	}
 
-	sql := "delete from core.product where store_id = $1"
+	sql := "delete from core.agent where store_id = $1"
 
 	_, err = con.Exec(sql, storeId)
 
