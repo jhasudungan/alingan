@@ -26,6 +26,22 @@ func TestAgentRepository(t *testing.T) {
 
 	})
 
+	t.Run("TestFindAgentByEmail", func(t *testing.T) {
+
+		agentRepository := &AgentRepositoryImpl{}
+
+		agent, err := agentRepository.FindAgentByEmail("jeremiahhs@smartveggiesmart.com")
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		assert.Equal(t, "agent-001", agent.AgentId)
+		assert.Equal(t, "Jeremiah H.S", agent.AgentName)
+
+	})
+
 	t.Run("TestInsert", func(t *testing.T) {
 
 		data := entity.Agent{}
@@ -113,6 +129,21 @@ func TestAgentRepository(t *testing.T) {
 		agentRepository := &AgentRepositoryImpl{}
 
 		result, err := agentRepository.CheckExist("agent-test")
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		assert.Equal(t, true, result)
+
+	})
+
+	t.Run("TestCheckEmailExist", func(t *testing.T) {
+
+		agentRepository := &AgentRepositoryImpl{}
+
+		result, err := agentRepository.CheckEmailExist("updateagent@test.com")
 
 		if err != nil {
 			log.Fatal("Error Test : " + err.Error())

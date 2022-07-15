@@ -9,7 +9,9 @@ type AgentRepository interface {
 	Insert(data entity.Agent) error
 	Update(data entity.Agent, agentId string) error
 	FindAgentById(agentId string) (entity.Agent, error)
+	FindAgentByEmail(agentEmail string) (entity.Agent, error)
 	SetInactive(agentId string) error
+	CheckEmailExist(agentEmail string) (bool, error)
 	CheckExist(agentId string) (bool, error)
 	Delete(agentId string) error
 }
@@ -97,6 +99,38 @@ func (a *AgentRepositoryImpl) FindAgentById(agentId string) (entity.Agent, error
 
 }
 
+func (a *AgentRepositoryImpl) FindAgentByEmail(agentEmail string) (entity.Agent, error) {
+
+	agent := entity.Agent{}
+
+	con, err := config.CreateDBConnection()
+	defer con.Close()
+
+	if err != nil {
+		return agent, err
+	}
+
+	sql := "select a.agent_id, a.store_id, a.agent_name, a.agent_email, a.agent_password, a.is_active, a.created_date, a.last_modified from core.agent a where a.agent_email = $1"
+
+	row := con.QueryRow(sql, agentEmail)
+
+	err = row.Scan(
+		&agent.AgentId,
+		&agent.StoreId,
+		&agent.AgentName,
+		&agent.AgentEmail,
+		&agent.AgentPassword,
+		&agent.IsActive,
+		&agent.CreatedDate,
+		&agent.LastModified)
+
+	if err != nil {
+		return agent, err
+	}
+
+	return agent, nil
+}
+
 func (a *AgentRepositoryImpl) SetInactive(agentId string) error {
 
 	con, err := config.CreateDBConnection()
@@ -131,6 +165,30 @@ func (a *AgentRepositoryImpl) CheckExist(agentId string) (bool, error) {
 	sql := "select exists (select 1 from core.agent p where p.agent_id = $1)"
 
 	row := con.QueryRow(sql, agentId)
+
+	err = row.Scan(&result)
+
+	if err != nil {
+		return result, err
+	}
+
+	return result, nil
+}
+
+func (a *AgentRepositoryImpl) CheckEmailExist(agentEmail string) (bool, error) {
+
+	result := false
+
+	con, err := config.CreateDBConnection()
+	defer con.Close()
+
+	if err != nil {
+		return result, err
+	}
+
+	sql := "select exists (select 1 from core.agent p where p.agent_email = $1)"
+
+	row := con.QueryRow(sql, agentEmail)
 
 	err = row.Scan(&result)
 
