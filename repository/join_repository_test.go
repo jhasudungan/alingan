@@ -24,4 +24,23 @@ func TestJoinRepository(t *testing.T) {
 		assert.Equal(t, "agent-001", results[0].AgentId)
 		assert.Equal(t, "str-001", results[0].StoreId)
 	})
+
+	t.Run("TestFindAgentByOwnerId", func(t *testing.T) {
+
+		joinRepository := &JoinRepositoryImpl{}
+
+		results, err := joinRepository.FindTransactionByOwnerId("owner-001")
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		assert.Equal(t, "trx-001", results[0].TransactionId)
+		assert.Equal(t, "agent-001", results[0].AgentId)
+		assert.Equal(t, "str-001", results[0].StoreId)
+		assert.Equal(t, "Jeremiah H.S", results[0].AgentName)
+		assert.Equal(t, "Store 1 Smart Veggies", results[0].StoreName)
+
+	})
 }

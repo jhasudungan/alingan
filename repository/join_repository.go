@@ -7,6 +7,7 @@ import (
 
 type JoinRepository interface {
 	FindTransactionByOwnerId(ownerId string) ([]model.FindTransactionByOwnerIdDTO, error)
+	FindAgentByOwnerId(ownerId string) ([]model.FindAgentByOwnerIdDTO, error)
 }
 
 type JoinRepositoryImpl struct{}
@@ -46,6 +47,45 @@ func (j *JoinRepositoryImpl) FindTransactionByOwnerId(ownerId string) ([]model.F
 			&transaction.TransactionTotal)
 
 		results = append(results, transaction)
+	}
+
+	return results, nil
+}
+
+func (j *JoinRepositoryImpl) FindAgentByOwnerId(ownerId string) ([]model.FindAgentByOwnerIdDTO, error) {
+
+	results := make([]model.FindAgentByOwnerIdDTO, 0)
+
+	con, err := config.CreateDBConnection()
+	defer con.Close()
+
+	if err != nil {
+		return results, err
+	}
+
+	sql := "select a.agent_id , a.agent_name , a.agent_email , s.store_id , s.store_name , a.is_active from core.agent a inner join core.store s on a.store_id = s.store_id inner join core.owner o on s.owner_id = o.owner_id where o.owner_id = $1"
+
+	rows, err := con.Query(
+		sql,
+		ownerId)
+
+	if err != nil {
+		return results, err
+	}
+
+	for rows.Next() {
+
+		agent := model.FindAgentByOwnerIdDTO{}
+
+		err = rows.Scan(
+			&agent.AgentId,
+			&agent.AgentName,
+			&agent.AgentEmail,
+			&agent.StoreId,
+			&agent.StoreName,
+			&agent.IsActive)
+
+		results = append(results, agent)
 	}
 
 	return results, nil

@@ -11,3 +11,12 @@ type FindTransactionByOwnerIdDTO struct {
 	AgentName        string
 	TransactionTotal float64
 }
+
+type FindAgentByOwnerIdDTO struct {
+	AgentId    string
+	AgentName  string
+	AgentEmail string
+	StoreId    string
+	StoreName  string
+	IsActive   bool
+}
