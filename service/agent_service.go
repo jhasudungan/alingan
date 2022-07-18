@@ -15,14 +15,14 @@ type AgentService interface {
 }
 
 type AgentServiceImpl struct {
-	agentRepo repository.AgentRepository
-	ownerRepo repository.OwnerRepository
-	joinRepo  repository.JoinRepository
+	AgentRepo repository.AgentRepository
+	OwnerRepo repository.OwnerRepository
+	JoinRepo  repository.JoinRepository
 }
 
 func (a *AgentServiceImpl) RegisterNewAgent(request model.RegisterNewAgentRequest) error {
 
-	checkEmail, err := a.agentRepo.CheckEmailExist(request.AgentEmail)
+	checkEmail, err := a.AgentRepo.CheckEmailExist(request.AgentEmail)
 
 	if err != nil {
 		return err
@@ -38,7 +38,7 @@ func (a *AgentServiceImpl) RegisterNewAgent(request model.RegisterNewAgentReques
 	agent.AgentPassword = request.AgentPassword
 	agent.StoreId = request.StoreId
 
-	err = a.agentRepo.Insert(agent)
+	err = a.AgentRepo.Insert(agent)
 
 	if err != nil {
 		return err
@@ -51,7 +51,7 @@ func (a *AgentServiceImpl) GetAgentInformation(agentId string) (model.GetAgentIn
 
 	result := model.GetAgentInformationResponse{}
 
-	agent, err := a.agentRepo.FindAgentById(agentId)
+	agent, err := a.AgentRepo.FindAgentById(agentId)
 
 	if err != nil {
 		return result, err
@@ -71,7 +71,7 @@ func (a *AgentServiceImpl) GetAgentInformation(agentId string) (model.GetAgentIn
 
 func (a *AgentServiceImpl) SetAgentInactive(agentId string) error {
 
-	checkExist, err := a.agentRepo.CheckExist(agentId)
+	checkExist, err := a.AgentRepo.CheckExist(agentId)
 
 	if err != nil {
 		return err
@@ -81,7 +81,7 @@ func (a *AgentServiceImpl) SetAgentInactive(agentId string) error {
 		return errors.New("agent not exist")
 	}
 
-	err = a.agentRepo.SetInactive(agentId)
+	err = a.AgentRepo.SetInactive(agentId)
 
 	if err != nil {
 		return err
@@ -94,7 +94,7 @@ func (a *AgentServiceImpl) GetOwnerAgentList(ownerId string) ([]model.GetOwnerAg
 
 	results := make([]model.GetOwnerAgentListResponse, 0)
 
-	checkOwner, err := a.ownerRepo.CheckExist(ownerId)
+	checkOwner, err := a.OwnerRepo.CheckExist(ownerId)
 
 	if err != nil {
 		return results, err
@@ -104,7 +104,7 @@ func (a *AgentServiceImpl) GetOwnerAgentList(ownerId string) ([]model.GetOwnerAg
 		return results, errors.New("owner is not exist")
 	}
 
-	agents, err := a.joinRepo.FindAgentByOwnerId(ownerId)
+	agents, err := a.JoinRepo.FindAgentByOwnerId(ownerId)
 
 	if err != nil {
 		return results, err

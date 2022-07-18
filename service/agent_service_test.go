@@ -24,9 +24,9 @@ func TestAgentService(t *testing.T) {
 	testRepo := &repository.TestingRepository{}
 
 	agentService := &AgentServiceImpl{
-		ownerRepo: ownerRepo,
-		agentRepo: agentRepo,
-		joinRepo:  joinRepo,
+		OwnerRepo: ownerRepo,
+		AgentRepo: agentRepo,
+		JoinRepo:  joinRepo,
 	}
 
 	t.Run("PrepareOwnerData", func(t *testing.T) {
