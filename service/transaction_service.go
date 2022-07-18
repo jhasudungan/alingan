@@ -14,18 +14,18 @@ type TransactionService interface {
 }
 
 type TransactionServiceImpl struct {
-	storeRepo           repository.StoreRepository
-	ownerRepo           repository.OwnerRepository
-	productRepo         repository.ProductRepository
-	transactionRepo     repository.TransactionRepository
-	transactionItemRepo repository.TransactionItemRepository
-	agentRepo           repository.AgentRepository
-	joinRepo            repository.JoinRepository
+	StoreRepo           repository.StoreRepository
+	OwnerRepo           repository.OwnerRepository
+	ProductRepo         repository.ProductRepository
+	TransactionRepo     repository.TransactionRepository
+	TransactionItemRepo repository.TransactionItemRepository
+	AgentRepo           repository.AgentRepository
+	JoinRepo            repository.JoinRepository
 }
 
 func (t *TransactionServiceImpl) CreateTransaction(request model.CreateTransactionRequest) error {
 
-	checkStore, err := t.storeRepo.CheckExist(request.StoreId)
+	checkStore, err := t.StoreRepo.CheckExist(request.StoreId)
 
 	if err != nil {
 		return err
@@ -35,7 +35,7 @@ func (t *TransactionServiceImpl) CreateTransaction(request model.CreateTransacti
 		return errors.New("store is not exist")
 	}
 
-	checkAgent, err := t.agentRepo.CheckExist(request.AgentId)
+	checkAgent, err := t.AgentRepo.CheckExist(request.AgentId)
 
 	if err != nil {
 		return err
@@ -53,7 +53,7 @@ func (t *TransactionServiceImpl) CreateTransaction(request model.CreateTransacti
 	transaction.AgentId = request.AgentId
 	transaction.StoreId = request.StoreId
 
-	err = t.transactionRepo.Insert(transaction)
+	err = t.TransactionRepo.Insert(transaction)
 
 	if err != nil {
 		return err
@@ -69,7 +69,7 @@ func (t *TransactionServiceImpl) CreateTransaction(request model.CreateTransacti
 		transactionItem.UsedPrice = item.UsedPrice
 		transactionItem.ProductId = item.ProductId
 
-		err = t.transactionItemRepo.Insert(transactionItem)
+		err = t.TransactionItemRepo.Insert(transactionItem)
 
 		if err != nil {
 			return err
@@ -84,7 +84,7 @@ func (t *TransactionServiceImpl) FindTransactionByOwner(ownerId string) ([]model
 
 	results := make([]model.FindTransactionByOwnerResponse, 0)
 
-	checkOwner, err := t.ownerRepo.CheckExist(ownerId)
+	checkOwner, err := t.OwnerRepo.CheckExist(ownerId)
 
 	if err != nil {
 		return results, nil
@@ -94,7 +94,7 @@ func (t *TransactionServiceImpl) FindTransactionByOwner(ownerId string) ([]model
 		return results, errors.New("owner is not exist")
 	}
 
-	transactions, err := t.joinRepo.FindTransactionByOwnerId(ownerId)
+	transactions, err := t.JoinRepo.FindTransactionByOwnerId(ownerId)
 
 	if err != nil {
 		return results, err

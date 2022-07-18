@@ -30,13 +30,13 @@ func TestTransactionService(t *testing.T) {
 	testRepo := &repository.TestingRepository{}
 
 	transactionService := &TransactionServiceImpl{
-		storeRepo:           storeRepo,
-		ownerRepo:           ownerRepo,
-		productRepo:         productRepo,
-		transactionRepo:     transactionRepo,
-		transactionItemRepo: transactionItemRepo,
-		agentRepo:           agentRepo,
-		joinRepo:            joinRepo,
+		StoreRepo:           storeRepo,
+		OwnerRepo:           ownerRepo,
+		ProductRepo:         productRepo,
+		TransactionRepo:     transactionRepo,
+		TransactionItemRepo: transactionItemRepo,
+		AgentRepo:           agentRepo,
+		JoinRepo:            joinRepo,
 	}
 
 	t.Run("PrepareOwnerData", func(t *testing.T) {
