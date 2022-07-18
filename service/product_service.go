@@ -17,8 +17,8 @@ type ProductService interface {
 }
 
 type ProductServiceImpl struct {
-	ownerRepo   repository.OwnerRepository
-	productRepo repository.ProductRepository
+	OwnerRepo   repository.OwnerRepository
+	ProductRepo repository.ProductRepository
 }
 
 func (p *ProductServiceImpl) CreateProduct(request model.CreateProductRequest) error {
@@ -31,7 +31,7 @@ func (p *ProductServiceImpl) CreateProduct(request model.CreateProductRequest) e
 	product.ProductPrice = request.ProductPrice
 	product.ProductStock = request.ProductStock
 
-	checkOwner, err := p.ownerRepo.CheckExist(request.OwnerId)
+	checkOwner, err := p.OwnerRepo.CheckExist(request.OwnerId)
 
 	if err != nil {
 		return err
@@ -41,7 +41,7 @@ func (p *ProductServiceImpl) CreateProduct(request model.CreateProductRequest) e
 		return errors.New("owner is not exist")
 	}
 
-	err = p.productRepo.Insert(product)
+	err = p.ProductRepo.Insert(product)
 
 	if err != nil {
 		return err
@@ -58,7 +58,7 @@ func (p *ProductServiceImpl) UpdateProduct(request model.UpdateProductRequest, p
 	product.ProductStock = request.ProductStock
 	product.ProductPrice = request.ProductPrice
 
-	checkProduct, err := p.productRepo.CheckExist(productId)
+	checkProduct, err := p.ProductRepo.CheckExist(productId)
 
 	if err != nil {
 		return err
@@ -68,7 +68,7 @@ func (p *ProductServiceImpl) UpdateProduct(request model.UpdateProductRequest, p
 		return errors.New("product is not exist")
 	}
 
-	err = p.productRepo.Update(product, productId)
+	err = p.ProductRepo.Update(product, productId)
 
 	if err != nil {
 		return err
@@ -80,7 +80,7 @@ func (p *ProductServiceImpl) UpdateProduct(request model.UpdateProductRequest, p
 func (p *ProductServiceImpl) FindProductByOwnerId(ownerId string) ([]model.FindProductByOwnerIdResponse, error) {
 	result := make([]model.FindProductByOwnerIdResponse, 0)
 
-	checkOwner, err := p.ownerRepo.CheckExist(ownerId)
+	checkOwner, err := p.OwnerRepo.CheckExist(ownerId)
 
 	if err != nil {
 		return result, err
@@ -90,7 +90,7 @@ func (p *ProductServiceImpl) FindProductByOwnerId(ownerId string) ([]model.FindP
 		return result, errors.New("owner is not exist")
 	}
 
-	products, err := p.productRepo.FindProductsByOwnerId(ownerId)
+	products, err := p.ProductRepo.FindProductsByOwnerId(ownerId)
 
 	if err != nil {
 		return result, err
@@ -118,7 +118,7 @@ func (p *ProductServiceImpl) FindProductByOwnerId(ownerId string) ([]model.FindP
 func (p *ProductServiceImpl) FindProductById(productId string) (model.FindProductByIdResponse, error) {
 	result := model.FindProductByIdResponse{}
 
-	checkProduct, err := p.productRepo.CheckExist(productId)
+	checkProduct, err := p.ProductRepo.CheckExist(productId)
 
 	if err != nil {
 		return result, err
@@ -128,7 +128,7 @@ func (p *ProductServiceImpl) FindProductById(productId string) (model.FindProduc
 		return result, errors.New("product is not exist")
 	}
 
-	product, err := p.productRepo.FindProductById(productId)
+	product, err := p.ProductRepo.FindProductById(productId)
 
 	if err != nil {
 		return result, err
@@ -149,7 +149,7 @@ func (p *ProductServiceImpl) FindProductById(productId string) (model.FindProduc
 
 func (p *ProductServiceImpl) SetProductInactive(productId string) error {
 
-	checkProduct, err := p.productRepo.CheckExist(productId)
+	checkProduct, err := p.ProductRepo.CheckExist(productId)
 
 	if err != nil {
 		return err
@@ -159,7 +159,7 @@ func (p *ProductServiceImpl) SetProductInactive(productId string) error {
 		return errors.New("product is not exist")
 	}
 
-	err = p.productRepo.SetInactive(productId)
+	err = p.ProductRepo.SetInactive(productId)
 
 	if err != nil {
 		return err
