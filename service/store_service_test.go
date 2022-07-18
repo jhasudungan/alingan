@@ -21,7 +21,7 @@ func TestStoreService(t *testing.T) {
 	ownerRepo := &repository.OwnerRepositoryImpl{}
 
 	// service under test
-	storeService := &StoreServiceImpl{storeRepo: storeRepo, ownerRepo: ownerRepo}
+	storeService := &StoreServiceImpl{StoreRepo: storeRepo, OwnerRepo: ownerRepo}
 
 	t.Run("PrepareOwnerData", func(t *testing.T) {
 

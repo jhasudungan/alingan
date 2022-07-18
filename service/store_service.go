@@ -17,8 +17,8 @@ type StoreService interface {
 }
 
 type StoreServiceImpl struct {
-	ownerRepo repository.OwnerRepository
-	storeRepo repository.StoreRepository
+	OwnerRepo repository.OwnerRepository
+	StoreRepo repository.StoreRepository
 }
 
 func (s *StoreServiceImpl) CreateStore(request model.CreateStoreRequest) error {
@@ -32,7 +32,7 @@ func (s *StoreServiceImpl) CreateStore(request model.CreateStoreRequest) error {
 	store.StoreName = request.StoreName
 	store.StoreAddress = request.StoreAddress
 
-	checkOwner, err := s.ownerRepo.CheckExist(request.OwnerId)
+	checkOwner, err := s.OwnerRepo.CheckExist(request.OwnerId)
 
 	if err != nil {
 		return err
@@ -42,7 +42,7 @@ func (s *StoreServiceImpl) CreateStore(request model.CreateStoreRequest) error {
 		return errors.New("owner is not exist")
 	}
 
-	err = s.storeRepo.Insert(store)
+	err = s.StoreRepo.Insert(store)
 
 	if err != nil {
 		return err
@@ -53,7 +53,7 @@ func (s *StoreServiceImpl) CreateStore(request model.CreateStoreRequest) error {
 
 func (s *StoreServiceImpl) UpdateStore(request model.UpdateStoreRequest, storeId string) error {
 
-	checkExist, err := s.storeRepo.CheckExist(storeId)
+	checkExist, err := s.StoreRepo.CheckExist(storeId)
 
 	if err != nil {
 		return err
@@ -67,7 +67,7 @@ func (s *StoreServiceImpl) UpdateStore(request model.UpdateStoreRequest, storeId
 	store.StoreName = request.StoreName
 	store.StoreAddress = request.StoreAddress
 
-	err = s.storeRepo.Update(store, storeId)
+	err = s.StoreRepo.Update(store, storeId)
 
 	if err != nil {
 		return err
@@ -80,7 +80,7 @@ func (s *StoreServiceImpl) FindStoreByOwnerId(ownerId string) ([]model.FindStore
 
 	results := make([]model.FindStoreByOwnerIdResponse, 0)
 
-	checkOwner, err := s.ownerRepo.CheckExist(ownerId)
+	checkOwner, err := s.OwnerRepo.CheckExist(ownerId)
 
 	if err != nil {
 		return results, err
@@ -90,7 +90,7 @@ func (s *StoreServiceImpl) FindStoreByOwnerId(ownerId string) ([]model.FindStore
 		return results, errors.New("owner is not exist")
 	}
 
-	stores, err := s.storeRepo.FindStoresByOwnerId(ownerId)
+	stores, err := s.StoreRepo.FindStoresByOwnerId(ownerId)
 
 	if err != nil {
 		return results, err
@@ -118,7 +118,7 @@ func (s *StoreServiceImpl) FindStoreById(storeId string) (model.FindStoreByIdRes
 
 	result := model.FindStoreByIdResponse{}
 
-	checkStore, err := s.storeRepo.CheckExist(storeId)
+	checkStore, err := s.StoreRepo.CheckExist(storeId)
 
 	if err != nil {
 		return result, err
@@ -128,7 +128,7 @@ func (s *StoreServiceImpl) FindStoreById(storeId string) (model.FindStoreByIdRes
 		return result, errors.New("store is not exist")
 	}
 
-	store, err := s.storeRepo.FindStoreById(storeId)
+	store, err := s.StoreRepo.FindStoreById(storeId)
 
 	if err != nil {
 		return result, err
@@ -147,7 +147,7 @@ func (s *StoreServiceImpl) FindStoreById(storeId string) (model.FindStoreByIdRes
 
 func (s *StoreServiceImpl) SetStoreInactive(storeId string) error {
 
-	checkExist, err := s.storeRepo.CheckExist(storeId)
+	checkExist, err := s.StoreRepo.CheckExist(storeId)
 
 	if err != nil {
 		return err
@@ -157,7 +157,7 @@ func (s *StoreServiceImpl) SetStoreInactive(storeId string) error {
 		return errors.New("store is not exist")
 	}
 
-	err = s.storeRepo.SetInactive(storeId)
+	err = s.StoreRepo.SetInactive(storeId)
 
 	if err != nil {
 		return err
