@@ -17,13 +17,13 @@ type AuthService interface {
 
 type AuthServiceImpl struct {
 	SessionList map[string]*model.Session
-	ownerRepo   repository.OwnerRepository
-	agentRepo   repository.AgentRepository
+	OwnerRepo   repository.OwnerRepository
+	AgentRepo   repository.AgentRepository
 }
 
 func (a *AuthServiceImpl) OwnerRegistration(request model.OwnerRegistrationRequest) error {
 
-	checkEmailExist, err := a.ownerRepo.CheckEmailExist(request.OwnerEmail)
+	checkEmailExist, err := a.OwnerRepo.CheckEmailExist(request.OwnerEmail)
 
 	if err != nil {
 		return err
@@ -40,7 +40,7 @@ func (a *AuthServiceImpl) OwnerRegistration(request model.OwnerRegistrationReque
 	owner.OwnerType = request.OwnerType
 	owner.Password = request.Password
 
-	err = a.ownerRepo.Insert(owner)
+	err = a.OwnerRepo.Insert(owner)
 
 	if err != nil {
 		return err
@@ -53,7 +53,7 @@ func (a *AuthServiceImpl) OwnerLogin(request model.OwnerLoginRequest) (*model.Se
 
 	session := &model.Session{}
 
-	checkEmailExist, err := a.ownerRepo.CheckEmailExist(request.OwnerEmail)
+	checkEmailExist, err := a.OwnerRepo.CheckEmailExist(request.OwnerEmail)
 
 	if err != nil {
 		return session, err
@@ -63,7 +63,7 @@ func (a *AuthServiceImpl) OwnerLogin(request model.OwnerLoginRequest) (*model.Se
 		return session, errors.New("authentication error")
 	}
 
-	owner, err := a.ownerRepo.FindByOwnerEmail(request.OwnerEmail)
+	owner, err := a.OwnerRepo.FindByOwnerEmail(request.OwnerEmail)
 
 	if err != nil {
 		return session, err
@@ -89,7 +89,7 @@ func (a *AuthServiceImpl) AgentLogin(request model.AgentLoginRequest) (*model.Se
 
 	session := &model.Session{}
 
-	checkEmailExist, err := a.agentRepo.CheckEmailExist(request.AgentEmail)
+	checkEmailExist, err := a.AgentRepo.CheckEmailExist(request.AgentEmail)
 
 	if err != nil {
 		return session, err
@@ -99,7 +99,7 @@ func (a *AuthServiceImpl) AgentLogin(request model.AgentLoginRequest) (*model.Se
 		return session, errors.New("authentication error")
 	}
 
-	agent, err := a.agentRepo.FindAgentByEmail(request.AgentEmail)
+	agent, err := a.AgentRepo.FindAgentByEmail(request.AgentEmail)
 
 	if err != nil {
 		return session, err
