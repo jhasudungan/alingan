@@ -16,6 +16,10 @@ func main() {
 
 	r.HandleFunc("/", publicController.ShowIndexPage)
 
+	assetFileServer := http.FileServer(http.Dir("asset"))
+
+	r.PathPrefix("/static/").Handler(http.StripPrefix("/static", assetFileServer))
+
 	server := &http.Server{
 		Addr:    ":8080",
 		Handler: r,
