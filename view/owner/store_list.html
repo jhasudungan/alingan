@@ -1,5 +1,36 @@
-{{ template "owner-layout" }}
+{{ template "owner-layout" .}}
 {{ define "container" }}
-<p>We show data here</p>
+<div class="column">
+    <p class="title">Stores</p>
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th>StoreName</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range .stores }}
+                <tr>
+                    <td>{{ .StoreName }}</td>
+                    {{ if .IsActive}}
+                        <td>
+                            <div class="tag is-primary">
+                                active
+                            </div>
+                        </td>
+                    {{ else }}
+                        <td>
+                            <span class="tag is-danger">
+                                inactive
+                            </span>
+                        </td>
+                    {{ end }}
+                    <td><a class="button is-info is-small" href="#" > <i class="fa fa-desktop"></i></a></td>
+                </tr>
+            {{ end }}
+        </tbody>
+    </table>
+</div>
 {{ end }}
-   

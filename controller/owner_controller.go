@@ -34,14 +34,9 @@ func (o *OwnerController) ShowStoreData(w http.ResponseWriter, r *http.Request) 
 	}
 
 	templateData := make(map[string]interface{})
+
 	templateData["stores"] = stores
 
 	err = template.Execute(w, templateData)
-
-	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
-		return
-	}
 
 }
