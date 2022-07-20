@@ -1,0 +1,107 @@
+{{ define "owner-layout" }}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alingan - Your Store on Your Hand</title>
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="/static/bulma/css/bulma.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/static/font-awesome/css/all.min.css">
+    </head>
+<body>
+    
+    <!-- Owner Topbar -->
+    <nav class="navbar has-shadow">
+        <div class="navbar-brand">
+            <div class="navbar-item">
+                <i class="fa fa-book-open fa-2x"></i>
+            </div>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                <div class="navbar-item">Your Store on Your Hands</div>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <div class="navbar-link">Smart Veggies Mart</div>
+                    <div class="navbar-dropdown">
+                        <div class="navbar-item">
+                            <div>
+                                Profile
+                            </div>
+                        </div>
+                        <div class="navbar-item">
+                            <div>
+                                Sign Out
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="section">
+        <div class="columns">
+
+            <!-- Sidebar -->
+            <div class="column is-4-tablet is-3-desktop is-2-widescreen">
+                <!-- Menu -->
+                <div class="menu">
+                    <ul class="menu-list">
+                        <p class="menu-label">Menu</p>
+                        <li>
+                            <a href="#">
+                                <span class="icon">
+                                    <i class="fa fa-home"></i>
+                                </span>
+                                Store
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="icon">
+                                    <i class="fa fa-book"></i>
+                                </span>
+                                Product
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="icon">
+                                    <i class="fa fa-address-book"></i>  
+                                </span>
+                                Agent
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="icon">
+                                    <i class="fa fa-shopping-bag"></i>  
+                                </span>
+                                Transaction
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="column">
+                {{ template "container" .}}
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
+{{ end }}
