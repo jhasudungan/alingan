@@ -1,0 +1,35 @@
+{{ template "owner-layout" .}}
+{{ define "container" }}
+<div class="column">
+    <div class="block">
+        <p class="is-size-4">Create Store</p>
+    </div>
+    <div class="block">
+        <p>Once a store is created , you can assign agent to that store and start a transaction</p>
+    </div>
+    <form action="/owner/new/store/submit" method="POST">
+        <div class="columns">
+            <div class="column">
+                <label for="" class="label">Store Name</label>
+                <div class="control">
+                    <input class="input" name="store-name" placeholder="My First Shop" >
+                </div>
+            </div>
+            <div class="column">
+                <label for="" class="label">Store Address</label>
+                <div class="control">
+                    <input class="input" name="store-address" placeholder="Jakarta, Indonesia">
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <div class="buttons are-small">
+                    <a href="/owner/store" class="button is-dark"><i class="fa fa-arrow-left"></i></a>
+                    <button class="button is-primary" type="submit" name="submit">save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{{ end }}

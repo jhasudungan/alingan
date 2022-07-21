@@ -1,0 +1,58 @@
+{{ template "owner-layout" .}}
+{{ define "container" }}
+<div class="column">
+    <div class="block">
+        <p class="is-size-4">View Stores</p>
+    </div>
+    <div class="block">
+        <p>You can update your store data or set your store inactive here</p>
+    </div>
+    <form method="POST" action="/owner/update/store/submit">
+        <div class="columns">
+            <div class="column">
+                <label for="" class="label">Store Id</label>
+                <div class="control">
+                    <input class="input" value="{{ .store.StoreId }}" name="store-id" readonly="true" >
+                </div>
+            </div>
+            <div class="column">
+                <label for="" class="label">Store Name</label>
+                <div class="control">
+                    <input class="input" value="{{ .store.StoreName }}" name="update-store-name" >
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <label for="" class="label">Store Address</label>
+                <div class="control">
+                    <input class="input" value="{{ .store.StoreAddress }}" name="update-store-address" >
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <label for="" class="label">Last Modified</label>
+                <div class="control">
+                    <input class="input" value="{{ .store.LastModified }}" disabled>
+                </div>
+            </div>
+            <div class="column">
+                <label for="" class="label">Created Date </label>
+                <div class="control">
+                    <input class="input" value="{{ .store.CreatedDate }}" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <div class="buttons are-small">
+                    <a href="/owner/store" class="button is-dark"><i class="fa fa-arrow-left"></i></a>
+                    <button class="button is-primary" type="submit" name="submit">save change</button>
+                    <a href="/owner/inactive/store/{{.store.StoreId }}" class="button is-danger">deactive this store</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{{ end }}

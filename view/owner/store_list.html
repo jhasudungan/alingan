@@ -1,7 +1,12 @@
 {{ template "owner-layout" .}}
 {{ define "container" }}
 <div class="column">
-    <p class="title">Stores</p>
+    <div class="block">
+        <p class="is-size-4">Store</p>
+    </div>
+    <div class="block">
+        <p>Below is the list of your store, you can create a new store by clicking on "create a new store" button</p>
+    </div>
     <table class="table is-hoverable is-fullwidth">
         <thead>
             <tr>
@@ -27,10 +32,13 @@
                             </span>
                         </td>
                     {{ end }}
-                    <td><a class="button is-info is-small" href="#" > <i class="fa fa-desktop"></i></a></td>
+                    <td><a class="button is-info is-small" href="/owner/store/{{.StoreId}}" > view</a></td>
                 </tr>
             {{ end }}
         </tbody>
     </table>
+    <div class="block">
+        <a class="button is-success" href="/owner/new/store" >create new store</a>
+    </div>
 </div>
 {{ end }}
