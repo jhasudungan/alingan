@@ -1,0 +1,64 @@
+{{ template "owner-layout" .}}
+{{ define "container" }}
+<div class="column">
+    <div class="block">
+        <p class="is-size-4">View Product</p>
+    </div>
+    <div class="block">
+        <p>You can update your product data or set your product inactive here</p>
+    </div>
+    <form method="POST" action="/owner/update/product/submit">
+        <div class="columns">
+            <div class="column">
+                <label for="" class="label">Product Id</label>
+                <div class="control">
+                    <input class="input" value="{{ .product.ProductId }}" name="product-id" readonly="true" >
+                </div>
+            </div>
+            <div class="column">
+                <label for="" class="label">Product Name</label>
+                <div class="control">
+                    <input class="input" value="{{ .product.ProductName }}" name="update-product-name" >
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <label for="" class="label">Product Measurement Unit</label>
+                <div class="control">
+                    <input class="input" value="{{ .product.ProductMeasurementUnit }}" name="update-product-measurement-unit" >
+                </div>
+            </div>
+            <div class="column">
+                <label for="" class="label">Product Price</label>
+                <div class="control">
+                    <input class="input" type="number" value="{{ .product.ProductPrice }}" name="update-product-price" >
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <label for="" class="label">Last Modified</label>
+                <div class="control">
+                    <input class="input" value="{{ .product.LastModified }}" disabled>
+                </div>
+            </div>
+            <div class="column">
+                <label for="" class="label">Created Date </label>
+                <div class="control">
+                    <input class="input" value="{{ .product.CreatedDate }}" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <div class="buttons are-small">
+                    <a href="/owner/product" class="button is-dark"><i class="fa fa-arrow-left"></i></a>
+                    <button class="button is-primary" type="submit" name="submit">save change</button>
+                    <a href="/owner/inactive/product/{{.product.ProductId }}" class="button is-danger">deactive this product</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{{ end }}

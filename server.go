@@ -15,6 +15,7 @@ func main() {
 	// repository
 	storeRepo := &repository.StoreRepositoryImpl{}
 	ownerRepo := &repository.OwnerRepositoryImpl{}
+	productRepo := &repository.ProductRepositoryImpl{}
 
 	// svc
 	storeSvc := &service.StoreServiceImpl{
@@ -22,21 +23,38 @@ func main() {
 		StoreRepo: storeRepo,
 	}
 
+	productSvc := &service.ProductServiceImpl{
+		OwnerRepo:   ownerRepo,
+		ProductRepo: productRepo,
+	}
+
 	// controller
 	storeManagementController := &controller.StoreManagementController{
 		StoreService: storeSvc,
+	}
+
+	productManagementController := &controller.ProductManagementController{
+		ProductService: productSvc,
 	}
 	publicController := &controller.PublicController{}
 
 	// router and handler
 	r := &mux.Router{}
 	r.HandleFunc("/", publicController.ShowIndexPage)
+
 	r.HandleFunc("/owner/store", storeManagementController.ShowStoreData).Methods("GET")
 	r.HandleFunc("/owner/store/{storeId}", storeManagementController.ShowStoreInformation).Methods("GET")
 	r.HandleFunc("/owner/new/store", storeManagementController.ShowCreateStoreForm).Methods("GET")
 	r.HandleFunc("/owner/new/store/submit", storeManagementController.HandleCreateStoreFormRequest).Methods("POST")
 	r.HandleFunc("/owner/inactive/store/{storeId}", storeManagementController.HandleInactiveStoreRequest).Methods("GET")
 	r.HandleFunc("/owner/update/store/submit", storeManagementController.HandleUpdateStoreRequest).Methods("POST")
+
+	r.HandleFunc("/owner/product", productManagementController.ShowProductData).Methods("GET")
+	r.HandleFunc("/owner/product/{productId}", productManagementController.ShowProductInformation).Methods("GET")
+	r.HandleFunc("/owner/new/product", productManagementController.ShowCreateProductForm).Methods("GET")
+	r.HandleFunc("/owner/new/product/submit", productManagementController.HandleCreateProductFormRequest).Methods("POST")
+	r.HandleFunc("/owner/inactive/product/{productId}", productManagementController.HandleInactiveProductRequest).Methods("GET")
+	r.HandleFunc("/owner/update/product/submit", productManagementController.HandleUpdateProductRequest).Methods("POST")
 
 	// file server
 	assetFileServer := http.FileServer(http.Dir("asset"))

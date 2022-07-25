@@ -1,0 +1,43 @@
+{{ template "owner-layout" .}}
+{{ define "container" }}
+<div class="column">
+    <div class="block">
+        <p class="is-size-4">New Product</p>
+    </div>
+    <div class="block">
+        <p>Once a product is created , you can use it in a transaction</p>
+    </div>
+    <form method="POST" action="/owner/new/product/submit">
+        <div class="columns">
+            <div class="column">
+                <label for="" class="label">Product Name</label>
+                <div class="control">
+                    <input class="input" name="product-name" >
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <label for="" class="label">Product Measurement Unit</label>
+                <div class="control">
+                    <input class="input" name="product-measurement-unit" >
+                </div>
+            </div>
+            <div class="column">
+                <label for="" class="label">Product Price</label>
+                <div class="control">
+                    <input class="input" type="number" name="product-price" >
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <div class="buttons are-small">
+                    <a href="/owner/product" class="button is-dark"><i class="fa fa-arrow-left"></i></a>
+                    <button class="button is-primary" type="submit" name="submit">save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{{ end }}

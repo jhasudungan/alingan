@@ -12,7 +12,7 @@ type ProductService interface {
 	CreateProduct(request model.CreateProductRequest) error
 	UpdateProduct(request model.UpdateProductRequest, productId string) error
 	FindProductByOwnerId(ownerId string) ([]model.FindProductByOwnerIdResponse, error)
-	FindProductById(productId string) ([]model.FindProductByIdResponse, error)
+	FindProductById(productId string) (model.FindProductByIdResponse, error)
 	SetProductInactive(productId string) error
 }
 
