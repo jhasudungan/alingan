@@ -12,8 +12,7 @@ import (
 )
 
 type StoreManagementController struct {
-	StoreService   service.StoreService
-	ProductService service.ProductService
+	StoreService service.StoreService
 }
 
 func (o *StoreManagementController) ShowStoreData(w http.ResponseWriter, r *http.Request) {
@@ -176,40 +175,5 @@ func (o *StoreManagementController) HandleUpdateStoreRequest(w http.ResponseWrit
 	}
 
 	http.Redirect(w, r, "/owner/store", http.StatusSeeOther)
-
-}
-
-func (o *StoreManagementController) ShowProductData(w http.ResponseWriter, r *http.Request) {
-
-	// ownerId will get from session when authentication is integrated
-	ownerId := "owner-001"
-
-	products, err := o.ProductService.FindProductByOwnerId(ownerId)
-
-	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
-		return
-	}
-
-	template, err := template.ParseFiles(path.Join("view", "owner/product_list.html"), path.Join("view", "layout/owner_layout.html"))
-
-	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
-		return
-	}
-
-	templateData := make(map[string]interface{})
-
-	templateData["products"] = products
-
-	err = template.Execute(w, templateData)
-
-	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
-		return
-	}
 
 }
