@@ -4,6 +4,7 @@ import (
 	"alingan/core/entity"
 	"alingan/core/model"
 	"alingan/core/repository"
+	"alingan/core/util"
 	"errors"
 )
 
@@ -33,6 +34,7 @@ func (a *AgentServiceImpl) RegisterNewAgent(request model.RegisterNewAgentReques
 	}
 
 	agent := entity.Agent{}
+	agent.AgentId = util.GenerateId("AGT")
 	agent.AgentEmail = request.AgentEmail
 	agent.AgentName = request.AgentName
 	agent.AgentPassword = request.AgentPassword

@@ -16,6 +16,8 @@ func main() {
 	storeRepo := &repository.StoreRepositoryImpl{}
 	ownerRepo := &repository.OwnerRepositoryImpl{}
 	productRepo := &repository.ProductRepositoryImpl{}
+	joinRepo := &repository.JoinRepositoryImpl{}
+	agentRepo := &repository.AgentRepositoryImpl{}
 
 	// svc
 	storeSvc := &service.StoreServiceImpl{
@@ -28,6 +30,12 @@ func main() {
 		ProductRepo: productRepo,
 	}
 
+	agentSvc := &service.AgentServiceImpl{
+		OwnerRepo: ownerRepo,
+		JoinRepo:  joinRepo,
+		AgentRepo: agentRepo,
+	}
+
 	// controller
 	storeManagementController := &controller.StoreManagementController{
 		StoreService: storeSvc,
@@ -36,6 +44,12 @@ func main() {
 	productManagementController := &controller.ProductManagementController{
 		ProductService: productSvc,
 	}
+
+	agentManagamentController := &controller.AgentManagamentController{
+		AgentService: agentSvc,
+		StoreService: storeSvc,
+	}
+
 	publicController := &controller.PublicController{}
 
 	// router and handler
@@ -55,6 +69,12 @@ func main() {
 	r.HandleFunc("/owner/new/product/submit", productManagementController.HandleCreateProductFormRequest).Methods("POST")
 	r.HandleFunc("/owner/inactive/product/{productId}", productManagementController.HandleInactiveProductRequest).Methods("GET")
 	r.HandleFunc("/owner/update/product/submit", productManagementController.HandleUpdateProductRequest).Methods("POST")
+
+	r.HandleFunc("/owner/agent", agentManagamentController.ShowAgentData).Methods("GET")
+	r.HandleFunc("/owner/agent/{agentId}", agentManagamentController.ShowAgentInformation).Methods("GET")
+	r.HandleFunc("/owner/new/agent", agentManagamentController.ShowCreateAgentForm).Methods("GET")
+	r.HandleFunc("/owner/new/agent/submit", agentManagamentController.HandleCreateAgentFormRequest).Methods("POST")
+	r.HandleFunc("/owner/inactive/agent/{agentId}", agentManagamentController.HandleSetAgentInactiveRequest).Methods("GET")
 
 	// file server
 	assetFileServer := http.FileServer(http.Dir("asset"))

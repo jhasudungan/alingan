@@ -1,0 +1,46 @@
+{{ template "owner-layout" .}}
+{{ define "container" }}
+<div class="column">
+    <div class="block">
+        <p class="is-size-4">Agent</p>
+    </div>
+    <div class="block">
+        <p>Below is the list of your agent, you can create a new agent by clicking on "register new agent" button</p>
+    </div>
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th>Agent Name</th>
+                <th>Store</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range .agents }}
+                <tr>
+                    <td>{{ .AgentName }}</td>
+                    <td>{{ .StoreName }}</td>
+                    {{ if .IsActive}}
+                        <td>
+                            <div class="tag is-primary">
+                                active
+                            </div>
+                        </td>
+                    {{ else }}
+                        <td>
+                            <span class="tag is-danger">
+                                inactive
+                            </span>
+                        </td>
+                    {{ end }}
+                    <td><a class="button is-info is-small" href="/owner/agent/{{.AgentId}}" > view</a></td>
+                </tr>
+            {{ end }}
+        </tbody>
+    </table>
+    <div class="block">
+        <a class="button is-success" href="/owner/new/agent" >register new agent</a>
+    </div>
+</div>
+{{ end }}

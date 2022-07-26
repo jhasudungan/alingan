@@ -1,0 +1,54 @@
+{{ template "owner-layout" .}}
+{{ define "container" }}
+<div class="column">
+    <div class="block">
+        <p class="is-size-4">New Agent</p>
+    </div>
+    <div class="block">
+        <p>Create a new agent to start a transaction</p>
+    </div>
+    <form method="POST" action="/owner/new/agent/submit">
+        <div class="columns">
+            <div class="column">
+                <label for="" class="label">Agent Name</label>
+                <div class="control">
+                    <input class="input" name="agent-name" >
+                </div>
+            </div>
+            <div class="column">
+                <label for="" class="label">Agent Assigned Store</label>
+                <div class="select">
+                    <select name="agent-store">
+                        <option selected>select agent store</option>
+                        {{  range .stores }}
+                            <option value="{{ .StoreId }}">{{ .StoreName }}</option>
+                        {{ end }}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <label for="" class="label">Agent Email</label>
+                <div class="control">
+                    <input class="input" name="agent-email" >
+                </div>
+            </div>
+            <div class="column">
+                <label for="" class="label">Agent Login Password</label>
+                <div class="control">
+                    <input class="input" type="password" name="agent-password" >
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <div class="buttons are-small">
+                    <a href="/owner/agent" class="button is-dark"><i class="fa fa-arrow-left"></i></a>
+                    <button class="button is-primary" type="submit" name="submit">save</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{{ end }}
