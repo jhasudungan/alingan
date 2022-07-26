@@ -11,6 +11,7 @@ import (
 type TransactionService interface {
 	CreateTransaction(request model.CreateTransactionRequest) error
 	CountTotalTransaction(request model.CreateTransactionRequest) float64
+	FindTransactionByOwner(ownerId string) ([]model.FindTransactionByOwnerResponse, error)
 }
 
 type TransactionServiceImpl struct {

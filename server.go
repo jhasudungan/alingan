@@ -36,6 +36,14 @@ func main() {
 		AgentRepo: agentRepo,
 	}
 
+	transactionSvc := &service.TransactionServiceImpl{
+		OwnerRepo:   ownerRepo,
+		JoinRepo:    joinRepo,
+		AgentRepo:   agentRepo,
+		ProductRepo: productRepo,
+		StoreRepo:   storeRepo,
+	}
+
 	// controller
 	storeManagementController := &controller.StoreManagementController{
 		StoreService: storeSvc,
@@ -48,6 +56,10 @@ func main() {
 	agentManagamentController := &controller.AgentManagamentController{
 		AgentService: agentSvc,
 		StoreService: storeSvc,
+	}
+
+	transactionManagementController := &controller.TransactionManagementController{
+		TransactionService: transactionSvc,
 	}
 
 	publicController := &controller.PublicController{}
@@ -75,6 +87,8 @@ func main() {
 	r.HandleFunc("/owner/new/agent", agentManagamentController.ShowCreateAgentForm).Methods("GET")
 	r.HandleFunc("/owner/new/agent/submit", agentManagamentController.HandleCreateAgentFormRequest).Methods("POST")
 	r.HandleFunc("/owner/inactive/agent/{agentId}", agentManagamentController.HandleSetAgentInactiveRequest).Methods("GET")
+
+	r.HandleFunc("/owner/transaction", transactionManagementController.ShowTransactionData).Methods("GET")
 
 	// file server
 	assetFileServer := http.FileServer(http.Dir("asset"))

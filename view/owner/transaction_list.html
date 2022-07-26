@@ -1,0 +1,34 @@
+{{ template "owner-layout" .}}
+{{ define "container" }}
+<div class="column">
+    <div class="block">
+        <p class="is-size-4">Transaction</p>
+    </div>
+    <div class="block">
+        <p>Below is the list of your transaction, you can create a new transaction by clicking on "create a new transaction" button</p>
+    </div>
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th>Transaction Date</th>
+                <th>Store Name</th>
+                <th>Agent In Charge</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range .transactions }}
+                <tr>
+                    <td>{{ .TransactionDate }}</td>
+                    <td>{{ .StoreName }}</td>
+                    <td>{{ .AgentName }}</td>
+                    <td><a class="button is-info is-small" href="/owner/transaction/{{.StoreId}}" > view</a></td>
+                </tr>
+            {{ end }}
+        </tbody>
+    </table>
+    <div class="block">
+        <a class="button is-success" href="/owner/new/transaction" >create new transaction</a>
+    </div>
+</div>
+{{ end }}
