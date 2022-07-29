@@ -1,4 +1,4 @@
-module alingan/core
+module alingan
 
 go 1.17
 

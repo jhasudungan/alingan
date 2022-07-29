@@ -1,9 +1,9 @@
 package main
 
 import (
-	"alingan/core/controller"
-	"alingan/core/repository"
-	"alingan/core/service"
+	"alingan/controller"
+	"alingan/repository"
+	"alingan/service"
 	"log"
 	"net/http"
 

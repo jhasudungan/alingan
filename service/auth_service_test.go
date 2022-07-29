@@ -1,8 +1,8 @@
 package service
 
 import (
-	"alingan/core/model"
-	"alingan/core/repository"
+	"alingan/model"
+	"alingan/repository"
 	"log"
 	"testing"
 

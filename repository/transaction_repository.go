@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"alingan/core/config"
-	"alingan/core/entity"
+	"alingan/config"
+	"alingan/entity"
 )
 
 type TransactionRepository interface {

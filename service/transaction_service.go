@@ -1,10 +1,10 @@
 package service
 
 import (
-	"alingan/core/entity"
-	"alingan/core/model"
-	"alingan/core/repository"
-	"alingan/core/util"
+	"alingan/entity"
+	"alingan/model"
+	"alingan/repository"
+	"alingan/util"
 	"errors"
 	"time"
 )

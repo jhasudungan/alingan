@@ -1,6 +1,6 @@
 package repository
 
-import "alingan/core/config"
+import "alingan/config"
 
 // Below query only used for cleaning up data after testing
 

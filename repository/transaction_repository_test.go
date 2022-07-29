@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"alingan/core/entity"
+	"alingan/entity"
 	"log"
 	"testing"
 	"time"

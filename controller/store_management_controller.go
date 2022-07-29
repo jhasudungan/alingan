@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"alingan/core/model"
-	"alingan/core/service"
+	"alingan/model"
+	"alingan/service"
 	"html/template"
 	"log"
 	"net/http"

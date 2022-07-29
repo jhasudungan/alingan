@@ -1,8 +1,8 @@
 package repository
 
 import (
-	"alingan/core/config"
-	"alingan/core/model"
+	"alingan/config"
+	"alingan/model"
 )
 
 type JoinRepository interface {
