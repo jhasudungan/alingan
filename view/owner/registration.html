@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="/static/bulma/css/bulma.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/static/font-awesome/css/all.min.css">
+
+    <title>Alingan - Login as An Owner</title>
+</head>
+<body>
+    <section class="hero is-fullheight">
+        <section class="hero-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-5-tablet is-4-desktop is-6-widescreen">
+                        <form action="/owner/registration/submit" method="POST" class="box has-shadow">
+                            <div class="columns">
+                                <div class="column">
+                                    <div class="field">
+                                        <label for="" class="label">Email</label>
+                                        <div class="control has-icons-left">
+                                            <span class="icon is-small is-left">
+                                                <i class="fa fa-envelope"></i>
+                                            </span>
+                                            <input type="text" class="input" type="email" name="owner-email" placeholder="eg jeremiah@aol.com">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column">
+                                    <div class="field">
+                                        <label for="" class="label">Name</label>
+                                        <div class="control has-icons-left">
+                                            <span class="icon is-small is-left">
+                                                <i class="fa fa-person"></i>
+                                            </span>
+                                            <input type="text" class="input" type="text" name="owner-name" placeholder="eg Jeremiah Hasudungan">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="columns">
+                                <div class="column">
+                                    <div class="field">
+                                        <label for="" class="label">Account Type</label>
+                                        <div class="control has-icons-left">
+                                            <span class="icon is-small is-left">
+                                                <i class="fa fa-person"></i>
+                                            </span>
+                                            <div class="select">
+                                                <select name="account-type">
+                                                    <option selected value="personal">Personal</option>
+                                                    <option selected value="organization">Company/Organization</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column">
+                                    <div class="field">
+                                        <label for="" class="label">Password</label>
+                                        <div class="control has-icons-left">
+                                            <span class="icon is-small is-left">
+                                                <i class="fa fa-lock"></i>
+                                            </span>
+                                            <input type="password" class="input" type="password" name="owner-password" ></input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <button class="button is-success" type="submit">Register</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+</body>
+</html>

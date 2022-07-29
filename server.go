@@ -2,6 +2,7 @@ package main
 
 import (
 	"alingan/controller"
+	"alingan/model"
 	"alingan/repository"
 	"alingan/service"
 	"log"
@@ -48,6 +49,14 @@ func main() {
 		TransactionItemRepo: transactionItemRepo,
 	}
 
+	sessionList := make(map[string]*model.Session)
+
+	authSvc := &service.AuthServiceImpl{
+		OwnerRepo:   ownerRepo,
+		AgentRepo:   agentRepo,
+		SessionList: sessionList,
+	}
+
 	// controller
 	storeManagementController := &controller.StoreManagementController{
 		StoreService: storeSvc,
@@ -65,6 +74,10 @@ func main() {
 	transactionManagementController := &controller.TransactionManagementController{
 		TransactionService: transactionSvc,
 		ProductService:     productSvc,
+	}
+
+	authController := &controller.AuthController{
+		AuthService: authSvc,
 	}
 
 	publicController := &controller.PublicController{}
@@ -96,6 +109,11 @@ func main() {
 	r.HandleFunc("/owner/transaction", transactionManagementController.ShowTransactionData).Methods("GET")
 	r.HandleFunc("/owner/new/transaction", transactionManagementController.ShowCreateTransactionForm).Methods("GET")
 	r.HandleFunc("/owner/new/transaction/submit", transactionManagementController.HandleCreateTransactionRequest).Methods("POST")
+
+	r.HandleFunc("/owner/login", authController.ShowLoginForm).Methods("GET")
+	r.HandleFunc("/owner/login/submit", authController.HandleLoginFormRequest).Methods("POST")
+	r.HandleFunc("/owner/registration", authController.ShowRegistrationForm).Methods("GET")
+	r.HandleFunc("/owner/registration/submit", authController.HandleRegistrationFormRequest).Methods("POST")
 
 	// file server
 	assetFileServer := http.FileServer(http.Dir("asset"))
