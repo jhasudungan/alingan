@@ -6,6 +6,7 @@ import (
 	"alingan/core/repository"
 	"alingan/core/util"
 	"errors"
+	"time"
 )
 
 type TransactionService interface {
@@ -49,6 +50,7 @@ func (t *TransactionServiceImpl) CreateTransaction(request model.CreateTransacti
 	transactionId := util.GenerateId("TRX")
 	transaction := entity.Transaction{}
 
+	transaction.TransactionDate = time.Now()
 	transaction.TransactionId = transactionId
 	transaction.TransactionTotal = t.CountTotalTransaction(request)
 	transaction.AgentId = request.AgentId

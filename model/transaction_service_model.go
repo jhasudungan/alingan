@@ -4,15 +4,15 @@ import "time"
 
 type CreateTransactionRequest struct {
 	TransactionDate time.Time
-	AgentId         string
-	StoreId         string
-	Items           []CreateTransactionItemRequest
+	AgentId         string                         `json:"agentId"`
+	StoreId         string                         `json:"storeId"`
+	Items           []CreateTransactionItemRequest `json:"transactionItems"`
 }
 
 type CreateTransactionItemRequest struct {
-	ProductId   string
-	UsedPrice   float64
-	BuyQuantity int64
+	ProductId   string  `json:"productId"`
+	UsedPrice   float64 `json:"usedPrice"`
+	BuyQuantity int64   `json:"buyQuantity"`
 }
 
 type FindTransactionByOwnerResponse struct {
