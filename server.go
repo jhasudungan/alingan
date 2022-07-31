@@ -2,6 +2,7 @@ package main
 
 import (
 	"alingan/controller"
+	"alingan/middleware"
 	"alingan/model"
 	"alingan/repository"
 	"alingan/service"
@@ -57,6 +58,10 @@ func main() {
 		SessionList: sessionList,
 	}
 
+	authMiddleware := middleware.AuthMiddleware{
+		SessionList: sessionList,
+	}
+
 	// controller
 	storeManagementController := &controller.StoreManagementController{
 		StoreService: storeSvc,
@@ -67,8 +72,9 @@ func main() {
 	}
 
 	agentManagamentController := &controller.AgentManagamentController{
-		AgentService: agentSvc,
-		StoreService: storeSvc,
+		AuthMiddleware: authMiddleware,
+		AgentService:   agentSvc,
+		StoreService:   storeSvc,
 	}
 
 	transactionManagementController := &controller.TransactionManagementController{

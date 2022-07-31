@@ -20,21 +20,21 @@ type AgentManagamentController struct {
 
 func (a *AgentManagamentController) ShowAgentData(w http.ResponseWriter, r *http.Request) {
 
-	// isAuthenticated, err := a.AuthMiddleware.AuthenticateOwner(r)
+	isAuthenticated, err, session := a.AuthMiddleware.AuthenticateOwner(r)
 
-	// if err != nil {
-	// 	log.Println(err.Error())
-	// 	http.Error(w, "Something Went Wrong - Exceute Render", 500)
-	// 	return
-	// }
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
 
-	// if isAuthenticated == false {
-	// 	http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
-	// 	return
-	// }
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
 
 	// ownerId will get from session when authentication is integrated
-	ownerId := "owner-001"
+	ownerId := session.Id
 
 	agents, err := a.AgentService.GetOwnerAgentList(ownerId)
 
@@ -67,6 +67,19 @@ func (a *AgentManagamentController) ShowAgentData(w http.ResponseWriter, r *http
 }
 
 func (a *AgentManagamentController) ShowAgentInformation(w http.ResponseWriter, r *http.Request) {
+
+	isAuthenticated, err, _ := a.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
 
 	// storeId
 	params := mux.Vars(r)
@@ -104,7 +117,20 @@ func (a *AgentManagamentController) ShowAgentInformation(w http.ResponseWriter, 
 
 func (a *AgentManagamentController) ShowCreateAgentForm(w http.ResponseWriter, r *http.Request) {
 
-	ownerId := "owner-001"
+	isAuthenticated, err, session := a.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	ownerId := session.Id
 
 	stores, err := a.StoreService.FindStoreByOwnerId(ownerId)
 
@@ -137,7 +163,20 @@ func (a *AgentManagamentController) ShowCreateAgentForm(w http.ResponseWriter, r
 
 func (a *AgentManagamentController) HandleCreateAgentFormRequest(w http.ResponseWriter, r *http.Request) {
 
-	err := r.ParseForm()
+	isAuthenticated, err, _ := a.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	err = r.ParseForm()
 
 	if err != nil {
 		log.Println(err.Error())
@@ -165,11 +204,24 @@ func (a *AgentManagamentController) HandleCreateAgentFormRequest(w http.Response
 
 func (a *AgentManagamentController) HandleSetAgentInactiveRequest(w http.ResponseWriter, r *http.Request) {
 
+	isAuthenticated, err, _ := a.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
 	// storeId
 	params := mux.Vars(r)
 	agentId := params["agentId"]
 
-	err := a.AgentService.SetAgentInactive(agentId)
+	err = a.AgentService.SetAgentInactive(agentId)
 
 	if err != nil {
 		log.Println(err.Error())
