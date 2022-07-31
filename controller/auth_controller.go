@@ -94,6 +94,7 @@ func (a *AuthController) HandleRegistrationFormRequest(w http.ResponseWriter, r 
 		http.Error(w, "Something Went Wrong - Exceute Render", 500)
 		return
 	}
+
 	request := model.OwnerRegistrationRequest{}
 	request.OwnerEmail = r.Form.Get("owner-email")
 	request.OwnerName = r.Form.Get("owner-name")

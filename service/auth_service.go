@@ -80,7 +80,7 @@ func (a *AuthServiceImpl) OwnerLogin(request model.OwnerLoginRequest) (*model.Se
 	session.Token = util.GenerateId("SES")
 
 	// add session to session map with session.Id as key
-	a.SessionList[session.Id] = session
+	a.SessionList[session.Token] = session
 
 	return session, nil
 }
@@ -116,7 +116,7 @@ func (a *AuthServiceImpl) AgentLogin(request model.AgentLoginRequest) (*model.Se
 	session.Token = util.GenerateId("SES")
 
 	// add session to session map with session.Id as key
-	a.SessionList[session.Id] = session
+	a.SessionList[session.Token] = session
 
 	return session, nil
 }
