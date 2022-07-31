@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"alingan/middleware"
 	"alingan/model"
 	"alingan/service"
 	"html/template"
@@ -12,11 +13,25 @@ import (
 )
 
 type AgentManagamentController struct {
-	AgentService service.AgentService
-	StoreService service.StoreService
+	AgentService   service.AgentService
+	StoreService   service.StoreService
+	AuthMiddleware middleware.AuthMiddleware
 }
 
 func (a *AgentManagamentController) ShowAgentData(w http.ResponseWriter, r *http.Request) {
+
+	// isAuthenticated, err := a.AuthMiddleware.AuthenticateOwner(r)
+
+	// if err != nil {
+	// 	log.Println(err.Error())
+	// 	http.Error(w, "Something Went Wrong - Exceute Render", 500)
+	// 	return
+	// }
+
+	// if isAuthenticated == false {
+	// 	http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+	// 	return
+	// }
 
 	// ownerId will get from session when authentication is integrated
 	ownerId := "owner-001"

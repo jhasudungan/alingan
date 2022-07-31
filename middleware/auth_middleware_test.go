@@ -44,7 +44,7 @@ func TestAuthMiddleware(t *testing.T) {
 		r.AddCookie(cookie)
 
 		// under test
-		result, err := authMiddleware.AuthenticateOwner(r)
+		result, err, _ := authMiddleware.AuthenticateOwner(r)
 
 		if err != nil {
 			log.Fatal(err.Error())
@@ -86,7 +86,7 @@ func TestAuthMiddleware(t *testing.T) {
 		r.AddCookie(cookie)
 
 		// under test
-		_, err = authMiddleware.AuthenticateOwner(r)
+		_, err, _ = authMiddleware.AuthenticateOwner(r)
 
 		assert.Equal(t, "authentication error - role not permiteed", err.Error())
 
