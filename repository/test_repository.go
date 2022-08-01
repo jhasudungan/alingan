@@ -105,3 +105,23 @@ func (t *TestingRepository) DeleteAllTransactionItemByStore(storeId string) erro
 
 	return nil
 }
+
+func (t *TestingRepository) DeleteAllProductImageByProductId(productId string) error {
+
+	con, err := config.CreateDBConnection()
+	defer con.Close()
+
+	if err != nil {
+		return err
+	}
+
+	sql := "delete from core.product_image where product_id = $1"
+
+	_, err = con.Exec(sql, productId)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
