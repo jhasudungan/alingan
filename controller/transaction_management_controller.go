@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"alingan/middleware"
 	"alingan/model"
 	"alingan/service"
 	"encoding/json"
@@ -13,6 +14,7 @@ import (
 type TransactionManagementController struct {
 	TransactionService service.TransactionService
 	ProductService     service.ProductService
+	AuthMiddleware     middleware.AuthMiddleware
 }
 
 type WebResponse struct {
@@ -22,7 +24,20 @@ type WebResponse struct {
 
 func (t *TransactionManagementController) ShowTransactionData(w http.ResponseWriter, r *http.Request) {
 
-	ownerId := "owner-001"
+	isAuthenticated, err, session := t.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	ownerId := session.Id
 
 	transactions, err := t.TransactionService.FindTransactionByOwner(ownerId)
 
@@ -56,7 +71,20 @@ func (t *TransactionManagementController) ShowTransactionData(w http.ResponseWri
 
 func (t *TransactionManagementController) ShowCreateTransactionForm(w http.ResponseWriter, r *http.Request) {
 
-	ownerId := "owner-001"
+	isAuthenticated, err, session := t.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	ownerId := session.Id
 
 	products, err := t.ProductService.FindProductByOwnerId(ownerId)
 

@@ -80,6 +80,7 @@ func main() {
 	}
 
 	transactionManagementController := &controller.TransactionManagementController{
+		AuthMiddleware:     authMiddleware,
 		TransactionService: transactionSvc,
 		ProductService:     productSvc,
 	}
