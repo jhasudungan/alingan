@@ -149,7 +149,7 @@ func (p *ProductManagementController) ShowCreateProductForm(w http.ResponseWrite
 
 func (p *ProductManagementController) HandleCreateProductFormRequest(w http.ResponseWriter, r *http.Request) {
 
-	isAuthenticated, err, _ := p.AuthMiddleware.AuthenticateOwner(r)
+	isAuthenticated, err, session := p.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
 		log.Println(err.Error())
@@ -173,7 +173,7 @@ func (p *ProductManagementController) HandleCreateProductFormRequest(w http.Resp
 	request := model.CreateProductRequest{}
 
 	// we get owner id from sessions
-	request.OwnerId = "owner-001"
+	request.OwnerId = session.Id
 
 	request.ProductName = r.Form.Get("product-name")
 	request.ProductMeasurementUnit = r.Form.Get("product-measurement-unit")
