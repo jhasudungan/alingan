@@ -68,6 +68,7 @@ func main() {
 	}
 
 	productManagementController := &controller.ProductManagementController{
+		AuthMiddleware: authMiddleware,
 		ProductService: productSvc,
 	}
 

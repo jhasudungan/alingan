@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"alingan/middleware"
 	"alingan/model"
 	"alingan/service"
 	"html/template"
@@ -14,12 +15,26 @@ import (
 
 type ProductManagementController struct {
 	ProductService service.ProductService
+	AuthMiddleware middleware.AuthMiddleware
 }
 
 func (p *ProductManagementController) ShowProductData(w http.ResponseWriter, r *http.Request) {
 
+	isAuthenticated, err, session := p.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
 	// ownerId will get from session when authentication is integrated
-	ownerId := "owner-001"
+	ownerId := session.Id
 
 	products, err := p.ProductService.FindProductByOwnerId(ownerId)
 
@@ -51,6 +66,19 @@ func (p *ProductManagementController) ShowProductData(w http.ResponseWriter, r *
 }
 
 func (p *ProductManagementController) ShowProductInformation(w http.ResponseWriter, r *http.Request) {
+
+	isAuthenticated, err, _ := p.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
 
 	// storeId
 	params := mux.Vars(r)
@@ -88,6 +116,19 @@ func (p *ProductManagementController) ShowProductInformation(w http.ResponseWrit
 
 func (p *ProductManagementController) ShowCreateProductForm(w http.ResponseWriter, r *http.Request) {
 
+	isAuthenticated, err, _ := p.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
 	template, err := template.ParseFiles(path.Join("view", "owner/create_product.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
@@ -108,7 +149,20 @@ func (p *ProductManagementController) ShowCreateProductForm(w http.ResponseWrite
 
 func (p *ProductManagementController) HandleCreateProductFormRequest(w http.ResponseWriter, r *http.Request) {
 
-	err := r.ParseForm()
+	isAuthenticated, err, _ := p.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	err = r.ParseForm()
 
 	if err != nil {
 		log.Println(err.Error())
@@ -151,11 +205,24 @@ func (p *ProductManagementController) HandleCreateProductFormRequest(w http.Resp
 
 func (p *ProductManagementController) HandleInactiveProductRequest(w http.ResponseWriter, r *http.Request) {
 
+	isAuthenticated, err, _ := p.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
 	// storeId
 	params := mux.Vars(r)
 	productId := params["productId"]
 
-	err := p.ProductService.SetProductInactive(productId)
+	err = p.ProductService.SetProductInactive(productId)
 
 	if err != nil {
 		log.Println(err.Error())
@@ -169,7 +236,19 @@ func (p *ProductManagementController) HandleInactiveProductRequest(w http.Respon
 
 func (p *ProductManagementController) HandleUpdateProductRequest(w http.ResponseWriter, r *http.Request) {
 
-	err := r.ParseForm()
+	isAuthenticated, err, _ := p.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+	err = r.ParseForm()
 
 	if err != nil {
 		log.Println(err.Error())
