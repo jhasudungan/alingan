@@ -64,7 +64,8 @@ func main() {
 
 	// controller
 	storeManagementController := &controller.StoreManagementController{
-		StoreService: storeSvc,
+		AuthMiddleware: authMiddleware,
+		StoreService:   storeSvc,
 	}
 
 	productManagementController := &controller.ProductManagementController{

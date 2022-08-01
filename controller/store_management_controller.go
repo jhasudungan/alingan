@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"alingan/middleware"
 	"alingan/model"
 	"alingan/service"
 	"html/template"
@@ -12,13 +13,27 @@ import (
 )
 
 type StoreManagementController struct {
-	StoreService service.StoreService
+	StoreService   service.StoreService
+	AuthMiddleware middleware.AuthMiddleware
 }
 
 func (o *StoreManagementController) ShowStoreData(w http.ResponseWriter, r *http.Request) {
 
+	isAuthenticated, err, session := o.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
 	// ownerId will get from session when authentication is integrated
-	ownerId := "owner-001"
+	ownerId := session.Id
 
 	stores, err := o.StoreService.FindStoreByOwnerId(ownerId)
 
@@ -51,6 +66,19 @@ func (o *StoreManagementController) ShowStoreData(w http.ResponseWriter, r *http
 }
 
 func (o *StoreManagementController) ShowStoreInformation(w http.ResponseWriter, r *http.Request) {
+
+	isAuthenticated, err, _ := o.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
 
 	// storeId
 	params := mux.Vars(r)
@@ -88,6 +116,19 @@ func (o *StoreManagementController) ShowStoreInformation(w http.ResponseWriter, 
 
 func (o *StoreManagementController) ShowCreateStoreForm(w http.ResponseWriter, r *http.Request) {
 
+	isAuthenticated, err, _ := o.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
 	template, err := template.ParseFiles(path.Join("view", "owner/create_store.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
@@ -108,7 +149,20 @@ func (o *StoreManagementController) ShowCreateStoreForm(w http.ResponseWriter, r
 
 func (o *StoreManagementController) HandleCreateStoreFormRequest(w http.ResponseWriter, r *http.Request) {
 
-	err := r.ParseForm()
+	isAuthenticated, err, session := o.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	err = r.ParseForm()
 
 	if err != nil {
 		log.Println(err.Error())
@@ -118,7 +172,7 @@ func (o *StoreManagementController) HandleCreateStoreFormRequest(w http.Response
 
 	request := model.CreateStoreRequest{}
 	// we get owner id from sessions
-	request.OwnerId = "owner-001"
+	request.OwnerId = session.Id
 	request.StoreName = r.Form.Get("store-name")
 	request.StoreAddress = r.Form.Get("store-address")
 
@@ -136,11 +190,24 @@ func (o *StoreManagementController) HandleCreateStoreFormRequest(w http.Response
 
 func (o *StoreManagementController) HandleInactiveStoreRequest(w http.ResponseWriter, r *http.Request) {
 
+	isAuthenticated, err, _ := o.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
 	// storeId
 	params := mux.Vars(r)
 	storeId := params["storeId"]
 
-	err := o.StoreService.SetStoreInactive(storeId)
+	err = o.StoreService.SetStoreInactive(storeId)
 
 	if err != nil {
 		log.Println(err.Error())
@@ -154,7 +221,20 @@ func (o *StoreManagementController) HandleInactiveStoreRequest(w http.ResponseWr
 
 func (o *StoreManagementController) HandleUpdateStoreRequest(w http.ResponseWriter, r *http.Request) {
 
-	err := r.ParseForm()
+	isAuthenticated, err, _ := o.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	err = r.ParseForm()
 
 	if err != nil {
 		log.Println(err.Error())
