@@ -74,7 +74,7 @@ func (a *AuthServiceImpl) OwnerLogin(request model.OwnerLoginRequest) (*model.Se
 	}
 
 	// session per login = 2 minutes
-	session.Expiry = time.Now().Add(time.Minute * 2)
+	session.Expiry = time.Now().Add(time.Minute * 30)
 	session.Id = owner.OwnerId
 	session.Role = "owner"
 	session.Token = util.GenerateId("SES")

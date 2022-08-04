@@ -27,7 +27,7 @@ func (a *AuthMiddleware) AuthenticateOwner(r *http.Request) (bool, error, *model
 		return false, errors.New("authentication error - session is not recognized"), nil
 	}
 
-	if ownerSession.Expiry.After(ownerSession.Expiry.Add(2 * time.Minute)) {
+	if ownerSession.Expiry == time.Now() {
 		delete(a.SessionList, sessionToken)
 		return false, errors.New("authentication error - session is expired"), nil
 	}
