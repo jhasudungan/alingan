@@ -16,6 +16,10 @@
             {{ range .products }}
             <div class="column is-6">
                 <article class="media">
+                    <figure class="media-left">
+                        <p class="image is-128x128">
+                          <img src="{{ .ImageUrl }}">
+                        </p>
                     <div class="media-content">
                         <p class="title is-6">{{ .ProductName }}</p>
                         <p class="subtitle is-6">{{ .ProductPrice   }}</p>
