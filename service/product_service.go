@@ -17,8 +17,9 @@ type ProductService interface {
 }
 
 type ProductServiceImpl struct {
-	OwnerRepo   repository.OwnerRepository
-	ProductRepo repository.ProductRepository
+	OwnerRepo        repository.OwnerRepository
+	ProductRepo      repository.ProductRepository
+	ProductImageRepo repository.ProductImageRepository
 }
 
 func (p *ProductServiceImpl) CreateProduct(request model.CreateProductRequest) error {
@@ -108,6 +109,18 @@ func (p *ProductServiceImpl) FindProductByOwnerId(ownerId string) ([]model.FindP
 		data.IsActive = product.IsActive
 		data.LastModified = product.LastModified
 		data.CreatedDate = product.CreatedDate
+
+		listImages, err := p.ProductImageRepo.FindProductImageByProductId(product.ProductId)
+
+		if err != nil {
+			return result, err
+		}
+
+		if len(listImages) == 0 {
+			data.ImageUrl = "https://picsum.photos/id/237/200/300"
+		} else {
+			data.ImageUrl = listImages[0].LocationPath
+		}
 
 		result = append(result, data)
 	}

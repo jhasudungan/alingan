@@ -27,6 +27,7 @@ type FindProductByOwnerIdResponse struct {
 	IsActive               bool
 	CreatedDate            time.Time
 	LastModified           time.Time
+	ImageUrl               string
 }
 
 type FindProductByIdResponse struct {
