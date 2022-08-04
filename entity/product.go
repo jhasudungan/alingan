@@ -8,7 +8,6 @@ type Product struct {
 	ProductName            string
 	ProductMeasurementUnit string
 	ProductPrice           float64
-	ProductStock           int64
 	IsActive               bool
 	CreatedDate            time.Time
 	LastModified           time.Time

@@ -10,6 +10,13 @@ import (
 
 func TestProductRepository(t *testing.T) {
 
+	/**
+	Make sure below data available in core.store
+		- prd-001 (Kapal Api)
+		- prd-002 (Torabika Creamy Latte)
+		- PRDa543809e-f36f-443a-a815-64c0e2f0e09c (Abc Susu) and this one should be the last inserted
+	*/
+
 	t.Run("TestFindProductsByOwnerId", func(t *testing.T) {
 
 		productRepository := &ProductRepositoryImpl{}
@@ -21,8 +28,8 @@ func TestProductRepository(t *testing.T) {
 			t.FailNow()
 		}
 
-		assert.Equal(t, "prd-001", products[0].ProductId)
-		assert.Equal(t, "Fresh Orange Juice", products[0].ProductName)
+		assert.Equal(t, "PRDa543809e-f36f-443a-a815-64c0e2f0e09c", products[0].ProductId)
+		assert.Equal(t, "Abc Susu ", products[0].ProductName)
 	})
 
 	t.Run("TestFindProductById", func(t *testing.T) {
@@ -37,7 +44,7 @@ func TestProductRepository(t *testing.T) {
 		}
 
 		assert.Equal(t, "prd-001", product.ProductId)
-		assert.Equal(t, "Fresh Orange Juice", product.ProductName)
+		assert.Equal(t, "Kapal Api ", product.ProductName)
 
 	})
 
@@ -51,7 +58,6 @@ func TestProductRepository(t *testing.T) {
 		data.ProductName = "Product Test"
 		data.ProductMeasurementUnit = "pcs"
 		data.ProductPrice = float64(15000)
-		data.ProductStock = int64(100)
 
 		err := productRepository.Insert(data)
 
@@ -72,7 +78,6 @@ func TestProductRepository(t *testing.T) {
 		assert.Equal(t, "Product Test", product.ProductName)
 		assert.Equal(t, "pcs", product.ProductMeasurementUnit)
 		assert.Equal(t, float64(15000), product.ProductPrice)
-		assert.Equal(t, int64(100), product.ProductStock)
 
 	})
 
@@ -85,7 +90,6 @@ func TestProductRepository(t *testing.T) {
 		data.ProductName = "Product Update Test"
 		data.ProductMeasurementUnit = "box"
 		data.ProductPrice = float64(13000)
-		data.ProductStock = int64(150)
 
 		err := productRepository.Update(data, data.ProductId)
 
@@ -104,7 +108,6 @@ func TestProductRepository(t *testing.T) {
 		assert.Equal(t, "Product Update Test", product.ProductName)
 		assert.Equal(t, "box", product.ProductMeasurementUnit)
 		assert.Equal(t, float64(13000), product.ProductPrice)
-		assert.Equal(t, int64(150), product.ProductStock)
 
 	})
 
@@ -112,7 +115,7 @@ func TestProductRepository(t *testing.T) {
 
 		productRepository := &ProductRepositoryImpl{}
 
-		err := productRepository.SetInactive("prd-test")
+		err := productRepository.SetActive("prd-test")
 
 		if err != nil {
 			log.Fatal("Error Test : " + err.Error())
@@ -126,7 +129,28 @@ func TestProductRepository(t *testing.T) {
 			t.FailNow()
 		}
 
-		assert.Equal(t, false, product.IsActive)
+		assert.Equal(t, true, product.IsActive)
+	})
+
+	t.Run("TestSetActive", func(t *testing.T) {
+
+		productRepository := &ProductRepositoryImpl{}
+
+		err := productRepository.SetActive("prd-test")
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		product, err := productRepository.FindProductById("prd-test")
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		assert.Equal(t, true, product.IsActive)
 	})
 
 	t.Run("TestCheckExist", func(t *testing.T) {
