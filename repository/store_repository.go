@@ -11,6 +11,7 @@ type StoreRepository interface {
 	FindStoresByOwnerId(ownerId string) ([]entity.Store, error)
 	FindStoreById(storeId string) (entity.Store, error)
 	SetInactive(storeId string) error
+	SetActive(storeId string) error
 	CheckExist(storeId string) (bool, error)
 	Delete(storeId string) error
 }
@@ -141,6 +142,26 @@ func (s *StoreRepositoryImpl) SetInactive(storeId string) error {
 	}
 
 	sql := "update core.store set is_active = false where store_id = $1"
+
+	_, err = con.Exec(sql, storeId)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *StoreRepositoryImpl) SetActive(storeId string) error {
+
+	con, err := config.CreateDBConnection()
+	defer con.Close()
+
+	if err != nil {
+		return err
+	}
+
+	sql := "update core.store set is_active = true where store_id = $1"
 
 	_, err = con.Exec(sql, storeId)
 

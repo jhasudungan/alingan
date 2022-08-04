@@ -8,7 +8,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestStoreRepostiroy(t *testing.T) {
+func TestStoreRepostiry(t *testing.T) {
+
+	/**
+	Make sure below data available in core.store
+		- str-001 (Store 1 Smart Veggies)
+		- str-002 (Store 2 Smart Veggies) and this one should be the last inserted
+	*/
 
 	t.Run("TestFindStoresByOwnerId", func(t *testing.T) {
 
@@ -120,6 +126,27 @@ func TestStoreRepostiroy(t *testing.T) {
 
 		assert.Equal(t, false, store.IsActive)
 
+	})
+
+	t.Run("TestSetActive", func(t *testing.T) {
+
+		storeRepository := &StoreRepositoryImpl{}
+
+		err := storeRepository.SetActive("str-test")
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		store, err := storeRepository.FindStoreById("str-test")
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		assert.Equal(t, true, store.IsActive)
 	})
 
 	t.Run("TestCheckExist", func(t *testing.T) {
