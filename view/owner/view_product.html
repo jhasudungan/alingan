@@ -60,5 +60,19 @@
             </div>
         </div>
     </form>
+    <div class="block mt-5">
+        <p class="is-size-4">Upload Product Image</p>
+    </div>
+    <div class="block">
+        <p>Upload An Image Of Your Product</p>
+    </div>
+    <form action="/owner/upload/product-image/{{.product.ProductId }}" method="POST" enctype="multipart/form-data">
+        <input class="input" type="file" name="upload-product-image" placeholder="Link input">
+        <div class="block"></div>
+        <div class="buttons are-small">
+            <a href="/owner/product" class="button is-dark"><i class="fa fa-arrow-left"></i></a>
+            <button type="submit" name="submit" class="button is-primary">save</a>
+        </div>
+    </form>
 </div>
 {{ end }}

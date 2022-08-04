@@ -22,6 +22,7 @@ func main() {
 	agentRepo := &repository.AgentRepositoryImpl{}
 	transactionRepo := &repository.TransactionRepositoryImpl{}
 	transactionItemRepo := &repository.TransactionItemRepositoryImpl{}
+	productImageRepo := &repository.ProductImageRepositoryImpl{}
 
 	// svc
 	storeSvc := &service.StoreServiceImpl{
@@ -30,8 +31,9 @@ func main() {
 	}
 
 	productSvc := &service.ProductServiceImpl{
-		OwnerRepo:   ownerRepo,
-		ProductRepo: productRepo,
+		OwnerRepo:        ownerRepo,
+		ProductRepo:      productRepo,
+		ProductImageRepo: productImageRepo,
 	}
 
 	agentSvc := &service.AgentServiceImpl{
@@ -56,6 +58,10 @@ func main() {
 		OwnerRepo:   ownerRepo,
 		AgentRepo:   agentRepo,
 		SessionList: sessionList,
+	}
+
+	fileUploadService := &service.FileUploadServiceImpl{
+		ProductImageRepository: productImageRepo,
 	}
 
 	authMiddleware := middleware.AuthMiddleware{
@@ -87,6 +93,10 @@ func main() {
 
 	authController := &controller.AuthController{
 		AuthService: authSvc,
+	}
+
+	fileUploadController := &controller.FileUploadController{
+		FileUploadService: fileUploadService,
 	}
 
 	publicController := &controller.PublicController{}
@@ -124,11 +134,15 @@ func main() {
 	r.HandleFunc("/owner/registration", authController.ShowRegistrationForm).Methods("GET")
 	r.HandleFunc("/owner/registration/submit", authController.HandleRegistrationFormRequest).Methods("POST")
 
+	r.HandleFunc("/owner/upload/product-image/{productId}", fileUploadController.HandleUploadProductImageRequest).Methods("POST")
+
 	// file server
 	assetFileServer := http.FileServer(http.Dir("asset"))
+	productImageFileServer := http.FileServer(http.Dir("uploaded/product-image"))
 
 	// file server handler
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static", assetFileServer))
+	r.PathPrefix("/resources/").Handler(http.StripPrefix("/resources", productImageFileServer))
 
 	// web server setup
 	server := &http.Server{
