@@ -158,6 +158,44 @@ func TestStoreService(t *testing.T) {
 		assert.Equal(t, "store is not exist", err.Error())
 	})
 
+	t.Run("SetInactive", func(t *testing.T) {
+
+		err := storeService.SetStoreInactive(storeId)
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		store, err := storeService.FindStoreById(storeId)
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		assert.Equal(t, false, store.IsActive)
+	})
+
+	t.Run("SetActive", func(t *testing.T) {
+
+		err := storeService.SetStoreActive(storeId)
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		store, err := storeService.FindStoreById(storeId)
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		assert.Equal(t, true, store.IsActive)
+	})
+
 	t.Run("CleanUpStoreData", func(t *testing.T) {
 
 		err := testingRepo.DeleteAllStoreByOwner(ownerId)

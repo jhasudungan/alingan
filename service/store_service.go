@@ -14,6 +14,7 @@ type StoreService interface {
 	FindStoreByOwnerId(ownerId string) ([]model.FindStoreByOwnerIdResponse, error)
 	FindStoreById(storeId string) (model.FindStoreByIdResponse, error)
 	SetStoreInactive(storeId string) error
+	SetStoreActive(storeId string) error
 }
 
 type StoreServiceImpl struct {
@@ -158,6 +159,27 @@ func (s *StoreServiceImpl) SetStoreInactive(storeId string) error {
 	}
 
 	err = s.StoreRepo.SetInactive(storeId)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *StoreServiceImpl) SetStoreActive(storeId string) error {
+
+	checkExist, err := s.StoreRepo.CheckExist(storeId)
+
+	if err != nil {
+		return err
+	}
+
+	if checkExist == false {
+		return errors.New("store is not exist")
+	}
+
+	err = s.StoreRepo.SetActive(storeId)
 
 	if err != nil {
 		return err

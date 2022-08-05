@@ -148,6 +148,26 @@ func TestProductService(t *testing.T) {
 
 	})
 
+	t.Run("TesSetActiveService", func(t *testing.T) {
+
+		err := productService.SetProductActive(productId)
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		product, err := productRepo.FindProductById(productId)
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		assert.Equal(t, true, product.IsActive)
+
+	})
+
 	t.Run("CleanUpStoreData", func(t *testing.T) {
 
 		err := testingRepo.DeleteAllProductByOwner(ownerId)

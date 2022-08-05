@@ -14,6 +14,7 @@ type ProductService interface {
 	FindProductByOwnerId(ownerId string) ([]model.FindProductByOwnerIdResponse, error)
 	FindProductById(productId string) (model.FindProductByIdResponse, error)
 	SetProductInactive(productId string) error
+	SetProductActive(productId string) error
 }
 
 type ProductServiceImpl struct {
@@ -169,6 +170,27 @@ func (p *ProductServiceImpl) SetProductInactive(productId string) error {
 	}
 
 	err = p.ProductRepo.SetInactive(productId)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (p *ProductServiceImpl) SetProductActive(productId string) error {
+
+	checkProduct, err := p.ProductRepo.CheckExist(productId)
+
+	if err != nil {
+		return err
+	}
+
+	if checkProduct == false {
+		return errors.New("product is not exist")
+	}
+
+	err = p.ProductRepo.SetActive(productId)
 
 	if err != nil {
 		return err
