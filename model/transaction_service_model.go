@@ -24,3 +24,21 @@ type FindTransactionByOwnerResponse struct {
 	StoreName        interface{}
 	TransactionTotal interface{}
 }
+
+type GetTransactionInformationResponse struct {
+	TransactionId    string
+	TransactionDate  string
+	AgentId          string
+	AgentName        string
+	StoreId          string
+	StoreName        string
+	TransactionTotal string
+	Items            []GetTransactionInformationTransactionItem
+}
+
+type GetTransactionInformationTransactionItem struct {
+	ProductId   string
+	ProductName string
+	UsedPrice   float64
+	BuyQuantity int64
+}

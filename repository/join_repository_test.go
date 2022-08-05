@@ -20,16 +20,32 @@ func TestJoinRepository(t *testing.T) {
 			t.FailNow()
 		}
 
-		assert.Equal(t, "trx-001", results[0].TransactionId)
+		assert.Equal(t, "TRX2b40ee07-f8dd-4b80-9956-e65b3a364443", results[0].TransactionId)
 		assert.Equal(t, "agent-001", results[0].AgentId)
 		assert.Equal(t, "str-001", results[0].StoreId)
 	})
 
-	t.Run("TestFindAgentByOwnerId", func(t *testing.T) {
+	t.Run("TestFindTransactionAgentAndStoreByTransactionId", func(t *testing.T) {
 
 		joinRepository := &JoinRepositoryImpl{}
 
-		results, err := joinRepository.FindTransactionByOwnerId("owner-001")
+		results, err := joinRepository.FindTransactionAgentAndStoreByTransactionId("TRX0a63cfe6-2761-4c12-a2c0-42051edcde10")
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		assert.Equal(t, "TRX0a63cfe6-2761-4c12-a2c0-42051edcde10", results.TransactionId)
+		assert.Equal(t, "agent-001", results.AgentId)
+		assert.Equal(t, "str-001", results.StoreId)
+	})
+
+	t.Run("TestFindTransactionItemAndProductByTransactionId", func(t *testing.T) {
+
+		joinRepository := &JoinRepositoryImpl{}
+
+		results, err := joinRepository.FindTransactionItemAndProductByTransactionId("trx-001")
 
 		if err != nil {
 			log.Fatal("Error Test : " + err.Error())
@@ -37,6 +53,20 @@ func TestJoinRepository(t *testing.T) {
 		}
 
 		assert.Equal(t, "trx-001", results[0].TransactionId)
+		assert.Equal(t, "Kapal Api ", results[0].ProductName)
+	})
+
+	t.Run("TestFindAgentByOwnerId", func(t *testing.T) {
+
+		joinRepository := &JoinRepositoryImpl{}
+
+		results, err := joinRepository.FindAgentByOwnerId("owner-001")
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
 		assert.Equal(t, "agent-001", results[0].AgentId)
 		assert.Equal(t, "str-001", results[0].StoreId)
 		assert.Equal(t, "Jeremiah H.S", results[0].AgentName)

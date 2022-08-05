@@ -13,6 +13,7 @@ type TransactionService interface {
 	CreateTransaction(request model.CreateTransactionRequest) error
 	CountTotalTransaction(request model.CreateTransactionRequest) float64
 	FindTransactionByOwner(ownerId string) ([]model.FindTransactionByOwnerResponse, error)
+	GetTransactionInformation(transactionId string) (model.GetTransactionInformationResponse, error)
 }
 
 type TransactionServiceImpl struct {
@@ -130,4 +131,38 @@ func (t *TransactionServiceImpl) CountTotalTransaction(request model.CreateTrans
 	}
 
 	return result
+}
+
+func (t *TransactionServiceImpl) GetTransactionInformation(transactionId string) (model.GetTransactionInformationResponse, error) {
+
+	result := model.GetTransactionInformationResponse{}
+
+	transaction, err := t.JoinRepo.FindTransactionAgentAndStoreByTransactionId(transactionId)
+
+	if err != nil {
+		return result, err
+	}
+
+	result.TransactionId = transaction.TransactionId
+	result.StoreId = transaction.StoreId
+	result.StoreName = transaction.StoreName
+	result.AgentId = transaction.AgentId
+	result.AgentName = transaction.AgentName
+	result.TransactionDate = transaction.TransactionDate.Format("2006-01-02 15:04:05")
+
+	transactionItems, err := t.JoinRepo.FindTransactionItemAndProductByTransactionId(transactionId)
+
+	for _, transactionItem := range transactionItems {
+
+		item := model.GetTransactionInformationTransactionItem{}
+
+		item.ProductName = transactionItem.ProductName
+		item.ProductId = transactionItem.ProductId
+		item.BuyQuantity = transactionItem.BuyQuantity
+		item.UsedPrice = transactionItem.UsedPrice
+
+		result.Items = append(result.Items, item)
+	}
+
+	return result, nil
 }

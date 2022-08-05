@@ -7,6 +7,8 @@ import (
 
 type JoinRepository interface {
 	FindTransactionByOwnerId(ownerId string) ([]model.FindTransactionByOwnerIdDTO, error)
+	FindTransactionAgentAndStoreByTransactionId(transactionId string) (model.FindTransactionAgentAndStoreByTransactionIdDTO, error)
+	FindTransactionItemAndProductByTransactionId(transactionId string) ([]model.FindTransactionItemAndProductByTransactionIdDTO, error)
 	FindAgentByOwnerId(ownerId string) ([]model.FindAgentByOwnerIdDTO, error)
 }
 
@@ -47,6 +49,72 @@ func (j *JoinRepositoryImpl) FindTransactionByOwnerId(ownerId string) ([]model.F
 			&transaction.TransactionTotal)
 
 		results = append(results, transaction)
+	}
+
+	return results, nil
+}
+
+func (j *JoinRepositoryImpl) FindTransactionAgentAndStoreByTransactionId(transactionId string) (model.FindTransactionAgentAndStoreByTransactionIdDTO, error) {
+
+	result := model.FindTransactionAgentAndStoreByTransactionIdDTO{}
+
+	con, err := config.CreateDBConnection()
+	defer con.Close()
+
+	if err != nil {
+		return result, err
+	}
+
+	sql := "select t.transaction_id , t.transaction_date , s.store_name , s.store_id, t.agent_id, a.agent_name , t.transaction_total from core.transaction t inner join core.agent a on t.agent_id = a.agent_id inner join core.store s on t.store_id = s.store_id where t.transaction_id = $1 order by t.transaction_date desc"
+
+	row := con.QueryRow(
+		sql,
+		transactionId)
+
+	err = row.Scan(
+		&result.TransactionId,
+		&result.TransactionDate,
+		&result.StoreName,
+		&result.StoreId,
+		&result.AgentId,
+		&result.AgentName,
+		&result.TransactionTotal)
+
+	return result, nil
+}
+
+func (j *JoinRepositoryImpl) FindTransactionItemAndProductByTransactionId(transactionId string) ([]model.FindTransactionItemAndProductByTransactionIdDTO, error) {
+
+	results := make([]model.FindTransactionItemAndProductByTransactionIdDTO, 0)
+
+	con, err := config.CreateDBConnection()
+	defer con.Close()
+
+	if err != nil {
+		return results, err
+	}
+
+	sql := "select ti.transaction_item_id , ti.transaction_id , p.product_id, p.product_name , ti.used_price , ti.buy_quantity from core.transaction_item ti inner join core.product p on ti.product_id = p.product_id where ti.transaction_id  = $1"
+
+	rows, err := con.Query(sql, transactionId)
+
+	for rows.Next() {
+
+		data := model.FindTransactionItemAndProductByTransactionIdDTO{}
+
+		err = rows.Scan(
+			&data.TransactionItemId,
+			&data.TransactionId,
+			&data.ProductId,
+			&data.ProductName,
+			&data.UsedPrice,
+			&data.BuyQuantity)
+
+		if err != nil {
+			return results, err
+		}
+
+		results = append(results, data)
 	}
 
 	return results, nil

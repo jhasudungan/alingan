@@ -20,3 +20,22 @@ type FindAgentByOwnerIdDTO struct {
 	StoreName  string
 	IsActive   bool
 }
+
+type FindTransactionAgentAndStoreByTransactionIdDTO struct {
+	TransactionId    string
+	TransactionDate  time.Time
+	AgentId          string
+	AgentName        string
+	StoreId          string
+	StoreName        string
+	TransactionTotal string
+}
+
+type FindTransactionItemAndProductByTransactionIdDTO struct {
+	TransactionItemId string
+	TransactionId     string
+	ProductId         string
+	ProductName       string
+	UsedPrice         float64
+	BuyQuantity       int64
+}
