@@ -232,3 +232,34 @@ func (a *AgentManagamentController) HandleSetAgentInactiveRequest(w http.Respons
 	http.Redirect(w, r, "/owner/agent", http.StatusSeeOther)
 
 }
+
+func (a *AgentManagamentController) HandleReactiveActiveRequest(w http.ResponseWriter, r *http.Request) {
+
+	isAuthenticated, err, _ := a.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	// storeId
+	params := mux.Vars(r)
+	agentId := params["agentId"]
+
+	err = a.AgentService.SetAgentActive(agentId)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		return
+	}
+
+	http.Redirect(w, r, "/owner/agent", http.StatusSeeOther)
+
+}

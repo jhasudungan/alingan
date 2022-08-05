@@ -231,6 +231,37 @@ func (p *ProductManagementController) HandleInactiveProductRequest(w http.Respon
 
 }
 
+func (p *ProductManagementController) HandleReactiveProductRequest(w http.ResponseWriter, r *http.Request) {
+
+	isAuthenticated, err, _ := p.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	// storeId
+	params := mux.Vars(r)
+	productId := params["productId"]
+
+	err = p.ProductService.SetProductActive(productId)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		return
+	}
+
+	http.Redirect(w, r, "/owner/product", http.StatusSeeOther)
+
+}
+
 func (p *ProductManagementController) HandleUpdateProductRequest(w http.ResponseWriter, r *http.Request) {
 
 	isAuthenticated, err, _ := p.AuthMiddleware.AuthenticateOwner(r)

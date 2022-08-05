@@ -219,6 +219,37 @@ func (o *StoreManagementController) HandleInactiveStoreRequest(w http.ResponseWr
 
 }
 
+func (o *StoreManagementController) HandleReactiveStoreRequest(w http.ResponseWriter, r *http.Request) {
+
+	isAuthenticated, err, _ := o.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	// storeId
+	params := mux.Vars(r)
+	storeId := params["storeId"]
+
+	err = o.StoreService.SetStoreActive(storeId)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		return
+	}
+
+	http.Redirect(w, r, "/owner/store", http.StatusSeeOther)
+
+}
+
 func (o *StoreManagementController) HandleUpdateStoreRequest(w http.ResponseWriter, r *http.Request) {
 
 	isAuthenticated, err, _ := o.AuthMiddleware.AuthenticateOwner(r)
