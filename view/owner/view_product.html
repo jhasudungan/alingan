@@ -71,6 +71,9 @@
     <div class="block">
         <p>Upload An Image Of Your Product</p>
     </div>
+    <figure class="image is-128x128">
+        <img src="{{ .product.ImageUrl }}">
+    </figure>
     <form action="/owner/upload/product-image/{{.product.ProductId }}" method="POST" enctype="multipart/form-data">
         <input class="input" type="file" name="upload-product-image" placeholder="Link input">
         <div class="block"></div>

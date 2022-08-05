@@ -34,4 +34,5 @@ type FindProductByIdResponse struct {
 	IsActive               bool
 	CreatedDate            string
 	LastModified           string
+	ImageUrl               string
 }

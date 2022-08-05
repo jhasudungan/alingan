@@ -154,6 +154,18 @@ func (p *ProductServiceImpl) FindProductById(productId string) (model.FindProduc
 	result.LastModified = product.LastModified.Format("2006-01-02 15:04:05")
 	result.CreatedDate = product.LastModified.Format("2006-01-02 15:04:05")
 
+	listImages, err := p.ProductImageRepo.FindProductImageByProductId(product.ProductId)
+
+	if err != nil {
+		return result, err
+	}
+
+	if len(listImages) == 0 {
+		result.ImageUrl = "http://localhost:8080" + "/static/image/no-image-icon.png"
+	} else {
+		result.ImageUrl = listImages[0].LocationPath
+	}
+
 	return result, nil
 }
 
