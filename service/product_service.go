@@ -30,7 +30,6 @@ func (p *ProductServiceImpl) CreateProduct(request model.CreateProductRequest) e
 	product.ProductName = request.ProductName
 	product.ProductMeasurementUnit = request.ProductMeasurementUnit
 	product.ProductPrice = request.ProductPrice
-	product.ProductStock = request.ProductStock
 
 	checkOwner, err := p.OwnerRepo.CheckExist(request.OwnerId)
 
@@ -56,7 +55,6 @@ func (p *ProductServiceImpl) UpdateProduct(request model.UpdateProductRequest, p
 	product := entity.Product{}
 	product.ProductName = request.ProductName
 	product.ProductMeasurementUnit = request.ProductMeasurementUnit
-	product.ProductStock = request.ProductStock
 	product.ProductPrice = request.ProductPrice
 
 	checkProduct, err := p.ProductRepo.CheckExist(productId)
@@ -105,7 +103,6 @@ func (p *ProductServiceImpl) FindProductByOwnerId(ownerId string) ([]model.FindP
 		data.ProductName = product.ProductName
 		data.ProductMeasurementUnit = product.ProductMeasurementUnit
 		data.ProductPrice = product.ProductPrice
-		data.ProductStock = product.ProductStock
 		data.IsActive = product.IsActive
 		data.LastModified = product.LastModified
 		data.CreatedDate = product.CreatedDate
@@ -152,7 +149,6 @@ func (p *ProductServiceImpl) FindProductById(productId string) (model.FindProduc
 	result.ProductName = product.ProductName
 	result.ProductMeasurementUnit = product.ProductMeasurementUnit
 	result.ProductPrice = product.ProductPrice
-	result.ProductStock = product.ProductStock
 	result.IsActive = product.IsActive
 	result.LastModified = product.LastModified
 	result.CreatedDate = product.LastModified

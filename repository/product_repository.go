@@ -27,7 +27,7 @@ func (p *ProductRepositoryImpl) Insert(data entity.Product) error {
 		return err
 	}
 
-	sql := "insert into core.product (product_id, owner_id, product_name, product_measurement_unit, product_price, is_active, created_date, last_modified) values($1, $2, $3, $4, $5, $6, true, now(), now());"
+	sql := "insert into core.product (product_id, owner_id, product_name, product_measurement_unit, product_price, is_active, created_date, last_modified) values($1, $2, $3, $4, $5, true, now(), now());"
 
 	_, err = con.Exec(sql,
 		data.ProductId,
@@ -52,7 +52,7 @@ func (p *ProductRepositoryImpl) Update(data entity.Product, productId string) er
 		return err
 	}
 
-	sql := "update core.product set product_name= $1, product_measurement_unit= $2, product_price = $3, last_modified= now() where product_id= $5"
+	sql := "update core.product set product_name= $1, product_measurement_unit= $2, product_price = $3, last_modified= now() where product_id= $4"
 
 	_, err = con.Exec(sql,
 		data.ProductName,

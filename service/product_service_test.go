@@ -19,9 +19,10 @@ func TestProductService(t *testing.T) {
 	testingRepo := &repository.TestingRepository{}
 	ownerRepo := &repository.OwnerRepositoryImpl{}
 	productRepo := &repository.ProductRepositoryImpl{}
+	productImageRepo := &repository.ProductImageRepositoryImpl{}
 
 	// service under test
-	productService := &ProductServiceImpl{OwnerRepo: ownerRepo, ProductRepo: productRepo}
+	productService := &ProductServiceImpl{OwnerRepo: ownerRepo, ProductRepo: productRepo, ProductImageRepo: productImageRepo}
 
 	t.Run("PrepareOwnerData", func(t *testing.T) {
 
@@ -48,7 +49,6 @@ func TestProductService(t *testing.T) {
 		product.ProductName = "Chicken Breast Crispy"
 		product.ProductMeasurementUnit = "pcs"
 		product.ProductPrice = float64(150000)
-		product.ProductStock = int64(40)
 
 		err := productRepo.Insert(product)
 
@@ -65,7 +65,6 @@ func TestProductService(t *testing.T) {
 		request.OwnerId = ownerId
 		request.ProductName = "Wings Crispy Yakiniku"
 		request.ProductPrice = float64(13000)
-		request.ProductStock = int64(130)
 
 		err := productService.CreateProduct(request)
 
@@ -79,7 +78,6 @@ func TestProductService(t *testing.T) {
 		request.ProductName = "Chicken Breast Crispy Box"
 		request.ProductMeasurementUnit = "box"
 		request.ProductPrice = float64(25000)
-		request.ProductStock = int64(60)
 
 		err := productService.UpdateProduct(request, productId)
 
@@ -100,7 +98,6 @@ func TestProductService(t *testing.T) {
 		assert.Equal(t, request.ProductName, product.ProductName)
 		assert.Equal(t, request.ProductMeasurementUnit, product.ProductMeasurementUnit)
 		assert.Equal(t, request.ProductPrice, product.ProductPrice)
-		assert.Equal(t, request.ProductStock, product.ProductStock)
 	})
 
 	t.Run("FindProductById", func(t *testing.T) {
@@ -115,7 +112,6 @@ func TestProductService(t *testing.T) {
 		assert.Equal(t, "Chicken Breast Crispy Box", product.ProductName)
 		assert.Equal(t, "box", product.ProductMeasurementUnit)
 		assert.Equal(t, float64(25000), product.ProductPrice)
-		assert.Equal(t, int64(60), product.ProductStock)
 	})
 
 	t.Run("TestFindProductByOwner", func(t *testing.T) {
@@ -130,7 +126,6 @@ func TestProductService(t *testing.T) {
 		assert.Equal(t, "Chicken Breast Crispy Box", products[0].ProductName)
 		assert.Equal(t, "box", products[0].ProductMeasurementUnit)
 		assert.Equal(t, float64(25000), products[0].ProductPrice)
-		assert.Equal(t, int64(60), products[0].ProductStock)
 	})
 
 	t.Run("TesSetInactiveService", func(t *testing.T) {

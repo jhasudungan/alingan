@@ -80,7 +80,6 @@ func TestTransactionService(t *testing.T) {
 		product.ProductName = "Chicken Breast Crispy"
 		product.ProductMeasurementUnit = "pcs"
 		product.ProductPrice = float64(15000)
-		product.ProductStock = int64(40)
 
 		err := productRepo.Insert(product)
 
@@ -99,7 +98,6 @@ func TestTransactionService(t *testing.T) {
 		product.ProductName = "Wings Crispy"
 		product.ProductMeasurementUnit = "pcs"
 		product.ProductPrice = float64(12000)
-		product.ProductStock = int64(40)
 
 		err := productRepo.Insert(product)
 

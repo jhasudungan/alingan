@@ -7,14 +7,12 @@ type CreateProductRequest struct {
 	ProductName            string
 	ProductMeasurementUnit string
 	ProductPrice           float64
-	ProductStock           int64
 }
 
 type UpdateProductRequest struct {
 	ProductName            string
 	ProductMeasurementUnit string
 	ProductPrice           float64
-	ProductStock           int64
 }
 
 type FindProductByOwnerIdResponse struct {
@@ -23,7 +21,6 @@ type FindProductByOwnerIdResponse struct {
 	ProductName            string
 	ProductMeasurementUnit string
 	ProductPrice           float64
-	ProductStock           int64
 	IsActive               bool
 	CreatedDate            time.Time
 	LastModified           time.Time
@@ -36,7 +33,6 @@ type FindProductByIdResponse struct {
 	ProductName            string
 	ProductMeasurementUnit string
 	ProductPrice           float64
-	ProductStock           int64
 	IsActive               bool
 	CreatedDate            time.Time
 	LastModified           time.Time
