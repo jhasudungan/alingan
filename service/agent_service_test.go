@@ -129,6 +129,26 @@ func TestAgentService(t *testing.T) {
 
 	})
 
+	t.Run("TestSetAgentActive", func(t *testing.T) {
+
+		err := agentService.SetAgentActive(agentId)
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		agent, err := agentRepo.FindAgentById(agentId)
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		assert.Equal(t, true, agent.IsActive)
+
+	})
+
 	t.Run("TestGetOwnerAgentList", func(t *testing.T) {
 
 		agents, err := agentService.GetOwnerAgentList(ownerId)

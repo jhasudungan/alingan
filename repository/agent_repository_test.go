@@ -124,6 +124,28 @@ func TestAgentRepository(t *testing.T) {
 
 	})
 
+	t.Run("TestSetActive", func(t *testing.T) {
+
+		agentRepository := &AgentRepositoryImpl{}
+
+		err := agentRepository.SetActive("agent-test")
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		agent, err := agentRepository.FindAgentById("agent-test")
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		assert.Equal(t, true, agent.IsActive)
+
+	})
+
 	t.Run("TestCheckExist", func(t *testing.T) {
 
 		agentRepository := &AgentRepositoryImpl{}

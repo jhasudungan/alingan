@@ -11,6 +11,7 @@ type AgentRepository interface {
 	FindAgentById(agentId string) (entity.Agent, error)
 	FindAgentByEmail(agentEmail string) (entity.Agent, error)
 	SetInactive(agentId string) error
+	SetActive(agentId string) error
 	CheckEmailExist(agentEmail string) (bool, error)
 	CheckExist(agentId string) (bool, error)
 	Delete(agentId string) error
@@ -141,6 +142,26 @@ func (a *AgentRepositoryImpl) SetInactive(agentId string) error {
 	}
 
 	sql := "update core.agent set is_active = false where agent_id = $1"
+
+	_, err = con.Exec(sql, agentId)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (a *AgentRepositoryImpl) SetActive(agentId string) error {
+
+	con, err := config.CreateDBConnection()
+	defer con.Close()
+
+	if err != nil {
+		return err
+	}
+
+	sql := "update core.agent set is_active = true where agent_id = $1"
 
 	_, err = con.Exec(sql, agentId)
 

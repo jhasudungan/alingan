@@ -13,6 +13,7 @@ type AgentService interface {
 	GetAgentInformation(agentId string) (model.GetAgentInformationResponse, error)
 	GetOwnerAgentList(ownerId string) ([]model.GetOwnerAgentListResponse, error)
 	SetAgentInactive(agentId string) error
+	SetAgentActive(agentId string) error
 }
 
 type AgentServiceImpl struct {
@@ -84,6 +85,27 @@ func (a *AgentServiceImpl) SetAgentInactive(agentId string) error {
 	}
 
 	err = a.AgentRepo.SetInactive(agentId)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (a *AgentServiceImpl) SetAgentActive(agentId string) error {
+
+	checkExist, err := a.AgentRepo.CheckExist(agentId)
+
+	if err != nil {
+		return err
+	}
+
+	if checkExist == false {
+		return errors.New("agent not exist")
+	}
+
+	err = a.AgentRepo.SetActive(agentId)
 
 	if err != nil {
 		return err
