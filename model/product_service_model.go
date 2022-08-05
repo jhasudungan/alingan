@@ -1,7 +1,5 @@
 package model
 
-import "time"
-
 type CreateProductRequest struct {
 	OwnerId                string
 	ProductName            string
@@ -22,8 +20,8 @@ type FindProductByOwnerIdResponse struct {
 	ProductMeasurementUnit string
 	ProductPrice           float64
 	IsActive               bool
-	CreatedDate            time.Time
-	LastModified           time.Time
+	CreatedDate            string
+	LastModified           string
 	ImageUrl               string
 }
 
@@ -34,6 +32,6 @@ type FindProductByIdResponse struct {
 	ProductMeasurementUnit string
 	ProductPrice           float64
 	IsActive               bool
-	CreatedDate            time.Time
-	LastModified           time.Time
+	CreatedDate            string
+	LastModified           string
 }

@@ -55,7 +55,12 @@
                 <div class="buttons are-small">
                     <a href="/owner/product" class="button is-dark"><i class="fa fa-arrow-left"></i></a>
                     <button class="button is-primary" type="submit" name="submit">save change</button>
-                    <a href="/owner/inactive/product/{{.product.ProductId }}" class="button is-danger">deactive this product</a>
+
+                    {{ if .product.IsActive  }}
+                        <a href="/owner/inactive/product/{{.product.ProductId }}" class="button is-danger">deactive this product</a>
+                    {{ else }}
+                        <a href="/owner/reactive/product/{{.product.ProductId }}" class="button is-success">reactive this product</a>
+                    {{ end }}
                 </div>
             </div>
         </div>

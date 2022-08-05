@@ -1,7 +1,5 @@
 package model
 
-import "time"
-
 type CreateStoreRequest struct {
 	OwnerId      string
 	StoreName    string
@@ -19,8 +17,8 @@ type FindStoreByIdResponse struct {
 	StoreName    string
 	StoreAddress string
 	IsActive     bool
-	CreatedDate  time.Time
-	LastModified time.Time
+	CreatedDate  string
+	LastModified string
 }
 
 type FindStoreByOwnerIdResponse struct {
@@ -29,6 +27,6 @@ type FindStoreByOwnerIdResponse struct {
 	StoreName    string
 	StoreAddress string
 	IsActive     bool
-	CreatedDate  time.Time
-	LastModified time.Time
+	CreatedDate  string
+	LastModified string
 }

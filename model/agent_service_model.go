@@ -1,7 +1,5 @@
 package model
 
-import "time"
-
 type RegisterNewAgentRequest struct {
 	StoreId       string
 	AgentName     string
@@ -16,8 +14,8 @@ type GetAgentInformationResponse struct {
 	AgentEmail    string
 	AgentPassword string
 	IsActive      bool
-	CreatedDate   time.Time
-	LastModified  time.Time
+	CreatedDate   string
+	LastModified  string
 }
 
 type GetOwnerAgentListResponse struct {

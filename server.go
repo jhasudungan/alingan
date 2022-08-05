@@ -110,6 +110,7 @@ func main() {
 	r.HandleFunc("/owner/new/store", storeManagementController.ShowCreateStoreForm).Methods("GET")
 	r.HandleFunc("/owner/new/store/submit", storeManagementController.HandleCreateStoreFormRequest).Methods("POST")
 	r.HandleFunc("/owner/inactive/store/{storeId}", storeManagementController.HandleInactiveStoreRequest).Methods("GET")
+	r.HandleFunc("/owner/reactive/store/{storeId}", storeManagementController.HandleReactiveStoreRequest).Methods("GET")
 	r.HandleFunc("/owner/update/store/submit", storeManagementController.HandleUpdateStoreRequest).Methods("POST")
 
 	r.HandleFunc("/owner/product", productManagementController.ShowProductData).Methods("GET")
@@ -117,6 +118,7 @@ func main() {
 	r.HandleFunc("/owner/new/product", productManagementController.ShowCreateProductForm).Methods("GET")
 	r.HandleFunc("/owner/new/product/submit", productManagementController.HandleCreateProductFormRequest).Methods("POST")
 	r.HandleFunc("/owner/inactive/product/{productId}", productManagementController.HandleInactiveProductRequest).Methods("GET")
+	r.HandleFunc("/owner/reactive/product/{productId}", productManagementController.HandleReactiveProductRequest).Methods("GET")
 	r.HandleFunc("/owner/update/product/submit", productManagementController.HandleUpdateProductRequest).Methods("POST")
 
 	r.HandleFunc("/owner/agent", agentManagamentController.ShowAgentData).Methods("GET")
@@ -124,6 +126,7 @@ func main() {
 	r.HandleFunc("/owner/new/agent", agentManagamentController.ShowCreateAgentForm).Methods("GET")
 	r.HandleFunc("/owner/new/agent/submit", agentManagamentController.HandleCreateAgentFormRequest).Methods("POST")
 	r.HandleFunc("/owner/inactive/agent/{agentId}", agentManagamentController.HandleSetAgentInactiveRequest).Methods("GET")
+	r.HandleFunc("/owner/reactive/agent/{agentId}", agentManagamentController.HandleReactiveActiveRequest).Methods("GET")
 
 	r.HandleFunc("/owner/transaction", transactionManagementController.ShowTransactionData).Methods("GET")
 	r.HandleFunc("/owner/new/transaction", transactionManagementController.ShowCreateTransactionForm).Methods("GET")

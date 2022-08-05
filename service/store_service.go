@@ -105,8 +105,8 @@ func (s *StoreServiceImpl) FindStoreByOwnerId(ownerId string) ([]model.FindStore
 		data.StoreName = store.StoreName
 		data.StoreAddress = store.StoreAddress
 		data.IsActive = store.IsActive
-		data.CreatedDate = store.CreatedDate
-		data.LastModified = store.LastModified
+		data.CreatedDate = store.CreatedDate.Format("2006-01-02 15:04:05")
+		data.LastModified = store.LastModified.Format("2006-01-02 15:04:05")
 
 		results = append(results, data)
 	}
@@ -140,8 +140,8 @@ func (s *StoreServiceImpl) FindStoreById(storeId string) (model.FindStoreByIdRes
 	result.StoreName = store.StoreName
 	result.StoreAddress = store.StoreAddress
 	result.IsActive = store.IsActive
-	result.CreatedDate = store.CreatedDate
-	result.LastModified = store.LastModified
+	result.CreatedDate = store.CreatedDate.Format("2006-01-02 15:04:05")
+	result.LastModified = store.LastModified.Format("2006-01-02 15:04:05")
 
 	return result, nil
 }

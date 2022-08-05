@@ -66,8 +66,8 @@ func (a *AgentServiceImpl) GetAgentInformation(agentId string) (model.GetAgentIn
 	result.AgentEmail = agent.AgentEmail
 	result.AgentPassword = agent.AgentPassword
 	result.IsActive = agent.IsActive
-	result.CreatedDate = agent.CreatedDate
-	result.LastModified = agent.LastModified
+	result.CreatedDate = agent.CreatedDate.Format("2006-01-02 15:04:05")
+	result.LastModified = agent.LastModified.Format("2006-01-02 15:04:05")
 
 	return result, nil
 }

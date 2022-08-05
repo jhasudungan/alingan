@@ -108,7 +108,7 @@ func (t *TransactionServiceImpl) FindTransactionByOwner(ownerId string) ([]model
 		data := model.FindTransactionByOwnerResponse{}
 
 		data.TransactionId = transaction.TransactionId
-		data.TransactionDate = transaction.TransactionDate
+		data.TransactionDate = transaction.TransactionDate.Format("2006-01-02 15:04:05")
 		data.AgentId = transaction.AgentId
 		data.AgentName = transaction.AgentName
 		data.StoreName = transaction.StoreName

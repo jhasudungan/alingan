@@ -105,8 +105,8 @@ func (p *ProductServiceImpl) FindProductByOwnerId(ownerId string) ([]model.FindP
 		data.ProductMeasurementUnit = product.ProductMeasurementUnit
 		data.ProductPrice = product.ProductPrice
 		data.IsActive = product.IsActive
-		data.LastModified = product.LastModified
-		data.CreatedDate = product.CreatedDate
+		data.LastModified = product.LastModified.Format("2006-01-02 15:04:05")
+		data.CreatedDate = product.CreatedDate.Format("2006-01-02 15:04:05")
 
 		listImages, err := p.ProductImageRepo.FindProductImageByProductId(product.ProductId)
 
@@ -115,7 +115,7 @@ func (p *ProductServiceImpl) FindProductByOwnerId(ownerId string) ([]model.FindP
 		}
 
 		if len(listImages) == 0 {
-			data.ImageUrl = "https://picsum.photos/id/237/200/300"
+			data.ImageUrl = "http://localhost:8080" + "/static/image/no-image-icon.png"
 		} else {
 			data.ImageUrl = listImages[0].LocationPath
 		}
@@ -151,8 +151,8 @@ func (p *ProductServiceImpl) FindProductById(productId string) (model.FindProduc
 	result.ProductMeasurementUnit = product.ProductMeasurementUnit
 	result.ProductPrice = product.ProductPrice
 	result.IsActive = product.IsActive
-	result.LastModified = product.LastModified
-	result.CreatedDate = product.LastModified
+	result.LastModified = product.LastModified.Format("2006-01-02 15:04:05")
+	result.CreatedDate = product.LastModified.Format("2006-01-02 15:04:05")
 
 	return result, nil
 }

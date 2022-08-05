@@ -54,7 +54,11 @@
             <div class="column">
                 <div class="buttons are-small">
                     <a href="/owner/agent" class="button is-dark"><i class="fa fa-arrow-left"></i></a>
-                    <a href="/owner/inactive/agent/{{.agent.AgentId }}" class="button is-danger">deactive this agent</a>
+                    {{ if .agent.IsActive }}
+                        <a href="/owner/inactive/agent/{{.agent.AgentId }}" class="button is-danger">deactive this agent</a>
+                    {{ else }}
+                        <a href="/owner/reactive/agent/{{.agent.AgentId }}" class="button is-success">reactive this agent</a>
+                    {{ end }}
                 </div>
             </div>
         </div>
