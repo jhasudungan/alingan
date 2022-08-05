@@ -188,9 +188,6 @@ func (p *ProductManagementController) HandleCreateProductFormRequest(w http.Resp
 
 	request.ProductPrice = data
 
-	// stock deactived later
-	request.ProductStock = int64(0)
-
 	err = p.ProductService.CreateProduct(request)
 
 	if err != nil {
@@ -270,9 +267,6 @@ func (p *ProductManagementController) HandleUpdateProductRequest(w http.Response
 	}
 
 	request.ProductPrice = data
-
-	// stock deactived later
-	request.ProductStock = int64(0)
 
 	err = p.ProductService.UpdateProduct(request, r.Form.Get("product-id"))
 
