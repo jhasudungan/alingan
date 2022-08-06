@@ -20,8 +20,8 @@ type TransactionManagementController struct {
 }
 
 type WebResponse struct {
-	Status int64  `json:"status"`
-	Desc   string `json: "desc"`
+	Status      int64  `json:"status"`
+	Description string `json:"description"`
 }
 
 func (t *TransactionManagementController) ShowTransactionData(w http.ResponseWriter, r *http.Request) {
@@ -132,7 +132,7 @@ func (t *TransactionManagementController) HandleCreateTransactionRequest(w http.
 		return
 	}
 
-	response := &WebResponse{Status: int64(200), Desc: "success submit transaction"}
+	response := &WebResponse{Status: int64(200), Description: "success submit transaction"}
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(response)
 
