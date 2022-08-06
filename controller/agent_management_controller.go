@@ -5,7 +5,6 @@ import (
 	"alingan/model"
 	"alingan/service"
 	"html/template"
-	"log"
 	"net/http"
 	"path"
 
@@ -16,6 +15,7 @@ type AgentManagamentController struct {
 	AgentService   service.AgentService
 	StoreService   service.StoreService
 	AuthMiddleware middleware.AuthMiddleware
+	ErrorHandler   middleware.ErrorHandler
 }
 
 func (a *AgentManagamentController) ShowAgentData(w http.ResponseWriter, r *http.Request) {
@@ -23,13 +23,12 @@ func (a *AgentManagamentController) ShowAgentData(w http.ResponseWriter, r *http
 	isAuthenticated, err, session := a.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
@@ -39,16 +38,14 @@ func (a *AgentManagamentController) ShowAgentData(w http.ResponseWriter, r *http
 	agents, err := a.AgentService.GetOwnerAgentList(ownerId)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/agent")
 		return
 	}
 
 	template, err := template.ParseFiles(path.Join("view", "owner/agent_list.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/agent")
 		return
 	}
 
@@ -59,8 +56,7 @@ func (a *AgentManagamentController) ShowAgentData(w http.ResponseWriter, r *http
 	err = template.Execute(w, templateData)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/agent")
 		return
 	}
 
@@ -71,13 +67,12 @@ func (a *AgentManagamentController) ShowAgentInformation(w http.ResponseWriter, 
 	isAuthenticated, err, _ := a.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
@@ -88,16 +83,14 @@ func (a *AgentManagamentController) ShowAgentInformation(w http.ResponseWriter, 
 	agent, err := a.AgentService.GetAgentInformation(agentId)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/agent")
 		return
 	}
 
 	template, err := template.ParseFiles(path.Join("view", "owner/view_agent.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/agent")
 		return
 	}
 
@@ -108,8 +101,7 @@ func (a *AgentManagamentController) ShowAgentInformation(w http.ResponseWriter, 
 	err = template.Execute(w, templateData)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/agent")
 		return
 	}
 
@@ -120,13 +112,12 @@ func (a *AgentManagamentController) ShowCreateAgentForm(w http.ResponseWriter, r
 	isAuthenticated, err, session := a.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
@@ -135,16 +126,14 @@ func (a *AgentManagamentController) ShowCreateAgentForm(w http.ResponseWriter, r
 	stores, err := a.StoreService.FindStoreByOwnerId(ownerId)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/agent")
 		return
 	}
 
 	template, err := template.ParseFiles(path.Join("view", "owner/register_agent.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/agent")
 		return
 	}
 
@@ -154,8 +143,7 @@ func (a *AgentManagamentController) ShowCreateAgentForm(w http.ResponseWriter, r
 	err = template.Execute(w, templateData)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/agent")
 		return
 	}
 
@@ -166,21 +154,19 @@ func (a *AgentManagamentController) HandleCreateAgentFormRequest(w http.Response
 	isAuthenticated, err, _ := a.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	err = r.ParseForm()
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/agent")
 		return
 	}
 
@@ -193,8 +179,7 @@ func (a *AgentManagamentController) HandleCreateAgentFormRequest(w http.Response
 	err = a.AgentService.RegisterNewAgent(request)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/agent")
 		return
 	}
 
@@ -207,13 +192,12 @@ func (a *AgentManagamentController) HandleSetAgentInactiveRequest(w http.Respons
 	isAuthenticated, err, _ := a.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
@@ -224,8 +208,7 @@ func (a *AgentManagamentController) HandleSetAgentInactiveRequest(w http.Respons
 	err = a.AgentService.SetAgentInactive(agentId)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/agent")
 		return
 	}
 
@@ -238,13 +221,12 @@ func (a *AgentManagamentController) HandleReactiveActiveRequest(w http.ResponseW
 	isAuthenticated, err, _ := a.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
@@ -255,8 +237,7 @@ func (a *AgentManagamentController) HandleReactiveActiveRequest(w http.ResponseW
 	err = a.AgentService.SetAgentActive(agentId)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/agent")
 		return
 	}
 
