@@ -1,8 +1,8 @@
 package controller
 
 import (
+	"alingan/middleware"
 	"alingan/service"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -10,6 +10,7 @@ import (
 
 type FileUploadController struct {
 	FileUploadService service.FileUploadService
+	ErrorHandler      middleware.ErrorHandler
 }
 
 func (f *FileUploadController) HandleUploadProductImageRequest(w http.ResponseWriter, r *http.Request) {
@@ -20,8 +21,7 @@ func (f *FileUploadController) HandleUploadProductImageRequest(w http.ResponseWr
 	_, err := f.FileUploadService.UploadIProductmage(productId, r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		f.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 

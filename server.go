@@ -103,6 +103,7 @@ func main() {
 
 	fileUploadController := &controller.FileUploadController{
 		FileUploadService: fileUploadService,
+		ErrorHandler:      errorHandler,
 	}
 
 	publicController := &controller.PublicController{}
