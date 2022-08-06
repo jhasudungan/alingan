@@ -9,6 +9,8 @@ import (
 	"log"
 	"net/http"
 	"path"
+
+	"github.com/gorilla/mux"
 )
 
 type TransactionManagementController struct {
@@ -133,5 +135,53 @@ func (t *TransactionManagementController) HandleCreateTransactionRequest(w http.
 	response := &WebResponse{Status: int64(200), Desc: "success submit transaction"}
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(response)
+
+}
+
+func (t *TransactionManagementController) ShowTransactionInformation(w http.ResponseWriter, r *http.Request) {
+
+	isAuthenticated, err, _ := t.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	if isAuthenticated == false {
+		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		return
+	}
+
+	params := mux.Vars(r)
+	transactionId := params["transactionId"]
+
+	transaction, err := t.TransactionService.GetTransactionInformation(transactionId)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		return
+	}
+
+	templateData := make(map[string]interface{})
+
+	templateData["transaction"] = transaction
+
+	template, err := template.ParseFiles(path.Join("view", "owner/view_transaction.html"), path.Join("view", "layout/owner_layout.html"))
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		return
+	}
+
+	err = template.Execute(w, templateData)
+
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		return
+	}
 
 }

@@ -1,0 +1,71 @@
+{{ template "owner-layout" .}}
+{{ define "container" }}
+<div class="column">
+    <div class="block">
+        <p class="is-size-4">Transaction </p>
+    </div>
+    <div class="block">
+        <p>Below Is The Transaction Detail</p>
+    </div>
+    <form action="">
+        <div class="columns">
+            <div class="column">
+                <label for="" class="label">Transaction Id</label>
+                <div class="control">
+                    <input class="input" value="{{ .transaction.TransactionId }}" disabled>
+                </div>
+            </div>
+            <div class="column">
+                <label for="" class="label">Transaction Date</label>
+                <div class="control">
+                    <input class="input" value="{{ .transaction.TransactionDate }}" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <label for="" class="label">Store</label>
+                <div class="control">
+                    <input class="input" value="{{ .transaction.StoreName }}" disabled>
+                </div>
+            </div>
+            <div class="column">
+                <label for="" class="label">Agent In Charge</label>
+                <div class="control">
+                    <input class="input" value="{{ .transaction.AgentName }}" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <label for="" class="label">items</label>
+                <table class="table is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Used Price</th>
+                            <th>Buy Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ range .transaction.Items }}
+                            <tr>
+                                <td>{{ .ProductName }}</td>
+                                <td>{{ .UsedPrice }}</td>
+                                <td>{{ .BuyQuantity }}</td>
+                            </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <div class="buttons are-small">
+                    <a href="/owner/transaction" class="button is-dark"><i class="fa fa-arrow-left"></i></a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{{ end }}

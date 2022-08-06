@@ -131,6 +131,7 @@ func main() {
 	r.HandleFunc("/owner/transaction", transactionManagementController.ShowTransactionData).Methods("GET")
 	r.HandleFunc("/owner/new/transaction", transactionManagementController.ShowCreateTransactionForm).Methods("GET")
 	r.HandleFunc("/owner/new/transaction/submit", transactionManagementController.HandleCreateTransactionRequest).Methods("POST")
+	r.HandleFunc("/owner/transaction/{transactionId}", transactionManagementController.ShowTransactionInformation).Methods("GET")
 
 	r.HandleFunc("/owner/login", authController.ShowLoginForm).Methods("GET")
 	r.HandleFunc("/owner/login/submit", authController.HandleLoginFormRequest).Methods("POST")
