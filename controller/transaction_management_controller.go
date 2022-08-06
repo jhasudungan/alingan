@@ -17,6 +17,7 @@ type TransactionManagementController struct {
 	TransactionService service.TransactionService
 	ProductService     service.ProductService
 	AuthMiddleware     middleware.AuthMiddleware
+	ErrorHandler       middleware.ErrorHandler
 }
 
 type WebResponse struct {
@@ -29,13 +30,12 @@ func (t *TransactionManagementController) ShowTransactionData(w http.ResponseWri
 	isAuthenticated, err, session := t.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		t.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		t.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, "authentication failed")
 		return
 	}
 
@@ -44,16 +44,14 @@ func (t *TransactionManagementController) ShowTransactionData(w http.ResponseWri
 	transactions, err := t.TransactionService.FindTransactionByOwner(ownerId)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		t.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/transaction")
 		return
 	}
 
 	template, err := template.ParseFiles(path.Join("view", "owner/transaction_list.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		t.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/transaction")
 		return
 	}
 
@@ -64,8 +62,7 @@ func (t *TransactionManagementController) ShowTransactionData(w http.ResponseWri
 	err = template.Execute(w, templateData)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		t.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/transaction")
 		return
 	}
 
@@ -76,13 +73,12 @@ func (t *TransactionManagementController) ShowCreateTransactionForm(w http.Respo
 	isAuthenticated, err, session := t.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		t.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		t.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, "authentication failed")
 		return
 	}
 
@@ -91,16 +87,14 @@ func (t *TransactionManagementController) ShowCreateTransactionForm(w http.Respo
 	products, err := t.ProductService.FindProductByOwnerId(ownerId)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		t.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/transaction")
 		return
 	}
 
 	template, err := template.ParseFiles(path.Join("view", "owner/point_of_sales.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		t.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/transaction")
 		return
 	}
 
@@ -111,8 +105,7 @@ func (t *TransactionManagementController) ShowCreateTransactionForm(w http.Respo
 	err = template.Execute(w, templateData)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		t.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/transaction")
 		return
 	}
 
@@ -143,13 +136,12 @@ func (t *TransactionManagementController) ShowTransactionInformation(w http.Resp
 	isAuthenticated, err, _ := t.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		t.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		t.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, "authentication - failed")
 		return
 	}
 
@@ -159,8 +151,7 @@ func (t *TransactionManagementController) ShowTransactionInformation(w http.Resp
 	transaction, err := t.TransactionService.GetTransactionInformation(transactionId)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		t.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/transaction")
 		return
 	}
 
@@ -171,16 +162,14 @@ func (t *TransactionManagementController) ShowTransactionInformation(w http.Resp
 	template, err := template.ParseFiles(path.Join("view", "owner/view_transaction.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		t.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/transaction")
 		return
 	}
 
 	err = template.Execute(w, templateData)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		t.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/transaction")
 		return
 	}
 

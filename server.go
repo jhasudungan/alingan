@@ -94,6 +94,7 @@ func main() {
 		AuthMiddleware:     authMiddleware,
 		TransactionService: transactionSvc,
 		ProductService:     productSvc,
+		ErrorHandler:       errorHandler,
 	}
 
 	authController := &controller.AuthController{
