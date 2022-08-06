@@ -15,6 +15,7 @@ import (
 type StoreManagementController struct {
 	StoreService   service.StoreService
 	AuthMiddleware middleware.AuthMiddleware
+	ErrorHandler   middleware.ErrorHandler
 }
 
 func (o *StoreManagementController) ShowStoreData(w http.ResponseWriter, r *http.Request) {
@@ -22,13 +23,12 @@ func (o *StoreManagementController) ShowStoreData(w http.ResponseWriter, r *http
 	isAuthenticated, err, session := o.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
@@ -38,16 +38,14 @@ func (o *StoreManagementController) ShowStoreData(w http.ResponseWriter, r *http
 	stores, err := o.StoreService.FindStoreByOwnerId(ownerId)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/store")
 		return
 	}
 
 	template, err := template.ParseFiles(path.Join("view", "owner/store_list.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/store")
 		return
 	}
 
@@ -58,8 +56,7 @@ func (o *StoreManagementController) ShowStoreData(w http.ResponseWriter, r *http
 	err = template.Execute(w, templateData)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/store")
 		return
 	}
 
@@ -70,13 +67,12 @@ func (o *StoreManagementController) ShowStoreInformation(w http.ResponseWriter, 
 	isAuthenticated, err, _ := o.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
@@ -87,16 +83,14 @@ func (o *StoreManagementController) ShowStoreInformation(w http.ResponseWriter, 
 	store, err := o.StoreService.FindStoreById(storeId)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/store")
 		return
 	}
 
 	template, err := template.ParseFiles(path.Join("view", "owner/view_store.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/store")
 		return
 	}
 
@@ -107,8 +101,7 @@ func (o *StoreManagementController) ShowStoreInformation(w http.ResponseWriter, 
 	err = template.Execute(w, templateData)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/store")
 		return
 	}
 
@@ -119,29 +112,26 @@ func (o *StoreManagementController) ShowCreateStoreForm(w http.ResponseWriter, r
 	isAuthenticated, err, _ := o.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	template, err := template.ParseFiles(path.Join("view", "owner/create_store.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/store")
 		return
 	}
 
 	err = template.Execute(w, nil)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/store")
 		return
 	}
 
@@ -152,21 +142,19 @@ func (o *StoreManagementController) HandleCreateStoreFormRequest(w http.Response
 	isAuthenticated, err, session := o.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	err = r.ParseForm()
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/store")
 		return
 	}
 
@@ -179,8 +167,7 @@ func (o *StoreManagementController) HandleCreateStoreFormRequest(w http.Response
 	err = o.StoreService.CreateStore(request)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/store")
 		return
 	}
 
@@ -193,13 +180,12 @@ func (o *StoreManagementController) HandleInactiveStoreRequest(w http.ResponseWr
 	isAuthenticated, err, _ := o.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
@@ -210,8 +196,7 @@ func (o *StoreManagementController) HandleInactiveStoreRequest(w http.ResponseWr
 	err = o.StoreService.SetStoreInactive(storeId)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/store")
 		return
 	}
 
@@ -224,13 +209,12 @@ func (o *StoreManagementController) HandleReactiveStoreRequest(w http.ResponseWr
 	isAuthenticated, err, _ := o.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
@@ -241,8 +225,7 @@ func (o *StoreManagementController) HandleReactiveStoreRequest(w http.ResponseWr
 	err = o.StoreService.SetStoreActive(storeId)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/store")
 		return
 	}
 
@@ -255,13 +238,12 @@ func (o *StoreManagementController) HandleUpdateStoreRequest(w http.ResponseWrit
 	isAuthenticated, err, _ := o.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
@@ -280,8 +262,7 @@ func (o *StoreManagementController) HandleUpdateStoreRequest(w http.ResponseWrit
 	err = o.StoreService.UpdateStore(request, r.Form.Get("store-id"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/store")
 		return
 	}
 

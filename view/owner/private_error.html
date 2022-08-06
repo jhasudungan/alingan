@@ -1,0 +1,17 @@
+{{ template "owner-layout" .}}
+{{ define "container" }}
+<div class="column">
+    <div class="block">
+        <p class="is-size-4">Error</p>
+    </div>
+    <article class="message is-danger">
+        <div class="message-header">
+          <p>Error</p>
+          <a class="button is-small is-dark" href="{{ .backurl }}">back</a>
+        </div>
+        <div class="message-body">
+          {{ .error }}
+        </div>
+    </article>
+</div>
+{{ end }}

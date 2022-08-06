@@ -68,10 +68,13 @@ func main() {
 		SessionList: sessionList,
 	}
 
+	errorHandler := middleware.ErrorHandler{}
+
 	// controller
 	storeManagementController := &controller.StoreManagementController{
 		AuthMiddleware: authMiddleware,
 		StoreService:   storeSvc,
+		ErrorHandler:   errorHandler,
 	}
 
 	productManagementController := &controller.ProductManagementController{
@@ -92,7 +95,8 @@ func main() {
 	}
 
 	authController := &controller.AuthController{
-		AuthService: authSvc,
+		AuthService:  authSvc,
+		ErrorHandler: errorHandler,
 	}
 
 	fileUploadController := &controller.FileUploadController{

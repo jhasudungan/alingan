@@ -1,16 +1,17 @@
 package controller
 
 import (
+	"alingan/middleware"
 	"alingan/model"
 	"alingan/service"
 	"html/template"
-	"log"
 	"net/http"
 	"path"
 )
 
 type AuthController struct {
-	AuthService service.AuthService
+	AuthService  service.AuthService
+	ErrorHandler middleware.ErrorHandler
 }
 
 func (a *AuthController) ShowLoginForm(w http.ResponseWriter, r *http.Request) {
@@ -18,16 +19,14 @@ func (a *AuthController) ShowLoginForm(w http.ResponseWriter, r *http.Request) {
 	template, err := template.ParseFiles(path.Join("view", "owner/login.html"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
 		return
 	}
 
 	err = template.Execute(w, nil)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
 		return
 	}
 
@@ -38,16 +37,14 @@ func (a *AuthController) ShowRegistrationForm(w http.ResponseWriter, r *http.Req
 	template, err := template.ParseFiles(path.Join("view", "owner/registration.html"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
 		return
 	}
 
 	err = template.Execute(w, nil)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
 		return
 	}
 
@@ -58,8 +55,7 @@ func (a *AuthController) HandleLoginFormRequest(w http.ResponseWriter, r *http.R
 	err := r.ParseForm()
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
 		return
 	}
 
@@ -70,8 +66,7 @@ func (a *AuthController) HandleLoginFormRequest(w http.ResponseWriter, r *http.R
 	session, err := a.AuthService.OwnerLogin(request)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
 		return
 	}
 
@@ -90,8 +85,7 @@ func (a *AuthController) HandleRegistrationFormRequest(w http.ResponseWriter, r 
 	err := r.ParseForm()
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
 		return
 	}
 
