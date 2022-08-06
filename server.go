@@ -80,6 +80,7 @@ func main() {
 	productManagementController := &controller.ProductManagementController{
 		AuthMiddleware: authMiddleware,
 		ProductService: productSvc,
+		ErrorHandler:   errorHandler,
 	}
 
 	agentManagamentController := &controller.AgentManagamentController{

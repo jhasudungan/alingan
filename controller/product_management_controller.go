@@ -5,7 +5,6 @@ import (
 	"alingan/model"
 	"alingan/service"
 	"html/template"
-	"log"
 	"net/http"
 	"path"
 	"strconv"
@@ -16,6 +15,7 @@ import (
 type ProductManagementController struct {
 	ProductService service.ProductService
 	AuthMiddleware middleware.AuthMiddleware
+	ErrorHandler   middleware.ErrorHandler
 }
 
 func (p *ProductManagementController) ShowProductData(w http.ResponseWriter, r *http.Request) {
@@ -23,13 +23,12 @@ func (p *ProductManagementController) ShowProductData(w http.ResponseWriter, r *
 	isAuthenticated, err, session := p.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		p.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		p.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
@@ -39,16 +38,14 @@ func (p *ProductManagementController) ShowProductData(w http.ResponseWriter, r *
 	products, err := p.ProductService.FindProductByOwnerId(ownerId)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		p.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 
 	template, err := template.ParseFiles(path.Join("view", "owner/product_list.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		p.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 
@@ -59,8 +56,7 @@ func (p *ProductManagementController) ShowProductData(w http.ResponseWriter, r *
 	err = template.Execute(w, templateData)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		p.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 }
@@ -70,13 +66,12 @@ func (p *ProductManagementController) ShowProductInformation(w http.ResponseWrit
 	isAuthenticated, err, _ := p.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		p.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		p.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
@@ -87,16 +82,14 @@ func (p *ProductManagementController) ShowProductInformation(w http.ResponseWrit
 	product, err := p.ProductService.FindProductById(productId)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		p.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 
 	template, err := template.ParseFiles(path.Join("view", "owner/view_product.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		p.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 
@@ -107,8 +100,7 @@ func (p *ProductManagementController) ShowProductInformation(w http.ResponseWrit
 	err = template.Execute(w, templateData)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		p.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 
@@ -119,29 +111,26 @@ func (p *ProductManagementController) ShowCreateProductForm(w http.ResponseWrite
 	isAuthenticated, err, _ := p.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		p.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		p.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	template, err := template.ParseFiles(path.Join("view", "owner/create_product.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		p.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 
 	err = template.Execute(w, nil)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		p.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 
@@ -152,21 +141,19 @@ func (p *ProductManagementController) HandleCreateProductFormRequest(w http.Resp
 	isAuthenticated, err, session := p.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		p.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		p.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	err = r.ParseForm()
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		p.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 
@@ -181,8 +168,7 @@ func (p *ProductManagementController) HandleCreateProductFormRequest(w http.Resp
 	data, err := strconv.ParseFloat(r.Form.Get("product-price"), 64)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		p.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 
@@ -191,8 +177,7 @@ func (p *ProductManagementController) HandleCreateProductFormRequest(w http.Resp
 	err = p.ProductService.CreateProduct(request)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		p.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 
@@ -205,13 +190,12 @@ func (p *ProductManagementController) HandleInactiveProductRequest(w http.Respon
 	isAuthenticated, err, _ := p.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		p.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		p.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
@@ -222,8 +206,7 @@ func (p *ProductManagementController) HandleInactiveProductRequest(w http.Respon
 	err = p.ProductService.SetProductInactive(productId)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		p.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 
@@ -236,13 +219,12 @@ func (p *ProductManagementController) HandleReactiveProductRequest(w http.Respon
 	isAuthenticated, err, _ := p.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		p.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		p.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
@@ -253,8 +235,7 @@ func (p *ProductManagementController) HandleReactiveProductRequest(w http.Respon
 	err = p.ProductService.SetProductActive(productId)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		p.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 
@@ -267,20 +248,19 @@ func (p *ProductManagementController) HandleUpdateProductRequest(w http.Response
 	isAuthenticated, err, _ := p.AuthMiddleware.AuthenticateOwner(r)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		p.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
 
 	if isAuthenticated == false {
-		http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+		p.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
 		return
 	}
+
 	err = r.ParseForm()
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		p.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 
@@ -292,8 +272,7 @@ func (p *ProductManagementController) HandleUpdateProductRequest(w http.Response
 	data, err := strconv.ParseFloat(r.Form.Get("update-product-price"), 64)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		p.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 
@@ -302,8 +281,7 @@ func (p *ProductManagementController) HandleUpdateProductRequest(w http.Response
 	err = p.ProductService.UpdateProduct(request, r.Form.Get("product-id"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Exceute Render", 500)
+		p.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 
