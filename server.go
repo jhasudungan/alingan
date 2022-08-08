@@ -53,11 +53,14 @@ func main() {
 	}
 
 	sessionList := make(map[string]*model.Session)
+	agentSessionList := make(map[string]*model.AgentSession)
 
 	authSvc := &service.AuthServiceImpl{
-		OwnerRepo:   ownerRepo,
-		AgentRepo:   agentRepo,
-		SessionList: sessionList,
+		OwnerRepo:        ownerRepo,
+		AgentRepo:        agentRepo,
+		SessionList:      sessionList,
+		AgentSessionList: agentSessionList,
+		JoinRepo:         joinRepo,
 	}
 
 	fileUploadService := &service.FileUploadServiceImpl{
@@ -155,6 +158,8 @@ func main() {
 
 	r.HandleFunc("/owner/upload/product-image/{productId}", fileUploadController.HandleUploadProductImageRequest).Methods("POST")
 
+	r.HandleFunc("/agent/login", authController.ShowAgentLoginForm).Methods("GET")
+	r.HandleFunc("/agent/login/submit", authController.HandleAgentLoginFormRequest).Methods("POST")
 	r.HandleFunc("/agent/new/transaction", agentTransactionController.ShowCreateTransactionForm).Methods("GET")
 
 	// file server

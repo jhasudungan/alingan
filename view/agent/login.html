@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="/static/bulma/css/bulma.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/static/font-awesome/css/all.min.css">
+
+    <title>Alingan - Login Agent</title>
+</head>
+<body>
+    
+    <section class="hero is-fullheight">
+        <section class="hero-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+                        <form action="/agent/login/submit" method="POST" class="box has-shadow">
+                            <div class="field">
+                                <label for="" class="label">Email</label>
+                                <div class="control has-icons-left">
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-envelope"></i>
+                                    </span>
+                                    <input type="text" class="input" type="email" name="agent-email-login" placeholder="eg jeremiah@aol.com">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <label for="" class="label">Password</label>
+                                <div class="control has-icons-left">
+                                    <span class="icon is-small is-left">
+                                        <i class="fa fa-lock"></i>
+                                    </span>
+                                    <input type="password" class="input" type="password" name="agent-email-password" ></input>
+                                </div>
+                            </div>  
+                            <div class="field">
+                                <button class="button is-success">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+</body>
+</html>
