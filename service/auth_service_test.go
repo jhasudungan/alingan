@@ -15,9 +15,16 @@ func TestAuthService(t *testing.T) {
 
 		ownerRepo := &repository.OwnerRepositoryImpl{}
 		agentRepo := &repository.AgentRepositoryImpl{}
-		sessionList := make(map[string]*model.Session)
+		joinRepo := &repository.JoinRepositoryImpl{}
 
-		authService := &AuthServiceImpl{OwnerRepo: ownerRepo, AgentRepo: agentRepo, SessionList: sessionList}
+		sessionList := make(map[string]*model.Session)
+		agentSessionList := make(map[string]*model.AgentSession)
+
+		authService := &AuthServiceImpl{OwnerRepo: ownerRepo,
+			AgentRepo:        agentRepo,
+			JoinRepo:         joinRepo,
+			SessionList:      sessionList,
+			AgentSessionList: agentSessionList}
 
 		request := model.OwnerLoginRequest{}
 		request.OwnerEmail = "admin@smartveggiesmart.com"
@@ -40,9 +47,16 @@ func TestAuthService(t *testing.T) {
 
 		ownerRepo := &repository.OwnerRepositoryImpl{}
 		agentRepo := &repository.AgentRepositoryImpl{}
-		sessionList := make(map[string]*model.Session)
+		joinRepo := &repository.JoinRepositoryImpl{}
 
-		authService := &AuthServiceImpl{OwnerRepo: ownerRepo, AgentRepo: agentRepo, SessionList: sessionList}
+		sessionList := make(map[string]*model.Session)
+		agentSessionList := make(map[string]*model.AgentSession)
+
+		authService := &AuthServiceImpl{OwnerRepo: ownerRepo,
+			AgentRepo:        agentRepo,
+			JoinRepo:         joinRepo,
+			SessionList:      sessionList,
+			AgentSessionList: agentSessionList}
 
 		request := model.OwnerLoginRequest{}
 		request.OwnerEmail = "admin@smartveggiesmart.com"
@@ -58,9 +72,16 @@ func TestAuthService(t *testing.T) {
 
 		ownerRepo := &repository.OwnerRepositoryImpl{}
 		agentRepo := &repository.AgentRepositoryImpl{}
-		sessionList := make(map[string]*model.Session)
+		joinRepo := &repository.JoinRepositoryImpl{}
 
-		authService := &AuthServiceImpl{OwnerRepo: ownerRepo, AgentRepo: agentRepo, SessionList: sessionList}
+		sessionList := make(map[string]*model.Session)
+		agentSessionList := make(map[string]*model.AgentSession)
+
+		authService := &AuthServiceImpl{OwnerRepo: ownerRepo,
+			AgentRepo:        agentRepo,
+			JoinRepo:         joinRepo,
+			SessionList:      sessionList,
+			AgentSessionList: agentSessionList}
 
 		request := model.OwnerLoginRequest{}
 		request.OwnerEmail = "lost@smartveggiesmart.com"
@@ -76,9 +97,16 @@ func TestAuthService(t *testing.T) {
 
 		ownerRepo := &repository.OwnerRepositoryImpl{}
 		agentRepo := &repository.AgentRepositoryImpl{}
-		sessionList := make(map[string]*model.Session)
+		joinRepo := &repository.JoinRepositoryImpl{}
 
-		authService := &AuthServiceImpl{OwnerRepo: ownerRepo, AgentRepo: agentRepo, SessionList: sessionList}
+		sessionList := make(map[string]*model.Session)
+		agentSessionList := make(map[string]*model.AgentSession)
+
+		authService := &AuthServiceImpl{OwnerRepo: ownerRepo,
+			AgentRepo:        agentRepo,
+			JoinRepo:         joinRepo,
+			SessionList:      sessionList,
+			AgentSessionList: agentSessionList}
 
 		request := model.AgentLoginRequest{}
 		request.AgentEmail = "jeremiahhs@smartveggiesmart.com"
@@ -94,6 +122,8 @@ func TestAuthService(t *testing.T) {
 		log.Println(session)
 		assert.Equal(t, "agent-001", session.Id)
 		assert.Equal(t, "agent", session.Role)
+		assert.Equal(t, "owner-001", session.OwnerId)
+		assert.Equal(t, "str-001", session.StoreId)
 
 	})
 
@@ -101,9 +131,16 @@ func TestAuthService(t *testing.T) {
 
 		ownerRepo := &repository.OwnerRepositoryImpl{}
 		agentRepo := &repository.AgentRepositoryImpl{}
-		sessionList := make(map[string]*model.Session)
+		joinRepo := &repository.JoinRepositoryImpl{}
 
-		authService := &AuthServiceImpl{OwnerRepo: ownerRepo, AgentRepo: agentRepo, SessionList: sessionList}
+		sessionList := make(map[string]*model.Session)
+		agentSessionList := make(map[string]*model.AgentSession)
+
+		authService := &AuthServiceImpl{OwnerRepo: ownerRepo,
+			AgentRepo:        agentRepo,
+			JoinRepo:         joinRepo,
+			SessionList:      sessionList,
+			AgentSessionList: agentSessionList}
 
 		request := model.AgentLoginRequest{}
 		request.AgentEmail = "jeremiahhs@smartveggiesmart.com"
@@ -118,9 +155,16 @@ func TestAuthService(t *testing.T) {
 
 		ownerRepo := &repository.OwnerRepositoryImpl{}
 		agentRepo := &repository.AgentRepositoryImpl{}
-		sessionList := make(map[string]*model.Session)
+		joinRepo := &repository.JoinRepositoryImpl{}
 
-		authService := &AuthServiceImpl{OwnerRepo: ownerRepo, AgentRepo: agentRepo, SessionList: sessionList}
+		sessionList := make(map[string]*model.Session)
+		agentSessionList := make(map[string]*model.AgentSession)
+
+		authService := &AuthServiceImpl{OwnerRepo: ownerRepo,
+			AgentRepo:        agentRepo,
+			JoinRepo:         joinRepo,
+			SessionList:      sessionList,
+			AgentSessionList: agentSessionList}
 
 		request := model.AgentLoginRequest{}
 		request.AgentEmail = "jeremiah@smartveggiesmart.com"
@@ -135,9 +179,16 @@ func TestAuthService(t *testing.T) {
 
 		ownerRepo := &repository.OwnerRepositoryImpl{}
 		agentRepo := &repository.AgentRepositoryImpl{}
-		sessionList := make(map[string]*model.Session)
+		joinRepo := &repository.JoinRepositoryImpl{}
 
-		authService := &AuthServiceImpl{OwnerRepo: ownerRepo, AgentRepo: agentRepo, SessionList: sessionList}
+		sessionList := make(map[string]*model.Session)
+		agentSessionList := make(map[string]*model.AgentSession)
+
+		authService := &AuthServiceImpl{OwnerRepo: ownerRepo,
+			AgentRepo:        agentRepo,
+			JoinRepo:         joinRepo,
+			SessionList:      sessionList,
+			AgentSessionList: agentSessionList}
 
 		request := model.OwnerRegistrationRequest{}
 		request.OwnerEmail = "admin@jfc.com"
@@ -158,9 +209,16 @@ func TestAuthService(t *testing.T) {
 
 		ownerRepo := &repository.OwnerRepositoryImpl{}
 		agentRepo := &repository.AgentRepositoryImpl{}
-		sessionList := make(map[string]*model.Session)
+		joinRepo := &repository.JoinRepositoryImpl{}
 
-		authService := &AuthServiceImpl{OwnerRepo: ownerRepo, AgentRepo: agentRepo, SessionList: sessionList}
+		sessionList := make(map[string]*model.Session)
+		agentSessionList := make(map[string]*model.AgentSession)
+
+		authService := &AuthServiceImpl{OwnerRepo: ownerRepo,
+			AgentRepo:        agentRepo,
+			JoinRepo:         joinRepo,
+			SessionList:      sessionList,
+			AgentSessionList: agentSessionList}
 
 		request := model.OwnerRegistrationRequest{}
 		request.OwnerEmail = "admin@jfc.com"

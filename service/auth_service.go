@@ -12,13 +12,15 @@ import (
 type AuthService interface {
 	OwnerRegistration(request model.OwnerRegistrationRequest) error
 	OwnerLogin(request model.OwnerLoginRequest) (*model.Session, error)
-	AgentLogin(request model.AgentLoginRequest) (*model.Session, error)
+	AgentLogin(request model.AgentLoginRequest) (*model.AgentSession, error)
 }
 
 type AuthServiceImpl struct {
-	SessionList map[string]*model.Session
-	OwnerRepo   repository.OwnerRepository
-	AgentRepo   repository.AgentRepository
+	SessionList      map[string]*model.Session
+	AgentSessionList map[string]*model.AgentSession
+	JoinRepo         repository.JoinRepository
+	OwnerRepo        repository.OwnerRepository
+	AgentRepo        repository.AgentRepository
 }
 
 func (a *AuthServiceImpl) OwnerRegistration(request model.OwnerRegistrationRequest) error {
@@ -85,9 +87,9 @@ func (a *AuthServiceImpl) OwnerLogin(request model.OwnerLoginRequest) (*model.Se
 	return session, nil
 }
 
-func (a *AuthServiceImpl) AgentLogin(request model.AgentLoginRequest) (*model.Session, error) {
+func (a *AuthServiceImpl) AgentLogin(request model.AgentLoginRequest) (*model.AgentSession, error) {
 
-	session := &model.Session{}
+	session := &model.AgentSession{}
 
 	checkEmailExist, err := a.AgentRepo.CheckEmailExist(request.AgentEmail)
 
@@ -109,14 +111,22 @@ func (a *AuthServiceImpl) AgentLogin(request model.AgentLoginRequest) (*model.Se
 		return session, errors.New("authentication error")
 	}
 
-	// session per login = 2 minutes
-	session.Expiry = time.Now().Add(time.Minute * 2)
+	owner, err := a.JoinRepo.FindOwnerByAgentId(agent.AgentId)
+
+	if err != nil {
+		return session, err
+	}
+
+	// session per login = 30 minutes
+	session.Expiry = time.Now().Add(time.Minute * 30)
 	session.Id = agent.AgentId
 	session.Role = "agent"
 	session.Token = util.GenerateId("SES")
+	session.StoreId = agent.StoreId
+	session.OwnerId = owner.OwnerId
 
 	// add session to session map with session.Id as key
-	a.SessionList[session.Token] = session
+	a.AgentSessionList[session.Token] = session
 
 	return session, nil
 }
