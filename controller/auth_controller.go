@@ -124,7 +124,7 @@ func (a *AuthController) HandleAgentLoginFormRequest(w http.ResponseWriter, r *h
 		Path:    "/",
 	})
 
-	http.Redirect(w, r, "/owner/store", http.StatusSeeOther)
+	http.Redirect(w, r, "/agent/new/trsndsction", http.StatusSeeOther)
 }
 
 func (a *AuthController) HandleRegistrationFormRequest(w http.ResponseWriter, r *http.Request) {
