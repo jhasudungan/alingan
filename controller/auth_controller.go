@@ -32,6 +32,23 @@ func (a *AuthController) ShowLoginForm(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func (a *AuthController) ShowAgentLoginForm(w http.ResponseWriter, r *http.Request) {
+
+	template, err := template.ParseFiles(path.Join("view", "agent/login.html"))
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
+		return
+	}
+
+	err = template.Execute(w, nil)
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
+		return
+	}
+}
+
 func (a *AuthController) ShowRegistrationForm(w http.ResponseWriter, r *http.Request) {
 
 	template, err := template.ParseFiles(path.Join("view", "owner/registration.html"))
@@ -64,6 +81,36 @@ func (a *AuthController) HandleLoginFormRequest(w http.ResponseWriter, r *http.R
 	request.OwnerPassword = r.Form.Get("owner-email-password")
 
 	session, err := a.AuthService.OwnerLogin(request)
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
+		return
+	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name:    "alingan-session",
+		Value:   session.Token,
+		Expires: session.Expiry,
+		Path:    "/",
+	})
+
+	http.Redirect(w, r, "/owner/store", http.StatusSeeOther)
+}
+
+func (a *AuthController) HandleAgentLoginFormRequest(w http.ResponseWriter, r *http.Request) {
+
+	err := r.ParseForm()
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
+		return
+	}
+
+	request := model.AgentLoginRequest{}
+	request.AgentEmail = r.Form.Get("agent-email-login")
+	request.AgentPassword = r.Form.Get("agent-email-password")
+
+	session, err := a.AuthService.AgentLogin(request)
 
 	if err != nil {
 		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
