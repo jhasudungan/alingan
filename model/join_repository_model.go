@@ -39,3 +39,13 @@ type FindTransactionItemAndProductByTransactionIdDTO struct {
 	UsedPrice         float64
 	BuyQuantity       int64
 }
+
+type FindOwnerByAgentIdDTO struct {
+	OwnerId      string
+	OwnerName    string
+	OwnerType    string
+	OwnerEmail   string
+	IsActive     bool
+	CreatedDate  time.Time
+	LastModified time.Time
+}

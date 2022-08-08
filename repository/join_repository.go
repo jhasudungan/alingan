@@ -10,6 +10,7 @@ type JoinRepository interface {
 	FindTransactionAgentAndStoreByTransactionId(transactionId string) (model.FindTransactionAgentAndStoreByTransactionIdDTO, error)
 	FindTransactionItemAndProductByTransactionId(transactionId string) ([]model.FindTransactionItemAndProductByTransactionIdDTO, error)
 	FindAgentByOwnerId(ownerId string) ([]model.FindAgentByOwnerIdDTO, error)
+	FindOwnerByAgentId(agentId string) (model.FindOwnerByAgentIdDTO, error)
 }
 
 type JoinRepositoryImpl struct{}
@@ -157,4 +158,34 @@ func (j *JoinRepositoryImpl) FindAgentByOwnerId(ownerId string) ([]model.FindAge
 	}
 
 	return results, nil
+}
+
+func (j *JoinRepositoryImpl) FindOwnerByAgentId(agentId string) (model.FindOwnerByAgentIdDTO, error) {
+
+	result := model.FindOwnerByAgentIdDTO{}
+
+	con, err := config.CreateDBConnection()
+	defer con.Close()
+
+	if err != nil {
+		return result, err
+	}
+
+	sql := "select o.owner_id , o.owner_name , o.owner_email , o.is_active, o.created_date , o.last_modified from core.owner o inner join core.store s on o.owner_id = s.owner_id inner join core.agent a on s.store_id = a.store_id where a.agent_id = $1"
+
+	row := con.QueryRow(sql, agentId)
+
+	err = row.Scan(&result.OwnerId,
+		&result.OwnerName,
+		&result.OwnerEmail,
+		&result.IsActive,
+		&result.CreatedDate,
+		&result.LastModified)
+
+	if err != nil {
+		return result, err
+	}
+
+	return result, nil
+
 }

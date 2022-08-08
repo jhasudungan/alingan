@@ -73,4 +73,21 @@ func TestJoinRepository(t *testing.T) {
 		assert.Equal(t, "Store 1 Smart Veggies", results[0].StoreName)
 
 	})
+
+	t.Run("TestFindOwnerByAgentId", func(t *testing.T) {
+
+		joinRepository := &JoinRepositoryImpl{}
+
+		result, err := joinRepository.FindOwnerByAgentId("AGT454497b9-74d1-4bb0-8753-962a962e31f6")
+
+		if err != nil {
+			log.Fatal("Error Test : " + err.Error())
+			t.FailNow()
+		}
+
+		assert.Equal(t, "owner-001", result.OwnerId)
+		assert.Equal(t, "admin@smartveggiesmart.com", result.OwnerEmail)
+		assert.Equal(t, "Smart Veggies Mart", result.OwnerName)
+
+	})
 }
