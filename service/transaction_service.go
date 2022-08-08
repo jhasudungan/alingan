@@ -28,6 +28,8 @@ type TransactionServiceImpl struct {
 
 func (t *TransactionServiceImpl) CreateTransaction(request model.CreateTransactionRequest) error {
 
+	agentId := ""
+
 	checkStore, err := t.StoreRepo.CheckExist(request.StoreId)
 
 	if err != nil {
@@ -45,7 +47,23 @@ func (t *TransactionServiceImpl) CreateTransaction(request model.CreateTransacti
 	}
 
 	if checkAgent == false {
-		return errors.New("agent is not exist")
+
+		checkOwner, err := t.OwnerRepo.CheckExist(request.AgentId)
+
+		if err != nil {
+			return err
+		}
+
+		if checkOwner == false {
+			return errors.New("agent is not exist")
+		}
+
+		agentId = request.AgentId
+
+	} else {
+
+		agentId = request.AgentId
+
 	}
 
 	transactionId := util.GenerateId("TRX")
@@ -54,7 +72,7 @@ func (t *TransactionServiceImpl) CreateTransaction(request model.CreateTransacti
 	transaction.TransactionDate = time.Now()
 	transaction.TransactionId = transactionId
 	transaction.TransactionTotal = t.CountTotalTransaction(request)
-	transaction.AgentId = request.AgentId
+	transaction.AgentId = agentId
 	transaction.StoreId = request.StoreId
 
 	err = t.TransactionRepo.Insert(transaction)
