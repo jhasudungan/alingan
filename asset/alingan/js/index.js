@@ -51,8 +51,16 @@ saveTransactionButton.addEventListener("click", async (e) => {
     }
 
     let request = {}
-    request.agentId = "agent-001"
-    request.storeId = "str-001"
+    let source = document.getElementById("pos-input-source").value;
+    request.agentId = document.getElementById("pos-input-agent-id").value;
+
+    if (source === "agent") {
+        var select = document.getElementById("pos-input-store-id");
+        request.agentId = select.options[select.selectedIndex].value;
+    } else {
+        request.storeId = document.getElementById("pos-input-store-id").value;
+    }
+
     request.total = parseFloat(document.getElementById("transaction-grand-total").childNodes[0].nodeValue)
     request.transactionItems = []
 
@@ -77,7 +85,11 @@ saveTransactionButton.addEventListener("click", async (e) => {
         alert("Error submit transaction"+error)
     }
  
-    window.location.href="/owner/transaction"
+    if (source === "agent") {
+        window.location.href = "/agent/new/transaction"
+    } else {
+        window.location.href="/owner/transaction"
+    }
 
 })
 
