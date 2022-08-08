@@ -1,0 +1,163 @@
+{{ define "agent-layout" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alingan - Your Store on Your Hand</title>
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="/static/bulma/css/bulma.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/static/font-awesome/css/all.min.css">
+    </head>
+<body>
+    
+    <!-- Owner Topbar -->
+    <nav class="navbar has-shadow">
+        <div class="navbar-brand">
+            <div class="navbar-item">
+                <i class="fa fa-square fa-2x"></i>
+            </div>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                <div class="navbar-item"><p class="is-size-4">alingan.id</p></div>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <div class="navbar-link">Smart Veggies Mart</div>
+                    <div class="navbar-dropdown">
+                        <div class="navbar-item">
+                            <div>
+                                Profile
+                            </div>
+                        </div>
+                        <div class="navbar-item">
+                            <div>
+                                Sign Out
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="section">
+        <div class="columns">
+
+            <!-- Sidebar -->
+            <div class="column is-4-tablet is-3-desktop is-2-widescreen">
+                <!-- Menu -->
+                <div class="menu">
+                    <ul class="menu-list">
+                        <p class="menu-label">Menu</p>
+                        <li>
+                            <a href="/agent/new/transaction">
+                                <span class="icon">
+                                    <i class="fa fa-shopping-bag"></i>  
+                                </span>
+                                Transaction
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="column">
+                {{ template "container" .}}
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Product Modal -->
+    <div class="modal" id="add-product-to-list-modal">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Add Product to Transaction</p>
+                </header>
+                <section class="modal-card-body">
+                    <div class="columns">
+                        <div class="column">
+                            <div class="field">
+                                <label class="label">Product ID</label>
+                                <div class="control">
+                                  <input class="input" type="text" id="add-product-modal-product-id" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns is-multiline">
+                        <div class="column is-4">
+                            <div class="field">
+                                <label class="label">Product</label>
+                                <div class="control">
+                                  <input class="input" type="text" id="add-product-modal-product-name" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-4">
+                            <div class="field">
+                                <label class="label">Price</label>
+                                <div class="control">
+                                  <input class="input" type="text" id="add-product-modal-product-price" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-4">
+                            <div class="field">
+                                <label class="label">Measurement Unit</label>
+                                <div class="control">
+                                  <input class="input" type="text" id="add-product-modal-msu" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns is-multiline">
+                        <div class="column is-6">
+                            <div class="field">
+                                <label class="label">Quantity</label>
+                                <div class="control">
+                                  <input class="input" type="number" id="add-product-modal-qty">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-6">
+                            <div class="field">
+                                <label class="label">Sub Total</label>
+                                <div class="control">
+                                  <input class="input" type="number" id="add-product-modal-sub-total" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success" id="add-product-to-list">Add</button>
+                    <button class="button" id="close-add-stock-to-list-modal" aria-label="close">Cancel</button>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- Axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/static/alingan/js/ui.js"></script>
+    <script src="/static/alingan/js/transaction-item.js"></script>
+    <script src="/static/alingan/js/index.js"></script>
+
+</body>
+</html>
+{{ end }}

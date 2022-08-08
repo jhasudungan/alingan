@@ -1,0 +1,82 @@
+{{ template "agent-layout" .}}
+{{ define "container" }}
+<div class="columns">
+    <div class="column">
+        <div class="block">
+            <p class="title is-4">New Transaction</p>
+        </div> 
+    </div>
+</div>
+<div class="columns is-multiline">
+    <div class="column">
+        <form>
+            <div class="field">
+                <label class="label">Store</label>
+                <div class="control">
+                  <input class="input" type="text" value="{{ .storeId }}" placeholder="Text input" readonly>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label">Agent</label>
+                <div class="control">
+                  <input class="input" type="text" value="{{ .agentId }}" placeholder="Text input" readonly>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="columns">
+    <div class="column">
+        <div class="block">
+            <p class="is-5">Available Products</p>
+        </div>
+        <div class="columns is-multiline" id="list-of-products">
+            {{ range .products }}
+            <div class="column is-6">
+                <article class="media">
+                    <figure class="media-left">
+                        <p class="image is-128x128">
+                          <img src="{{ .ImageUrl }}">
+                        </p>
+                    <div class="media-content">
+                        <p class="title is-6">{{ .ProductName }}</p>
+                        <p class="subtitle is-6">{{ .ProductPrice   }}</p>
+                        <p class="subtitle is-6">{{ .ProductMeasurementUnit }}</p>
+                        <p style="display: none;">{{ .ProductId }}</p>
+                        <button class="button is-info is-small my-2 choose-btn">add</button>
+                    </div>
+                </article>
+            </div>
+            {{ end }}
+        </div>
+    </div>
+    <div class="column">
+        <div class="block">
+            <p class="is-5">Transaction Item</p>
+        </div>
+        <table class="table" id="transaction-list-table">
+            <thead>
+                <tr>
+                    <th style="display: none;">Id</th>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Sub Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="transaction-list-table-body">
+
+            </tbody>
+        </table>
+        <div class="block">
+            <div id="transaction-list-grand-total-wrapper">
+                <p id="transaction-grand-total">0</p>
+            </div>
+        </div>
+        <div class="block">
+            <button class="button is-primary" id="save-transaction">save</button>
+        </div>
+    </div>
+</div>
+{{ end }}

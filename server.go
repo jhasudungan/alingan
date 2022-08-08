@@ -107,6 +107,12 @@ func main() {
 		ErrorHandler:      errorHandler,
 	}
 
+	agentTransactionController := &controller.AgentTransactionController{
+		TransactionService: transactionSvc,
+		ProductService:     productSvc,
+		ErrorHandler:       errorHandler,
+	}
+
 	publicController := &controller.PublicController{}
 
 	// router and handler
@@ -147,6 +153,8 @@ func main() {
 	r.HandleFunc("/owner/registration/submit", authController.HandleRegistrationFormRequest).Methods("POST")
 
 	r.HandleFunc("/owner/upload/product-image/{productId}", fileUploadController.HandleUploadProductImageRequest).Methods("POST")
+
+	r.HandleFunc("/agent/new/transaction", agentTransactionController.ShowCreateTransactionForm).Methods("GET")
 
 	// file server
 	assetFileServer := http.FileServer(http.Dir("asset"))
