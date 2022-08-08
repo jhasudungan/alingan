@@ -9,6 +9,15 @@ type Session struct {
 	Token  string
 }
 
+type AgentSession struct {
+	Id      string
+	StoreId string
+	OwnerId string
+	Role    string
+	Expiry  time.Time
+	Token   string
+}
+
 type OwnerRegistrationRequest struct {
 	OwnerEmail string
 	Password   string
