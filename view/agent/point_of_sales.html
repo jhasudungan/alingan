@@ -11,15 +11,21 @@
     <div class="column">
         <form>
             <div class="field">
+                <label class="label">Source</label>
+                <div class="control">
+                  <input class="input" type="text" value="agent" id="pos-input-source"  readonly>
+                </div>
+            </div>
+            <div class="field">
                 <label class="label">Store</label>
                 <div class="control">
-                  <input class="input" type="text" value="{{ .storeId }}" placeholder="Text input" readonly>
+                  <input class="input" type="text" value="{{ .storeId }}" id="pos-input-store-id"  readonly>
                 </div>
             </div>
             <div class="field">
                 <label class="label">Agent</label>
                 <div class="control">
-                  <input class="input" type="text" value="{{ .agentId }}" placeholder="Text input" readonly>
+                  <input class="input" type="text" value="{{ .agentId }}" id="pos-input-agent-id" readonly>
                 </div>
             </div>
         </form>

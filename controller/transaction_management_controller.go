@@ -16,6 +16,7 @@ import (
 type TransactionManagementController struct {
 	TransactionService service.TransactionService
 	ProductService     service.ProductService
+	StoreService       service.StoreService
 	AuthMiddleware     middleware.AuthMiddleware
 	ErrorHandler       middleware.ErrorHandler
 }
@@ -91,6 +92,13 @@ func (t *TransactionManagementController) ShowCreateTransactionForm(w http.Respo
 		return
 	}
 
+	stores, err := t.StoreService.FindStoreByOwnerId(ownerId)
+
+	if err != nil {
+		t.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/transaction")
+		return
+	}
+
 	template, err := template.ParseFiles(path.Join("view", "owner/point_of_sales.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
@@ -101,6 +109,8 @@ func (t *TransactionManagementController) ShowCreateTransactionForm(w http.Respo
 	templateData := make(map[string]interface{})
 
 	templateData["products"] = products
+	templateData["agentId"] = ownerId
+	templateData["stores"] = stores
 
 	err = template.Execute(w, templateData)
 

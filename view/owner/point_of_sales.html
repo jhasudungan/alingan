@@ -7,6 +7,33 @@
         </div> 
     </div>
 </div>
+<div class="columns is-multiline">
+    <div class="column">
+        <div class="field">
+            <label class="label">Source</label>
+            <div class="control">
+                <input class="input" type="text" value="owner" id="pos-input-source"  readonly>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Agent</label>
+            <div class="control">
+                <input class="input" type="text" value="{{ .agentId }}" id="pos-input-agent-id" readonly>
+            </div>
+        </div>
+        <div class="field">
+            <label for="" class="label">Agent Assigned Store</label>
+            <div class="select">
+                <select name="pos-input-store-id" id="pos-input-store-id">
+                    <option selected>select agent store</option>
+                    {{  range .stores }}
+                        <option value="{{ .StoreId }}">{{ .StoreName }}</option>
+                    {{ end }}
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="columns">
     <div class="column">
         <div class="block">
