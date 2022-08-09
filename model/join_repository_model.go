@@ -49,3 +49,23 @@ type FindOwnerByAgentIdDTO struct {
 	CreatedDate  time.Time
 	LastModified time.Time
 }
+
+type FindTransactionByAgentIdDTO struct {
+	TransactionId    string
+	TransactionDate  time.Time
+	StoreId          string
+	StoreName        string
+	AgentId          string
+	AgentName        string
+	TransactionTotal float64
+}
+
+type FindTransactionByStoreIdDTO struct {
+	TransactionId    string
+	TransactionDate  time.Time
+	StoreId          string
+	StoreName        string
+	AgentId          string
+	AgentName        string
+	TransactionTotal float64
+}

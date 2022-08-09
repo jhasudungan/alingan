@@ -7,6 +7,8 @@ import (
 
 type JoinRepository interface {
 	FindTransactionByOwnerId(ownerId string) ([]model.FindTransactionByOwnerIdDTO, error)
+	FindTransactionByAgentId(agentId string) ([]model.FindTransactionByAgentIdDTO, error)
+	FindTransactionByStoreId(agentId string) ([]model.FindTransactionByStoreIdDTO, error)
 	FindTransactionAgentAndStoreByTransactionId(transactionId string) (model.FindTransactionAgentAndStoreByTransactionIdDTO, error)
 	FindTransactionItemAndProductByTransactionId(transactionId string) ([]model.FindTransactionItemAndProductByTransactionIdDTO, error)
 	FindAgentByOwnerId(ownerId string) ([]model.FindAgentByOwnerIdDTO, error)
@@ -39,6 +41,86 @@ func (j *JoinRepositoryImpl) FindTransactionByOwnerId(ownerId string) ([]model.F
 	for rows.Next() {
 
 		transaction := model.FindTransactionByOwnerIdDTO{}
+
+		err = rows.Scan(
+			&transaction.TransactionId,
+			&transaction.TransactionDate,
+			&transaction.StoreName,
+			&transaction.StoreId,
+			&transaction.AgentId,
+			&transaction.AgentName,
+			&transaction.TransactionTotal)
+
+		results = append(results, transaction)
+	}
+
+	return results, nil
+}
+
+func (j *JoinRepositoryImpl) FindTransactionByAgentId(agentId string) ([]model.FindTransactionByAgentIdDTO, error) {
+
+	results := make([]model.FindTransactionByAgentIdDTO, 0)
+
+	con, err := config.CreateDBConnection()
+	defer con.Close()
+
+	if err != nil {
+		return results, err
+	}
+
+	sql := "select t.transaction_id , t.transaction_date , s.store_name , s.store_id, t.agent_id, a.agent_name , t.transaction_total  from core.transaction t inner join core.agent a on t.agent_id = a.agent_id inner join core.store s on t.store_id = s.store_id where a.agent_id = $1 order by t.transaction_date desc"
+
+	rows, err := con.Query(
+		sql,
+		agentId)
+
+	if err != nil {
+		return results, err
+	}
+
+	for rows.Next() {
+
+		transaction := model.FindTransactionByAgentIdDTO{}
+
+		err = rows.Scan(
+			&transaction.TransactionId,
+			&transaction.TransactionDate,
+			&transaction.StoreName,
+			&transaction.StoreId,
+			&transaction.AgentId,
+			&transaction.AgentName,
+			&transaction.TransactionTotal)
+
+		results = append(results, transaction)
+	}
+
+	return results, nil
+}
+
+func (j *JoinRepositoryImpl) FindTransactionByStoreId(storeId string) ([]model.FindTransactionByStoreIdDTO, error) {
+
+	results := make([]model.FindTransactionByStoreIdDTO, 0)
+
+	con, err := config.CreateDBConnection()
+	defer con.Close()
+
+	if err != nil {
+		return results, err
+	}
+
+	sql := "select t.transaction_id , t.transaction_date , s.store_name , s.store_id, t.agent_id, a.agent_name , t.transaction_total  from core.transaction t inner join core.agent a on t.agent_id = a.agent_id inner join core.store s on t.store_id = s.store_id where s.store_id = $1 order by t.transaction_date desc"
+
+	rows, err := con.Query(
+		sql,
+		storeId)
+
+	if err != nil {
+		return results, err
+	}
+
+	for rows.Next() {
+
+		transaction := model.FindTransactionByStoreIdDTO{}
 
 		err = rows.Scan(
 			&transaction.TransactionId,
