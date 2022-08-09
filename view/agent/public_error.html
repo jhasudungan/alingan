@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="/static/bulma/css/bulma.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/static/font-awesome/css/all.min.css">
+
+    <title>Alingan - Login as An Agent</title>
+</head>
+<body>
+    
+    <section class="hero is-fullheight">
+        <section class="hero-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+                        <article class="message is-danger">
+                            <div class="message-header">
+                              <p>Error</p>
+                              <a class="button is-small is-dark" href="/agent/login">back to login</a>
+                            </div>
+                            <div class="message-body">
+                              {{ .error }}
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </section>
+
+</body>
+</html>

@@ -63,3 +63,59 @@ func (e *ErrorHandler) WebErrorHandlerForOwnerPrivateRoute(w *http.ResponseWrite
 	}
 
 }
+
+func (e *ErrorHandler) WebErrorHandlerForAgentPublicRoute(w *http.ResponseWriter, errorMessage string) {
+
+	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/agent/public_error.html"))
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	data := make(map[string]interface{})
+	data["error"] = errorMessage
+
+	err = templateErrorPublic.Execute(*w, data)
+
+	if err != nil {
+		panic(err.Error())
+	}
+}
+
+func (e *ErrorHandler) WebErrorHandlerForAgentAuthMiddleware(w *http.ResponseWriter, errorMessage string) {
+
+	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/agent/public_error.html"))
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	data := make(map[string]interface{})
+	data["error"] = errorMessage
+
+	err = templateErrorPublic.Execute(*w, data)
+
+	if err != nil {
+		panic(err.Error())
+	}
+}
+
+func (e *ErrorHandler) WebErrorHandlerForAgentPrivateRoute(w *http.ResponseWriter, errorMessage string, backUrl string) {
+
+	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/agent/private_error.html"), path.Join("view", "/layout/owner_layout.html"))
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	data := make(map[string]interface{})
+	data["error"] = errorMessage
+	data["backurl"] = backUrl
+
+	err = templateErrorPublic.Execute(*w, data)
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+}
