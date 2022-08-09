@@ -13,6 +13,8 @@ type TransactionService interface {
 	CreateTransaction(request model.CreateTransactionRequest) error
 	CountTotalTransaction(request model.CreateTransactionRequest) float64
 	FindTransactionByOwner(ownerId string) ([]model.FindTransactionByOwnerResponse, error)
+	FindTransactionByAgent(agentId string) ([]model.FindTransactionByAgentResponse, error)
+	FindTransactionByStore(ownerId string) ([]model.FindTransactionByStoreResponse, error)
 	GetTransactionInformation(transactionId string) (model.GetTransactionInformationResponse, error)
 }
 
@@ -125,6 +127,82 @@ func (t *TransactionServiceImpl) FindTransactionByOwner(ownerId string) ([]model
 	for _, transaction := range transactions {
 
 		data := model.FindTransactionByOwnerResponse{}
+
+		data.TransactionId = transaction.TransactionId
+		data.TransactionDate = transaction.TransactionDate.Format("2006-01-02 15:04:05")
+		data.AgentId = transaction.AgentId
+		data.AgentName = transaction.AgentName
+		data.StoreName = transaction.StoreName
+		data.StoreId = transaction.StoreId
+		data.TransactionTotal = transaction.TransactionTotal
+
+		results = append(results, data)
+	}
+
+	return results, nil
+}
+
+func (t *TransactionServiceImpl) FindTransactionByAgent(agentId string) ([]model.FindTransactionByAgentResponse, error) {
+
+	results := make([]model.FindTransactionByAgentResponse, 0)
+
+	checkOwner, err := t.AgentRepo.CheckExist(agentId)
+
+	if err != nil {
+		return results, nil
+	}
+
+	if checkOwner == false {
+		return results, errors.New("agent is not exist")
+	}
+
+	transactions, err := t.JoinRepo.FindTransactionByAgentId(agentId)
+
+	if err != nil {
+		return results, err
+	}
+
+	for _, transaction := range transactions {
+
+		data := model.FindTransactionByAgentResponse{}
+
+		data.TransactionId = transaction.TransactionId
+		data.TransactionDate = transaction.TransactionDate.Format("2006-01-02 15:04:05")
+		data.AgentId = transaction.AgentId
+		data.AgentName = transaction.AgentName
+		data.StoreName = transaction.StoreName
+		data.StoreId = transaction.StoreId
+		data.TransactionTotal = transaction.TransactionTotal
+
+		results = append(results, data)
+	}
+
+	return results, nil
+}
+
+func (t *TransactionServiceImpl) FindTransactionByStore(storeId string) ([]model.FindTransactionByStoreResponse, error) {
+
+	results := make([]model.FindTransactionByStoreResponse, 0)
+
+	checkOwner, err := t.StoreRepo.CheckExist(storeId)
+
+	if err != nil {
+		return results, nil
+	}
+
+	if checkOwner == false {
+		return results, errors.New("agent is not exist")
+	}
+
+	transactions, err := t.JoinRepo.FindTransactionByStoreId(storeId)
+
+	if err != nil {
+		return results, err
+	}
+
+	for _, transaction := range transactions {
+
+		data := model.FindTransactionByStoreResponse{}
 
 		data.TransactionId = transaction.TransactionId
 		data.TransactionDate = transaction.TransactionDate.Format("2006-01-02 15:04:05")

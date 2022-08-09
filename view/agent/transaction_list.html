@@ -1,0 +1,63 @@
+{{ template "agent-layout" .}}
+{{ define "container" }}
+<div class="columns">
+    <div class="column">
+        <div class="block">
+            <p class="is-size-4">Transaction Store</p>
+        </div>
+        <div class="block">
+            <p>Below is the list of your store transaction</p>
+        </div>
+        <table class="table is-hoverable is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Transaction Date</th>
+                    <th>Store Name</th>
+                    <th>Agent In Charge</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range .storeTransactions }}
+                    <tr>
+                        <td>{{ .TransactionDate }}</td>
+                        <td>{{ .StoreName }}</td>
+                        <td>{{ .AgentName }}</td>
+                        <td><a class="button is-info is-small" href="/agent/transaction/{{.TransactionId}}" > view</a></td>
+                    </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="columns">
+    <div class="column">
+        <div class="block">
+            <p class="is-size-4">Your Transaction</p>
+        </div>
+        <div class="block">
+            <p>Below is the list of your transaction</p>
+        </div>
+        <table class="table is-hoverable is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Transaction Date</th>
+                    <th>Store Name</th>
+                    <th>Agent In Charge</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range .agentTransactions }}
+                    <tr>
+                        <td>{{ .TransactionDate }}</td>
+                        <td>{{ .StoreName }}</td>
+                        <td>{{ .AgentName }}</td>
+                        <td><a class="button is-info is-small" href="/agent/transaction/{{.TransactionId}}" > view</a></td>
+                    </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </div>
+</div>
+{{ end }}

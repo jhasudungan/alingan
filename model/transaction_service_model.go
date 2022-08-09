@@ -25,6 +25,26 @@ type FindTransactionByOwnerResponse struct {
 	TransactionTotal interface{}
 }
 
+type FindTransactionByAgentResponse struct {
+	TransactionId    interface{}
+	TransactionDate  interface{}
+	AgentId          interface{}
+	AgentName        interface{}
+	StoreId          interface{}
+	StoreName        interface{}
+	TransactionTotal interface{}
+}
+
+type FindTransactionByStoreResponse struct {
+	TransactionId    interface{}
+	TransactionDate  interface{}
+	AgentId          interface{}
+	AgentName        interface{}
+	StoreId          interface{}
+	StoreName        interface{}
+	TransactionTotal interface{}
+}
+
 type GetTransactionInformationResponse struct {
 	TransactionId    string
 	TransactionDate  string

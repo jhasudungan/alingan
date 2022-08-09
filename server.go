@@ -163,6 +163,7 @@ func main() {
 	r.HandleFunc("/agent/login", authController.ShowAgentLoginForm).Methods("GET")
 	r.HandleFunc("/agent/login/submit", authController.HandleAgentLoginFormRequest).Methods("POST")
 	r.HandleFunc("/agent/new/transaction", agentTransactionController.ShowCreateTransactionForm).Methods("GET")
+	r.HandleFunc("/agent/transaction", agentTransactionController.ShowAgentAndStoreTransactionList).Methods("GET")
 
 	// file server
 	assetFileServer := http.FileServer(http.Dir("asset"))
