@@ -4,7 +4,6 @@ import (
 	"alingan/middleware"
 	"alingan/service"
 	"html/template"
-	"log"
 	"net/http"
 	"path"
 )
@@ -12,21 +11,34 @@ import (
 type AgentTransactionController struct {
 	TransactionService service.TransactionService
 	ProductService     service.ProductService
+	AuthMiddleware     middleware.AuthMiddleware
 	ErrorHandler       middleware.ErrorHandler
 }
 
 func (a *AgentTransactionController) ShowCreateTransactionForm(w http.ResponseWriter, r *http.Request) {
 
+	isAuthenticated, err, session := a.AuthMiddleware.AuthenticateAgent(r)
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForAgentAuthMiddleware(&w, err.Error())
+		return
+	}
+
+	if isAuthenticated == false {
+		a.ErrorHandler.WebErrorHandlerForAgentAuthMiddleware(&w, "authentication failed")
+		return
+	}
+
 	// Get Owner Id & session id from session
-	ownerId := "owner-001"
-	storeId := "str-001"
-	agentId := "AGT454497b9-74d1-4bb0-8753-962a962e31f6"
+	ownerId := session.OwnerId
+	storeId := session.StoreId
+	agentId := session.Id
 
 	products, err := a.ProductService.FindProductByOwnerId(ownerId)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, err.Error(), 500)
+		a.ErrorHandler.WebErrorHandlerForAgentPrivateRoute(&w, err.Error(), "/agent/new/transaction")
+		return
 	}
 
 	templateData := make(map[string]interface{})
@@ -38,14 +50,14 @@ func (a *AgentTransactionController) ShowCreateTransactionForm(w http.ResponseWr
 	template, err := template.ParseFiles(path.Join("view", "agent/point_of_sales.html"), path.Join("view", "layout/agent_layout.html"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, err.Error(), 500)
+		a.ErrorHandler.WebErrorHandlerForAgentPrivateRoute(&w, err.Error(), "/agent/new/transaction")
+		return
 	}
 
 	err = template.Execute(w, templateData)
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, err.Error(), 500)
+		a.ErrorHandler.WebErrorHandlerForAgentPrivateRoute(&w, err.Error(), "/agent/new/transaction")
+		return
 	}
 }

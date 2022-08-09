@@ -37,14 +37,14 @@ func (a *AuthController) ShowAgentLoginForm(w http.ResponseWriter, r *http.Reque
 	template, err := template.ParseFiles(path.Join("view", "agent/login.html"))
 
 	if err != nil {
-		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
+		a.ErrorHandler.WebErrorHandlerForAgentPublicRoute(&w, err.Error())
 		return
 	}
 
 	err = template.Execute(w, nil)
 
 	if err != nil {
-		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
+		a.ErrorHandler.WebErrorHandlerForAgentPublicRoute(&w, err.Error())
 		return
 	}
 }
@@ -102,7 +102,7 @@ func (a *AuthController) HandleAgentLoginFormRequest(w http.ResponseWriter, r *h
 	err := r.ParseForm()
 
 	if err != nil {
-		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
+		a.ErrorHandler.WebErrorHandlerForAgentPublicRoute(&w, err.Error())
 		return
 	}
 
@@ -113,7 +113,7 @@ func (a *AuthController) HandleAgentLoginFormRequest(w http.ResponseWriter, r *h
 	session, err := a.AuthService.AgentLogin(request)
 
 	if err != nil {
-		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
+		a.ErrorHandler.WebErrorHandlerForAgentPublicRoute(&w, err.Error())
 		return
 	}
 

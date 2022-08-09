@@ -68,7 +68,8 @@ func main() {
 	}
 
 	authMiddleware := middleware.AuthMiddleware{
-		SessionList: sessionList,
+		SessionList:      sessionList,
+		AgentSessionList: agentSessionList,
 	}
 
 	errorHandler := middleware.ErrorHandler{}
@@ -114,6 +115,7 @@ func main() {
 	agentTransactionController := &controller.AgentTransactionController{
 		TransactionService: transactionSvc,
 		ProductService:     productSvc,
+		AuthMiddleware:     authMiddleware,
 		ErrorHandler:       errorHandler,
 	}
 
