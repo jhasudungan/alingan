@@ -124,6 +124,7 @@ func main() {
 	// router and handler
 	r := &mux.Router{}
 	r.HandleFunc("/", publicController.ShowIndexPage)
+	r.NotFoundHandler = http.HandlerFunc(publicController.ShowNotFoundPage)
 
 	r.HandleFunc("/owner/store", storeManagementController.ShowStoreData).Methods("GET")
 	r.HandleFunc("/owner/store/{storeId}", storeManagementController.ShowStoreInformation).Methods("GET")
