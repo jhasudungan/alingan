@@ -13,6 +13,8 @@ type AuthService interface {
 	OwnerRegistration(request model.OwnerRegistrationRequest) error
 	OwnerLogin(request model.OwnerLoginRequest) (*model.Session, error)
 	AgentLogin(request model.AgentLoginRequest) (*model.AgentSession, error)
+	OwnerLogout(sessionToken string)
+	AgentLogout(sessionToken string)
 }
 
 type AuthServiceImpl struct {
@@ -129,4 +131,12 @@ func (a *AuthServiceImpl) AgentLogin(request model.AgentLoginRequest) (*model.Ag
 	a.AgentSessionList[session.Token] = session
 
 	return session, nil
+}
+
+func (a *AuthServiceImpl) OwnerLogout(sessionToken string) {
+	delete(a.SessionList, sessionToken)
+}
+
+func (a *AuthServiceImpl) AgentLogout(sessionToken string) {
+	delete(a.AgentSessionList, sessionToken)
 }

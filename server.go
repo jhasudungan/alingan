@@ -167,6 +167,9 @@ func main() {
 	r.HandleFunc("/agent/transaction", agentTransactionController.ShowAgentAndStoreTransactionList).Methods("GET")
 	r.HandleFunc("/agent/transaction/{transactionId}", agentTransactionController.ShowTransactionInformation).Methods("GET")
 
+	r.HandleFunc("/owner/logout", authController.HandleOwnerLogOutRequest).Methods("GET")
+	r.HandleFunc("/agent/logout", authController.HandleAgentLogOutRequest).Methods("GET")
+
 	// file server
 	assetFileServer := http.FileServer(http.Dir("asset"))
 	productImageFileServer := http.FileServer(http.Dir("uploaded/product-image"))

@@ -146,3 +146,51 @@ func (a *AuthController) HandleRegistrationFormRequest(w http.ResponseWriter, r 
 
 	http.Redirect(w, r, "/owner/store", http.StatusSeeOther)
 }
+
+func (a *AuthController) HandleOwnerLogOutRequest(w http.ResponseWriter, r *http.Request) {
+
+	c, err := r.Cookie("alingan-session")
+
+	ownerToken := c.Value
+
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	c = &http.Cookie{
+		Name:   "deleted-cookie",
+		MaxAge: 0,
+		Value:  "",
+	}
+
+	http.SetCookie(w, c)
+
+	a.AuthService.OwnerLogout(ownerToken)
+
+	http.Redirect(w, r, "/owner/login", http.StatusSeeOther)
+}
+
+func (a *AuthController) HandleAgentLogOutRequest(w http.ResponseWriter, r *http.Request) {
+
+	c, err := r.Cookie("alingan-session")
+
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+
+	agentToken := c.Value
+
+	c = &http.Cookie{
+		Name:   "deleted-cookie",
+		MaxAge: 0,
+		Value:  "",
+	}
+
+	http.SetCookie(w, c)
+
+	a.AuthService.AgentLogout(agentToken)
+
+	http.Redirect(w, r, "/agent/login", http.StatusSeeOther)
+}
