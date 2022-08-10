@@ -244,3 +244,40 @@ func (a *AgentManagamentController) HandleReactiveActiveRequest(w http.ResponseW
 	http.Redirect(w, r, "/owner/agent", http.StatusSeeOther)
 
 }
+
+func (a *AgentManagamentController) HandleUpdateAgentRequest(w http.ResponseWriter, r *http.Request) {
+
+	isAuthenticated, err, _ := a.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
+		return
+	}
+
+	if isAuthenticated == false {
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
+		return
+	}
+
+	err = r.ParseForm()
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/agent")
+		return
+	}
+
+	request := model.UpdateAgentRequest{}
+	request.AgentEmail = r.Form.Get("update-agent-email")
+	request.AgentName = r.Form.Get("update-agent-name")
+	request.AgentPassword = r.Form.Get("update-agent-password")
+
+	err = a.AgentService.UpdateAgent(r.Form.Get("agent-id"), request)
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/agent")
+		return
+	}
+
+	http.Redirect(w, r, "/owner/agent", http.StatusSeeOther)
+
+}

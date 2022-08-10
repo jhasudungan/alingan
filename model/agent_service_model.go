@@ -7,6 +7,12 @@ type RegisterNewAgentRequest struct {
 	AgentPassword string
 }
 
+type UpdateAgentRequest struct {
+	AgentName     string
+	AgentEmail    string
+	AgentPassword string
+}
+
 type GetAgentInformationResponse struct {
 	AgentId       string
 	StoreId       string

@@ -7,7 +7,7 @@
     <div class="block">
         <p>You can update your agent data or set your agent inactive here</p>
     </div>
-    <form>
+    <form action="/owner/update/agent/submit" method="POST">
         <div class="columns">
             <div class="column">
                 <label for="" class="label">Agent Id</label>
@@ -59,6 +59,7 @@
                     {{ else }}
                         <a href="/owner/reactive/agent/{{.agent.AgentId }}" class="button is-success">reactive this agent</a>
                     {{ end }}
+                    <button type="submit" name="submit" class="button is-primary">save change</button>
                 </div>
             </div>
         </div>

@@ -148,6 +148,7 @@ func main() {
 	r.HandleFunc("/owner/new/agent/submit", agentManagamentController.HandleCreateAgentFormRequest).Methods("POST")
 	r.HandleFunc("/owner/inactive/agent/{agentId}", agentManagamentController.HandleSetAgentInactiveRequest).Methods("GET")
 	r.HandleFunc("/owner/reactive/agent/{agentId}", agentManagamentController.HandleReactiveActiveRequest).Methods("GET")
+	r.HandleFunc("/owner/update/agent/submit", agentManagamentController.HandleUpdateAgentRequest).Methods("POST")
 
 	r.HandleFunc("/owner/transaction", transactionManagementController.ShowTransactionData).Methods("GET")
 	r.HandleFunc("/owner/new/transaction", transactionManagementController.ShowCreateTransactionForm).Methods("GET")

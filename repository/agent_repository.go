@@ -53,11 +53,12 @@ func (a *AgentRepositoryImpl) Update(data entity.Agent, agentId string) error {
 		return err
 	}
 
-	sql := "update core.agent set agent_name=$1, agent_email=$2, last_modified = now() where agent_id=$3"
+	sql := "update core.agent set agent_name=$1, agent_email=$2, agent_password=$3, last_modified = now() where agent_id=$4"
 
 	_, err = con.Exec(sql,
 		data.AgentName,
 		data.AgentEmail,
+		data.AgentPassword,
 		agentId)
 
 	if err != nil {

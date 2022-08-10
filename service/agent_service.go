@@ -12,6 +12,7 @@ type AgentService interface {
 	RegisterNewAgent(request model.RegisterNewAgentRequest) error
 	GetAgentInformation(agentId string) (model.GetAgentInformationResponse, error)
 	GetOwnerAgentList(ownerId string) ([]model.GetOwnerAgentListResponse, error)
+	UpdateAgent(agentId string, request model.UpdateAgentRequest) error
 	SetAgentInactive(agentId string) error
 	SetAgentActive(agentId string) error
 }
@@ -148,4 +149,31 @@ func (a *AgentServiceImpl) GetOwnerAgentList(ownerId string) ([]model.GetOwnerAg
 	}
 
 	return results, nil
+}
+
+func (a *AgentServiceImpl) UpdateAgent(agentId string, request model.UpdateAgentRequest) error {
+
+	checkAgent, err := a.AgentRepo.CheckExist(agentId)
+
+	if err != nil {
+		return err
+	}
+
+	if checkAgent == false {
+		return errors.New("agent is not exist")
+	}
+
+	data := entity.Agent{}
+	data.AgentEmail = request.AgentEmail
+	data.AgentPassword = request.AgentPassword
+	data.AgentName = request.AgentName
+
+	err = a.AgentRepo.Update(data, agentId)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+
 }
