@@ -53,12 +53,12 @@ saveTransactionButton.addEventListener("click", async (e) => {
     let request = {}
     let source = document.getElementById("pos-input-source").value;
     request.agentId = document.getElementById("pos-input-agent-id").value;
-
+    
     if (source === "agent") {
-        var select = document.getElementById("pos-input-store-id");
-        request.agentId = select.options[select.selectedIndex].value;
-    } else {
         request.storeId = document.getElementById("pos-input-store-id").value;
+    } else {
+        var select = document.getElementById("pos-input-store-id");
+        request.storeId = select.options[select.selectedIndex].value;
     }
 
     request.total = parseFloat(document.getElementById("transaction-grand-total").childNodes[0].nodeValue)
