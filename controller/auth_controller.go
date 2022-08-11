@@ -144,7 +144,13 @@ func (a *AuthController) HandleRegistrationFormRequest(w http.ResponseWriter, r 
 
 	err = a.AuthService.OwnerRegistration(request)
 
-	http.Redirect(w, r, "/owner/store", http.StatusSeeOther)
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
+		return
+	}
+
+	http.Redirect(w, r, "/owner/registration/submit/sucess", http.StatusSeeOther)
+
 }
 
 func (a *AuthController) HandleOwnerLogOutRequest(w http.ResponseWriter, r *http.Request) {
@@ -193,4 +199,22 @@ func (a *AuthController) HandleAgentLogOutRequest(w http.ResponseWriter, r *http
 	a.AuthService.AgentLogout(agentToken)
 
 	http.Redirect(w, r, "/agent/login", http.StatusSeeOther)
+}
+
+func (a *AuthController) ShowRegistrationSuccessPage(w http.ResponseWriter, r *http.Request) {
+
+	template, err := template.ParseFiles(path.Join("view", "public/success_registration.html"))
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
+		return
+	}
+
+	err = template.Execute(w, nil)
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
+		return
+	}
+
 }
