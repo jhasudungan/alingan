@@ -103,8 +103,9 @@ func main() {
 	}
 
 	authController := &controller.AuthController{
-		AuthService:  authSvc,
-		ErrorHandler: errorHandler,
+		AuthService:    authSvc,
+		ErrorHandler:   errorHandler,
+		AuthMiddleware: authMiddleware,
 	}
 
 	fileUploadController := &controller.FileUploadController{
@@ -160,6 +161,7 @@ func main() {
 	r.HandleFunc("/owner/registration", authController.ShowRegistrationForm).Methods("GET")
 	r.HandleFunc("/owner/registration/submit", authController.HandleRegistrationFormRequest).Methods("POST")
 	r.HandleFunc("/owner/registration/submit/sucess", authController.ShowRegistrationSuccessPage).Methods("GET")
+	r.HandleFunc("/owner/profile", authController.ShowOwnerProfilePage).Methods("GET")
 
 	r.HandleFunc("/owner/upload/product-image/{productId}", fileUploadController.HandleUploadProductImageRequest).Methods("POST")
 

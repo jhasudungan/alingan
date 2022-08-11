@@ -15,6 +15,7 @@ type AuthService interface {
 	AgentLogin(request model.AgentLoginRequest) (*model.AgentSession, error)
 	OwnerLogout(sessionToken string)
 	AgentLogout(sessionToken string)
+	GetOwnerProfileInformation(ownerId string) (model.GetOwnerProfileInformationResponse, error)
 }
 
 type AuthServiceImpl struct {
@@ -139,4 +140,32 @@ func (a *AuthServiceImpl) OwnerLogout(sessionToken string) {
 
 func (a *AuthServiceImpl) AgentLogout(sessionToken string) {
 	delete(a.AgentSessionList, sessionToken)
+}
+
+func (a *AuthServiceImpl) GetOwnerProfileInformation(ownerId string) (model.GetOwnerProfileInformationResponse, error) {
+
+	result := model.GetOwnerProfileInformationResponse{}
+
+	checkEmailExist, err := a.OwnerRepo.CheckExist(ownerId)
+
+	if err != nil {
+		return result, err
+	}
+
+	if checkEmailExist == false {
+		return result, errors.New("owner is not exist")
+	}
+
+	ownerData, err := a.OwnerRepo.FindById(ownerId)
+
+	result.OwnerId = ownerData.OwnerId
+	result.OwnerEmail = ownerData.OwnerEmail
+	result.OwnerName = ownerData.OwnerName
+	result.Password = ownerData.Password
+	result.IsActive = ownerData.IsActive
+	result.CreatedDate = ownerData.CreatedDate.Format("2006-01-02 15:04:05")
+	result.LastModified = ownerData.LastModified.Format("2006-01-02 15:04:05")
+	result.OwnerType = ownerData.OwnerType
+
+	return result, nil
 }

@@ -10,8 +10,9 @@ import (
 )
 
 type AuthController struct {
-	AuthService  service.AuthService
-	ErrorHandler middleware.ErrorHandler
+	AuthService    service.AuthService
+	ErrorHandler   middleware.ErrorHandler
+	AuthMiddleware middleware.AuthMiddleware
 }
 
 func (a *AuthController) ShowLoginForm(w http.ResponseWriter, r *http.Request) {
@@ -217,4 +218,38 @@ func (a *AuthController) ShowRegistrationSuccessPage(w http.ResponseWriter, r *h
 		return
 	}
 
+}
+
+func (a *AuthController) ShowOwnerProfilePage(w http.ResponseWriter, r *http.Request) {
+
+	isAuthenticated, err, session := a.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
+		return
+	}
+
+	if isAuthenticated == false {
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
+		return
+	}
+
+	owner, err := a.AuthService.GetOwnerProfileInformation(session.Id)
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/login")
+		return
+	}
+
+	templateData := make(map[string]interface{})
+
+	templateData["owner"] = owner
+
+	template, err := template.ParseFiles(path.Join("view", "owner/profile.html"), path.Join("view", "layout/owner_layout.html"))
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/login")
+		return
+	}
+	template.Execute(w, templateData)
 }

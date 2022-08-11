@@ -1,0 +1,62 @@
+{{ template "owner-layout" .}}
+{{ define "container" }}
+<div class="column">
+    <div class="block">
+        <p class="is-size-4">{{ .owner.OwnerName }}</p>
+    </div>
+    <div class="block">
+        <p>{{ .owner.OwnerType }}</p>
+    </div>
+    <form method="POST" action="/owner/update/proifle/submit">
+        <div class="columns">
+            <div class="column">
+                <label for="" class="label">Your Id</label>
+                <div class="control">
+                    <input class="input" value="{{ .owner.OwnerId }}" name="owner-id" readonly="true" >
+                </div>
+            </div>
+            <div class="column">
+                <label for="" class="label">Email</label>
+                <div class="control">
+                    <input class="input" value="{{ .owner.OwnerEmail }}" name="owner-email" readonly="true" >
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <label for="" class="label">Name</label>
+                <div class="control">
+                    <input class="input" value="{{ .owner.OwnerName }}" name="update-owner-name" >
+                </div>
+            </div>
+            <div class="column">
+                <label for="" class="label">Password</label>
+                <div class="control">
+                    <input class="input" value="{{ .owner.Password }}" name="update-owner-password" >
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <label for="" class="label">Last Modified</label>
+                <div class="control">
+                    <input class="input" value="{{ .owner.LastModified }}" disabled>
+                </div>
+            </div>
+            <div class="column">
+                <label for="" class="label">Created Date </label>
+                <div class="control">
+                    <input class="input" value="{{ .owner.CreatedDate }}" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="columns">
+            <div class="column">
+                <div class="buttons are-small">
+                    <button class="button is-primary" type="submit" name="submit">save change</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{{ end }}

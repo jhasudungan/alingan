@@ -33,3 +33,14 @@ type AgentLoginRequest struct {
 	AgentEmail    string
 	AgentPassword string
 }
+
+type GetOwnerProfileInformationResponse struct {
+	OwnerId      string
+	OwnerName    string
+	OwnerType    string
+	OwnerEmail   string
+	Password     string
+	IsActive     bool
+	CreatedDate  string
+	LastModified string
+}
