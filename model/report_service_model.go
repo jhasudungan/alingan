@@ -1,0 +1,8 @@
+package model
+
+type WebDashboardReportResponse struct {
+	OwnerMostPurchasedProductByQuantity []FindOwnerMostPurchasedProductByQuantityDTO
+	OwnerMostPurchasedProductByRevenue  []FindOwnerMostPurchasedProductByRevenueDTO
+	OwnerAgentWithTheMostTransaction    []FindOwnerAgentWithTheMostTransactionDTO
+	OwnerStoreWithTheMostTransaction    []FindOwnerStoreWithTheMostTransactionDTO
+}
