@@ -44,3 +44,11 @@ type GetOwnerProfileInformationResponse struct {
 	CreatedDate  string
 	LastModified string
 }
+
+type UpdateOwnerProfileRequest struct {
+	OwnerId    string
+	OwnerName  string
+	OwnerEmail string
+	Password   string
+	OwnerType  string
+}

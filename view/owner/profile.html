@@ -7,7 +7,7 @@
     <div class="block">
         <p>{{ .owner.OwnerType }}</p>
     </div>
-    <form method="POST" action="/owner/update/proifle/submit">
+    <form method="POST" action="/owner/update/profile/submit">
         <div class="columns">
             <div class="column">
                 <label for="" class="label">Your Id</label>
@@ -19,6 +19,12 @@
                 <label for="" class="label">Email</label>
                 <div class="control">
                     <input class="input" value="{{ .owner.OwnerEmail }}" name="owner-email" readonly="true" >
+                </div>
+            </div>
+            <div class="column">
+                <label for="" class="label">Account Type</label>
+                <div class="control">
+                    <input class="input" value="{{ .owner.OwnerType }}" name="owner-type" readonly="true" >
                 </div>
             </div>
         </div>

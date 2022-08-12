@@ -16,6 +16,7 @@ type AuthService interface {
 	OwnerLogout(sessionToken string)
 	AgentLogout(sessionToken string)
 	GetOwnerProfileInformation(ownerId string) (model.GetOwnerProfileInformationResponse, error)
+	UpdateOwnerProfile(request model.UpdateOwnerProfileRequest) error
 }
 
 type AuthServiceImpl struct {
@@ -168,4 +169,30 @@ func (a *AuthServiceImpl) GetOwnerProfileInformation(ownerId string) (model.GetO
 	result.OwnerType = ownerData.OwnerType
 
 	return result, nil
+}
+
+func (a *AuthServiceImpl) UpdateOwnerProfile(request model.UpdateOwnerProfileRequest) error {
+
+	checkExist, err := a.OwnerRepo.CheckExist(request.OwnerId)
+
+	if err != nil {
+		return err
+	}
+
+	if checkExist == false {
+		return errors.New("owner is not exist")
+	}
+
+	owner := entity.Owner{}
+	owner.OwnerId = request.OwnerId
+	owner.OwnerName = request.OwnerName
+	owner.Password = request.Password
+
+	err = a.OwnerRepo.Update(owner, owner.OwnerId)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

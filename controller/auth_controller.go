@@ -253,3 +253,41 @@ func (a *AuthController) ShowOwnerProfilePage(w http.ResponseWriter, r *http.Req
 	}
 	template.Execute(w, templateData)
 }
+
+func (a *AuthController) HandleOwnerUpdateProdileRequest(w http.ResponseWriter, r *http.Request) {
+
+	isAuthenticated, err, _ := a.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
+		return
+	}
+
+	if isAuthenticated == false {
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
+		return
+	}
+
+	err = r.ParseForm()
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/login")
+		return
+	}
+
+	request := model.UpdateOwnerProfileRequest{}
+	request.OwnerId = r.Form.Get("owner-id")
+	request.OwnerName = r.Form.Get("update-owner-name")
+	request.Password = r.Form.Get("update-owner-password")
+	request.OwnerType = r.Form.Get("owner-type")
+
+	err = a.AuthService.UpdateOwnerProfile(request)
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/login")
+		return
+	}
+
+	http.Redirect(w, r, "/owner/profile", http.StatusSeeOther)
+
+}
