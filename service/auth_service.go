@@ -7,6 +7,8 @@ import (
 	"alingan/util"
 	"errors"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 type AuthService interface {
@@ -44,7 +46,14 @@ func (a *AuthServiceImpl) OwnerRegistration(request model.OwnerRegistrationReque
 	owner.OwnerEmail = request.OwnerEmail
 	owner.OwnerName = request.OwnerName
 	owner.OwnerType = request.OwnerType
-	owner.Password = request.Password
+
+	passwordBytes, err := bcrypt.GenerateFromPassword([]byte(request.Password), 14)
+
+	if checkEmailExist == true {
+		return err
+	}
+
+	owner.Password = string(passwordBytes)
 
 	err = a.OwnerRepo.Insert(owner)
 
@@ -75,8 +84,10 @@ func (a *AuthServiceImpl) OwnerLogin(request model.OwnerLoginRequest) (*model.Se
 		return session, err
 	}
 
-	if owner.Password != request.OwnerPassword {
-		return session, errors.New("authentication error")
+	err = bcrypt.CompareHashAndPassword([]byte(owner.Password), []byte(request.OwnerPassword))
+
+	if err != nil {
+		return session, err
 	}
 
 	// session per login = 2 minutes
