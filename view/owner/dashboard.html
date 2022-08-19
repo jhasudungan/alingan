@@ -1,0 +1,87 @@
+{{ template "owner-layout" .}}
+{{ define "container" }}
+<div class="column">
+    <div class="block">
+        <p class="is-size-4">Transaction</p>
+    </div>
+    <div class="block">
+        <p>Below is the report of your account</p>
+    </div>
+    <!-- Most Purcahased Product By Quantity -->
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th>Product Id</th>
+                <th>Product Name</th>
+                <th>Total Quantity Purcahased</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range .dashboardReports.OwnerMostPurchasedProductByQuantity }}
+                <tr>
+                    <td>{{ .ProductId }}</td>
+                    <td>{{ .ProductName }}</td>
+                    <td>{{ .TotalPurchased }}</td>
+                </tr>
+            {{ end }}
+        </tbody>
+    </table>
+    <!-- Most Purcahased Product By Revenue -->
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th>Product Id</th>
+                <th>Product Name</th>
+                <th>Total Revenue</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range .dashboardReports.OwnerMostPurchasedProductByRevenue }}
+                <tr>
+                    <td>{{ .ProductId }}</td>
+                    <td>{{ .ProductName }}</td>
+                    <td>{{ .TotalRevenue }}</td>
+                </tr>
+            {{ end }}
+        </tbody>
+    </table>
+    <!-- Top Store -->
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th>Store Id</th>
+                <th>Store Name</th>
+                <th>Total Transaction Handled</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range .dashboardReports.OwnerStoreWithTheMostTransaction }}
+                <tr>
+                    <td>{{ .StoreId }}</td>
+                    <td>{{ .StoreName }}</td>
+                    <td>{{ .StoreTotalTransaction }}</td>
+                </tr>
+            {{ end }}
+        </tbody>
+    </table>
+    <!-- Top Agent -->
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th>Agent Id</th>
+                <th>Agent Name</th>
+                <th>Total Transaction Handled</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range .dashboardReports.OwnerAgentWithTheMostTransaction }}
+                <tr>
+                    <td>{{ .AgentId }}</td>
+                    <td>{{ .AgentName }}</td>
+                    <td>{{ .TotalTransactionHandled }}</td>
+                </tr>
+            {{ end }}
+        </tbody>
+    </table>
+</div>
+{{ end }}

@@ -23,6 +23,7 @@ func main() {
 	transactionRepo := &repository.TransactionRepositoryImpl{}
 	transactionItemRepo := &repository.TransactionItemRepositoryImpl{}
 	productImageRepo := &repository.ProductImageRepositoryImpl{}
+	reportRepo := &repository.ReportRepositoryImpl{}
 
 	// svc
 	storeSvc := &service.StoreServiceImpl{
@@ -50,6 +51,10 @@ func main() {
 		JoinRepo:            joinRepo,
 		AgentRepo:           agentRepo,
 		TransactionItemRepo: transactionItemRepo,
+	}
+
+	reportService := &service.ReportServiceImpl{
+		ReportRepository: reportRepo,
 	}
 
 	sessionList := make(map[string]*model.Session)
@@ -120,6 +125,12 @@ func main() {
 		ErrorHandler:       errorHandler,
 	}
 
+	ownerController := &controller.OwnerController{
+		ReportService:  reportService,
+		ErrorHandler:   errorHandler,
+		AuthMiddleware: authMiddleware,
+	}
+
 	publicController := &controller.PublicController{}
 
 	// router and handler
@@ -156,6 +167,7 @@ func main() {
 	r.HandleFunc("/owner/new/transaction/submit", transactionManagementController.HandleCreateTransactionRequest).Methods("POST")
 	r.HandleFunc("/owner/transaction/{transactionId}", transactionManagementController.ShowTransactionInformation).Methods("GET")
 
+	r.HandleFunc("/owner/dashboard", ownerController.ShowDashboard).Methods("GET")
 	r.HandleFunc("/owner/login", authController.ShowLoginForm).Methods("GET")
 	r.HandleFunc("/owner/login/submit", authController.HandleLoginFormRequest).Methods("POST")
 	r.HandleFunc("/owner/registration", authController.ShowRegistrationForm).Methods("GET")
