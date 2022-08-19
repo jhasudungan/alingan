@@ -189,11 +189,9 @@ func main() {
 
 	// file server
 	assetFileServer := http.FileServer(http.Dir("asset"))
-	productImageFileServer := http.FileServer(http.Dir("uploaded/product-image"))
 
 	// file server handler
 	r.PathPrefix("/static/").Handler(http.StripPrefix("/static", assetFileServer))
-	r.PathPrefix("/resources/").Handler(http.StripPrefix("/resources", productImageFileServer))
 
 	// web server setup
 	server := &http.Server{
