@@ -278,7 +278,6 @@ func (a *AuthController) HandleOwnerUpdateProdileRequest(w http.ResponseWriter, 
 	request := model.UpdateOwnerProfileRequest{}
 	request.OwnerId = r.Form.Get("owner-id")
 	request.OwnerName = r.Form.Get("update-owner-name")
-	request.Password = r.Form.Get("update-owner-password")
 	request.OwnerType = r.Form.Get("owner-type")
 
 	err = a.AuthService.UpdateOwnerProfile(request)

@@ -19,6 +19,7 @@ type AuthService interface {
 	AgentLogout(sessionToken string)
 	GetOwnerProfileInformation(ownerId string) (model.GetOwnerProfileInformationResponse, error)
 	UpdateOwnerProfile(request model.UpdateOwnerProfileRequest) error
+	UpdateOwnerPassword(request model.UpdateOwnerPassword) error
 }
 
 type AuthServiceImpl struct {
@@ -49,7 +50,7 @@ func (a *AuthServiceImpl) OwnerRegistration(request model.OwnerRegistrationReque
 
 	passwordBytes, err := bcrypt.GenerateFromPassword([]byte(request.Password), 14)
 
-	if checkEmailExist == true {
+	if err != nil {
 		return err
 	}
 
@@ -173,7 +174,6 @@ func (a *AuthServiceImpl) GetOwnerProfileInformation(ownerId string) (model.GetO
 	result.OwnerId = ownerData.OwnerId
 	result.OwnerEmail = ownerData.OwnerEmail
 	result.OwnerName = ownerData.OwnerName
-	result.Password = ownerData.Password
 	result.IsActive = ownerData.IsActive
 	result.CreatedDate = ownerData.CreatedDate.Format("2006-01-02 15:04:05")
 	result.LastModified = ownerData.LastModified.Format("2006-01-02 15:04:05")
@@ -194,10 +194,48 @@ func (a *AuthServiceImpl) UpdateOwnerProfile(request model.UpdateOwnerProfileReq
 		return errors.New("owner is not exist")
 	}
 
-	owner := entity.Owner{}
-	owner.OwnerId = request.OwnerId
-	owner.OwnerName = request.OwnerName
-	owner.Password = request.Password
+	newOwnerData := entity.Owner{}
+	newOwnerData.OwnerId = request.OwnerId
+	newOwnerData.OwnerName = request.OwnerName
+	newOwnerData.OwnerType = request.OwnerType
+
+	err = a.OwnerRepo.Update(newOwnerData, newOwnerData.OwnerId)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (a *AuthServiceImpl) UpdateOwnerPassword(request model.UpdateOwnerPassword) error {
+
+	checkExist, err := a.OwnerRepo.CheckExist(request.OwnerId)
+
+	if err != nil {
+		return err
+	}
+
+	if checkExist == false {
+		return errors.New("owner is not exist")
+	}
+
+	owner, _ := a.OwnerRepo.FindById(request.OwnerId)
+
+	// compare old password with hash password in db
+	err = bcrypt.CompareHashAndPassword([]byte(owner.Password), []byte(request.OldPassword))
+
+	if err != nil {
+		return err
+	}
+
+	passwordBytes, err := bcrypt.GenerateFromPassword([]byte(request.NewPassword), 14)
+
+	if err != nil {
+		return err
+	}
+
+	owner.Password = string(passwordBytes)
 
 	err = a.OwnerRepo.Update(owner, owner.OwnerId)
 

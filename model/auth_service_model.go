@@ -49,6 +49,11 @@ type UpdateOwnerProfileRequest struct {
 	OwnerId    string
 	OwnerName  string
 	OwnerEmail string
-	Password   string
 	OwnerType  string
+}
+
+type UpdateOwnerPassword struct {
+	OwnerId     string
+	OldPassword string
+	NewPassword string
 }
