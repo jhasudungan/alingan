@@ -4,12 +4,16 @@ import (
 	"alingan/entity"
 	"alingan/repository"
 	"alingan/util"
+	"context"
 	"errors"
 	"io/ioutil"
-	"mime"
+	"log"
 	"net/http"
 	"os"
-	"path/filepath"
+
+	"github.com/cloudinary/cloudinary-go"
+	"github.com/cloudinary/cloudinary-go/api/uploader"
+	"github.com/joho/godotenv"
 )
 
 type FileUploadService interface {
@@ -34,8 +38,15 @@ func (f *FileUploadServiceImpl) UploadIProductmage(productId string, r *http.Req
 	}
 
 	// Get The File
-	file, fileHeader, err := r.FormFile("upload-product-image")
-	defer file.Close()
+	multipartFile, fileHeader, err := r.FormFile("upload-product-image")
+	defer multipartFile.Close()
+
+	if err != nil {
+		return location, err
+	}
+
+	actualFile, err := fileHeader.Open()
+	defer actualFile.Close()
 
 	if err != nil {
 		return location, err
@@ -45,7 +56,7 @@ func (f *FileUploadServiceImpl) UploadIProductmage(productId string, r *http.Req
 	fileSize := fileHeader.Size
 
 	// read the file into bytes
-	fileBytes, err := ioutil.ReadAll(file)
+	multipartFileBytes, err := ioutil.ReadAll(multipartFile)
 
 	if err != nil {
 		return location, err
@@ -56,51 +67,51 @@ func (f *FileUploadServiceImpl) UploadIProductmage(productId string, r *http.Req
 	}
 
 	// detect the file type
-	contentType := http.DetectContentType(fileBytes)
+	contentType := http.DetectContentType(multipartFileBytes)
 
 	if contentType != "image/png" && contentType != "image/jpeg" {
-		return location, err
+		return location, errors.New("image should be jpeg/png format")
 	}
 
-	// directory uploaded
-	dirUploaded := "./uploaded/product-image"
+	// create cloudinary context
+	ctx := context.Background()
 
-	// new file name
-	newName := util.GenerateId("PRDIMG")
-
-	// get the file extension
-	readContentTypes, err := mime.ExtensionsByType(contentType)
+	// load env for cloudinary
+	err = godotenv.Load()
 
 	if err != nil {
 		return location, err
 	}
 
-	fileExtension := readContentTypes[0]
+	cldClouName := os.Getenv("CLOUDINARY_CLOUD_NAME")
+	cldApiKey := os.Getenv("CLOUDINARY_API_KEY")
+	cldApiSecret := os.Getenv("CLOUDINARY_API_SECRET")
+	cldTargetFolder := os.Getenv("CLOUDINARY_PRODUCT_IMAGE_FOLDER")
 
-	// saving path : directory/newName.fileExtension
-	savingPath := filepath.Join(dirUploaded, newName+fileExtension)
-
-	// create the file
-	newFile, err := os.Create(savingPath)
-	defer newFile.Close()
-
-	if err != nil {
-		return location, err
-	}
-
-	// write the bytes to that file
-	_, err = newFile.Write(fileBytes)
+	// create cloudinary instance
+	cldInstance, err := cloudinary.NewFromParams(cldClouName, cldApiKey, cldApiSecret)
 
 	if err != nil {
 		return location, err
 	}
 
-	location = "http://localhost:8080/resources/" + newName + fileExtension
+	// Upload "actual file (actualFile)" into cloudinary
+	cloudinaryResponse, err := cldInstance.Upload.Upload(
+		ctx,
+		actualFile,
+		uploader.UploadParams{Folder: cldTargetFolder})
 
+	if err != nil {
+		return location, err
+	}
+
+	log.Print(cloudinaryResponse)
+
+	// save data to db
 	productImage := entity.ProductImage{}
+	productImage.LocationPath = cloudinaryResponse.SecureURL
 	productImage.ProductId = productId
-	productImage.LocationPath = location
-	productImage.ProductImageId = newName
+	productImage.ProductImageId = util.GenerateId("PRD-IMG")
 
 	err = f.ProductImageRepository.Insert(productImage)
 
