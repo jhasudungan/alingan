@@ -4,6 +4,7 @@ import (
 	"alingan/middleware"
 	"alingan/model"
 	"alingan/service"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -32,7 +33,6 @@ func (o *StoreManagementController) ShowStoreData(w http.ResponseWriter, r *http
 		return
 	}
 
-	// ownerId will get from session when authentication is integrated
 	ownerId := session.Id
 
 	stores, err := o.StoreService.FindStoreByOwnerId(ownerId)
@@ -159,7 +159,6 @@ func (o *StoreManagementController) HandleCreateStoreFormRequest(w http.Response
 	}
 
 	request := model.CreateStoreRequest{}
-	// we get owner id from sessions
 	request.OwnerId = session.Id
 	request.StoreName = r.Form.Get("store-name")
 	request.StoreAddress = r.Form.Get("store-address")
@@ -200,7 +199,8 @@ func (o *StoreManagementController) HandleInactiveStoreRequest(w http.ResponseWr
 		return
 	}
 
-	http.Redirect(w, r, "/owner/store", http.StatusSeeOther)
+	redirectUrl := fmt.Sprintf("/owner/store/%v", storeId)
+	http.Redirect(w, r, redirectUrl, http.StatusSeeOther)
 
 }
 
@@ -229,7 +229,8 @@ func (o *StoreManagementController) HandleReactiveStoreRequest(w http.ResponseWr
 		return
 	}
 
-	http.Redirect(w, r, "/owner/store", http.StatusSeeOther)
+	redirectUrl := fmt.Sprintf("/owner/store/%v", storeId)
+	http.Redirect(w, r, redirectUrl, http.StatusSeeOther)
 
 }
 
@@ -258,14 +259,16 @@ func (o *StoreManagementController) HandleUpdateStoreRequest(w http.ResponseWrit
 	request := model.UpdateStoreRequest{}
 	request.StoreAddress = r.Form.Get("update-store-address")
 	request.StoreName = r.Form.Get("update-store-name")
+	storeId := r.Form.Get("store-id")
 
-	err = o.StoreService.UpdateStore(request, r.Form.Get("store-id"))
+	err = o.StoreService.UpdateStore(request, storeId)
 
 	if err != nil {
 		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/store")
 		return
 	}
 
-	http.Redirect(w, r, "/owner/store", http.StatusSeeOther)
+	redirectUrl := fmt.Sprintf("/owner/store/%v", storeId)
+	http.Redirect(w, r, redirectUrl, http.StatusSeeOther)
 
 }

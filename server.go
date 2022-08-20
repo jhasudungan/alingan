@@ -160,7 +160,7 @@ func main() {
 	r.HandleFunc("/owner/new/agent", agentManagamentController.ShowCreateAgentForm).Methods("GET")
 	r.HandleFunc("/owner/new/agent/submit", agentManagamentController.HandleCreateAgentFormRequest).Methods("POST")
 	r.HandleFunc("/owner/inactive/agent/{agentId}", agentManagamentController.HandleSetAgentInactiveRequest).Methods("GET")
-	r.HandleFunc("/owner/reactive/agent/{agentId}", agentManagamentController.HandleReactiveActiveRequest).Methods("GET")
+	r.HandleFunc("/owner/reactive/agent/{agentId}", agentManagamentController.HandleReactiveAgentRequest).Methods("GET")
 	r.HandleFunc("/owner/update/agent/submit", agentManagamentController.HandleUpdateAgentRequest).Methods("POST")
 
 	r.HandleFunc("/owner/transaction", transactionManagementController.ShowTransactionData).Methods("GET")
@@ -173,7 +173,7 @@ func main() {
 	r.HandleFunc("/owner/login/submit", authController.HandleLoginFormRequest).Methods("POST")
 	r.HandleFunc("/owner/registration", authController.ShowRegistrationForm).Methods("GET")
 	r.HandleFunc("/owner/registration/submit", authController.HandleRegistrationFormRequest).Methods("POST")
-	r.HandleFunc("/owner/registration/submit/sucess", authController.ShowRegistrationSuccessPage).Methods("GET")
+	r.HandleFunc("/owner/registration/submit/success", authController.ShowRegistrationSuccessPage).Methods("GET")
 	r.HandleFunc("/owner/profile", authController.ShowOwnerProfilePage).Methods("GET")
 	r.HandleFunc("/owner/update/profile/submit", authController.HandleOwnerUpdateProfileRequest).Methods("POST")
 	r.HandleFunc("/owner/update/password", authController.ShowUpdatePasswordPage).Methods("GET")

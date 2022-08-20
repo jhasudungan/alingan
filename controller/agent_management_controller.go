@@ -4,6 +4,7 @@ import (
 	"alingan/middleware"
 	"alingan/model"
 	"alingan/service"
+	"fmt"
 	"html/template"
 	"net/http"
 	"path"
@@ -212,11 +213,12 @@ func (a *AgentManagamentController) HandleSetAgentInactiveRequest(w http.Respons
 		return
 	}
 
-	http.Redirect(w, r, "/owner/agent", http.StatusSeeOther)
+	redirectUrl := fmt.Sprintf("/owner/agent/%v", agentId)
+	http.Redirect(w, r, redirectUrl, http.StatusSeeOther)
 
 }
 
-func (a *AgentManagamentController) HandleReactiveActiveRequest(w http.ResponseWriter, r *http.Request) {
+func (a *AgentManagamentController) HandleReactiveAgentRequest(w http.ResponseWriter, r *http.Request) {
 
 	isAuthenticated, err, _ := a.AuthMiddleware.AuthenticateOwner(r)
 
@@ -241,7 +243,8 @@ func (a *AgentManagamentController) HandleReactiveActiveRequest(w http.ResponseW
 		return
 	}
 
-	http.Redirect(w, r, "/owner/agent", http.StatusSeeOther)
+	redirectUrl := fmt.Sprintf("/owner/agent/%v", agentId)
+	http.Redirect(w, r, redirectUrl, http.StatusSeeOther)
 
 }
 
@@ -270,14 +273,16 @@ func (a *AgentManagamentController) HandleUpdateAgentRequest(w http.ResponseWrit
 	request.AgentEmail = r.Form.Get("update-agent-email")
 	request.AgentName = r.Form.Get("update-agent-name")
 	request.AgentPassword = r.Form.Get("update-agent-password")
+	agentId := r.Form.Get("agent-id")
 
-	err = a.AgentService.UpdateAgent(r.Form.Get("agent-id"), request)
+	err = a.AgentService.UpdateAgent(agentId, request)
 
 	if err != nil {
 		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/agent")
 		return
 	}
 
-	http.Redirect(w, r, "/owner/agent", http.StatusSeeOther)
+	redirectUrl := fmt.Sprintf("/owner/agent/%v", agentId)
+	http.Redirect(w, r, redirectUrl, http.StatusSeeOther)
 
 }

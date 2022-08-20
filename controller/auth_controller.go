@@ -95,7 +95,7 @@ func (a *AuthController) HandleLoginFormRequest(w http.ResponseWriter, r *http.R
 		Path:    "/",
 	})
 
-	http.Redirect(w, r, "/owner/store", http.StatusSeeOther)
+	http.Redirect(w, r, "/owner/dashboard", http.StatusSeeOther)
 }
 
 func (a *AuthController) HandleAgentLoginFormRequest(w http.ResponseWriter, r *http.Request) {
@@ -150,7 +150,7 @@ func (a *AuthController) HandleRegistrationFormRequest(w http.ResponseWriter, r 
 		return
 	}
 
-	http.Redirect(w, r, "/owner/registration/submit/sucess", http.StatusSeeOther)
+	http.Redirect(w, r, "/owner/registration/submit/success", http.StatusSeeOther)
 
 }
 
@@ -161,7 +161,7 @@ func (a *AuthController) HandleOwnerLogOutRequest(w http.ResponseWriter, r *http
 	ownerToken := c.Value
 
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/dashboard")
 		return
 	}
 
@@ -183,7 +183,7 @@ func (a *AuthController) HandleAgentLogOutRequest(w http.ResponseWriter, r *http
 	c, err := r.Cookie("alingan-session")
 
 	if err != nil {
-		http.Error(w, err.Error(), 500)
+		a.ErrorHandler.WebErrorHandlerForAgentPrivateRoute(&w, err.Error(), "/agent/new/transaction")
 		return
 	}
 
@@ -237,7 +237,7 @@ func (a *AuthController) ShowOwnerProfilePage(w http.ResponseWriter, r *http.Req
 	owner, err := a.AuthService.GetOwnerProfileInformation(session.Id)
 
 	if err != nil {
-		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/login")
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/dashboard")
 		return
 	}
 
@@ -248,7 +248,7 @@ func (a *AuthController) ShowOwnerProfilePage(w http.ResponseWriter, r *http.Req
 	template, err := template.ParseFiles(path.Join("view", "owner/profile.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
-		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/login")
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/dashboard")
 		return
 	}
 	template.Execute(w, templateData)
@@ -271,7 +271,7 @@ func (a *AuthController) HandleOwnerUpdateProfileRequest(w http.ResponseWriter, 
 	err = r.ParseForm()
 
 	if err != nil {
-		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/login")
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/profile")
 		return
 	}
 
@@ -283,7 +283,7 @@ func (a *AuthController) HandleOwnerUpdateProfileRequest(w http.ResponseWriter, 
 	err = a.AuthService.UpdateOwnerProfile(request)
 
 	if err != nil {
-		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/login")
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/profile")
 		return
 	}
 
@@ -335,7 +335,7 @@ func (a *AuthController) HandleOwnerUpdatePasswordRequest(w http.ResponseWriter,
 	err = r.ParseForm()
 
 	if err != nil {
-		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/login")
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/dashboard")
 		return
 	}
 
@@ -347,10 +347,10 @@ func (a *AuthController) HandleOwnerUpdatePasswordRequest(w http.ResponseWriter,
 	err = a.AuthService.UpdateOwnerPassword(request)
 
 	if err != nil {
-		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/login")
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/dashboard")
 		return
 	}
 
-	http.Redirect(w, r, "/owner/profile", http.StatusSeeOther)
+	http.Redirect(w, r, "/owner/dashboard", http.StatusSeeOther)
 
 }

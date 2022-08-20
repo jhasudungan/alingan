@@ -4,6 +4,7 @@ import (
 	"alingan/middleware"
 	"alingan/model"
 	"alingan/service"
+	"fmt"
 	"html/template"
 	"net/http"
 	"path"
@@ -210,7 +211,8 @@ func (p *ProductManagementController) HandleInactiveProductRequest(w http.Respon
 		return
 	}
 
-	http.Redirect(w, r, "/owner/product", http.StatusSeeOther)
+	redirectUrl := fmt.Sprintf("/owner/product/%v", productId)
+	http.Redirect(w, r, redirectUrl, http.StatusSeeOther)
 
 }
 
@@ -239,7 +241,8 @@ func (p *ProductManagementController) HandleReactiveProductRequest(w http.Respon
 		return
 	}
 
-	http.Redirect(w, r, "/owner/product", http.StatusSeeOther)
+	redirectUrl := fmt.Sprintf("/owner/product/%v", productId)
+	http.Redirect(w, r, redirectUrl, http.StatusSeeOther)
 
 }
 
@@ -277,14 +280,16 @@ func (p *ProductManagementController) HandleUpdateProductRequest(w http.Response
 	}
 
 	request.ProductPrice = data
+	productId := r.Form.Get("product-id")
 
-	err = p.ProductService.UpdateProduct(request, r.Form.Get("product-id"))
+	err = p.ProductService.UpdateProduct(request, productId)
 
 	if err != nil {
 		p.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/product")
 		return
 	}
 
-	http.Redirect(w, r, "/owner/product", http.StatusSeeOther)
+	redirectUrl := fmt.Sprintf("/owner/product/%v", productId)
+	http.Redirect(w, r, redirectUrl, http.StatusSeeOther)
 
 }
