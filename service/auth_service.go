@@ -127,6 +127,10 @@ func (a *AuthServiceImpl) AgentLogin(request model.AgentLoginRequest) (*model.Ag
 		return session, errors.New("authentication error")
 	}
 
+	if agent.IsActive == false {
+		return session, errors.New("your account is inactive")
+	}
+
 	owner, err := a.JoinRepo.FindOwnerByAgentId(agent.AgentId)
 
 	if err != nil {
