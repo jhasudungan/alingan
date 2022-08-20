@@ -104,6 +104,7 @@ func main() {
 		TransactionService: transactionSvc,
 		StoreService:       storeSvc,
 		ProductService:     productSvc,
+		AgentService:       agentSvc,
 		ErrorHandler:       errorHandler,
 	}
 

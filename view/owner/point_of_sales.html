@@ -16,9 +16,14 @@
             </div>
         </div>
         <div class="field">
-            <label class="label">Agent</label>
-            <div class="control">
-                <input class="input" type="text" value="{{ .agentId }}" id="pos-input-agent-id" readonly>
+            <label for="" class="label">Agent</label>
+            <div class="select">
+                <select name="pos-input-agent-id" id="pos-input-agent-id">
+                    <option selected>select agent</option>
+                    {{  range .agents }}
+                        <option value="{{ .AgentId }}">{{ .AgentName }}</option>
+                    {{ end }}
+                </select>
             </div>
         </div>
         <div class="field">
