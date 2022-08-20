@@ -57,7 +57,13 @@
                         <p class="subtitle is-6">{{ .ProductPrice   }}</p>
                         <p class="subtitle is-6">{{ .ProductMeasurementUnit }}</p>
                         <p style="display: none;">{{ .ProductId }}</p>
-                        <button class="button is-info is-small my-2 choose-btn">add</button>
+                        {{ if .IsActive }}
+                            <button class="button is-info is-small my-2 choose-btn">add</button>
+                        {{ else }}
+                            <div class="tag is-danger is-small">
+                                <p>product inactive</p>
+                            </div>
+                        {{ end }}
                     </div>
                 </article>
             </div>
