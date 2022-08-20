@@ -6,7 +6,6 @@ import (
 	"alingan/repository"
 	"alingan/util"
 	"errors"
-	"log"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -241,8 +240,6 @@ func (a *AuthServiceImpl) UpdateOwnerPassword(request model.UpdateOwnerPassword)
 	newOwnerData.OwnerName = owner.OwnerName
 	newOwnerData.OwnerType = owner.OwnerType
 	newOwnerData.Password = string(passwordBytes)
-
-	log.Println(newOwnerData.Password)
 
 	err = a.OwnerRepo.Update(newOwnerData, owner.OwnerId)
 
