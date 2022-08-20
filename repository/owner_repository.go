@@ -52,11 +52,12 @@ func (o *OwnerRepositoryImpl) Update(data entity.Owner, ownerId string) error {
 		return err
 	}
 
-	sql := "update core.owner set owner_name=$1, owner_type=$2, last_modified= now() WHERE owner_id=$3"
+	sql := "update core.owner set owner_name=$1, owner_type=$2, password=$3, last_modified= now() WHERE owner_id=$4"
 
 	_, err = con.Exec(sql,
 		data.OwnerName,
 		data.OwnerType,
+		data.Password,
 		ownerId)
 
 	if err != nil {

@@ -254,7 +254,7 @@ func (a *AuthController) ShowOwnerProfilePage(w http.ResponseWriter, r *http.Req
 	template.Execute(w, templateData)
 }
 
-func (a *AuthController) HandleOwnerUpdateProdileRequest(w http.ResponseWriter, r *http.Request) {
+func (a *AuthController) HandleOwnerUpdateProfileRequest(w http.ResponseWriter, r *http.Request) {
 
 	isAuthenticated, err, _ := a.AuthMiddleware.AuthenticateOwner(r)
 
@@ -281,6 +281,70 @@ func (a *AuthController) HandleOwnerUpdateProdileRequest(w http.ResponseWriter, 
 	request.OwnerType = r.Form.Get("owner-type")
 
 	err = a.AuthService.UpdateOwnerProfile(request)
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/login")
+		return
+	}
+
+	http.Redirect(w, r, "/owner/profile", http.StatusSeeOther)
+
+}
+
+func (a *AuthController) ShowUpdatePasswordPage(w http.ResponseWriter, r *http.Request) {
+
+	isAuthenticated, err, _ := a.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
+		return
+	}
+
+	if isAuthenticated == false {
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
+		return
+	}
+
+	template, err := template.ParseFiles(path.Join("view", "owner/update_password.html"), path.Join("view", "layout/owner_layout.html"))
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/dashboard")
+	}
+
+	err = template.Execute(w, nil)
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/dashboard")
+	}
+}
+
+func (a *AuthController) HandleOwnerUpdatePasswordRequest(w http.ResponseWriter, r *http.Request) {
+
+	isAuthenticated, err, session := a.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
+		return
+	}
+
+	if isAuthenticated == false {
+		a.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
+		return
+	}
+
+	err = r.ParseForm()
+
+	if err != nil {
+		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/login")
+		return
+	}
+
+	request := model.UpdateOwnerPassword{}
+	request.OwnerId = session.Id
+	request.NewPassword = r.Form.Get("new-password")
+	request.OldPassword = r.Form.Get("old-password")
+
+	err = a.AuthService.UpdateOwnerPassword(request)
 
 	if err != nil {
 		a.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/login")

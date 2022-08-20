@@ -174,7 +174,9 @@ func main() {
 	r.HandleFunc("/owner/registration/submit", authController.HandleRegistrationFormRequest).Methods("POST")
 	r.HandleFunc("/owner/registration/submit/sucess", authController.ShowRegistrationSuccessPage).Methods("GET")
 	r.HandleFunc("/owner/profile", authController.ShowOwnerProfilePage).Methods("GET")
-	r.HandleFunc("/owner/update/profile/submit", authController.HandleOwnerUpdateProdileRequest).Methods("POST")
+	r.HandleFunc("/owner/update/profile/submit", authController.HandleOwnerUpdateProfileRequest).Methods("POST")
+	r.HandleFunc("/owner/update/password", authController.ShowUpdatePasswordPage).Methods("GET")
+	r.HandleFunc("/owner/update/password/submit", authController.HandleOwnerUpdatePasswordRequest).Methods("POST")
 
 	r.HandleFunc("/owner/upload/product-image/{productId}", fileUploadController.HandleUploadProductImageRequest).Methods("POST")
 
