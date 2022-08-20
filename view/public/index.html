@@ -1,23 +1,142 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Welcome To Alingan</title>
-
-    <!-- Bulma - Alingan CSS -->
-    <link rel="stylesheet" href="/static/alingan/css/bulma-alingan.css">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="/static/font-awesome/css/all.min.css">
-</head>
-<body>
-    <h1>Hello World</h1>
-    <div class="container">
-        <div class="notification is-primary">
-          This container is <strong>centered</strong> on desktop and larger viewports.
+{{ template "public-layout" .}}
+{{ define "container" }}
+<!-- Section 1 : Banner -->
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <div class="columns is-vcentered">
+                <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+                    <div class="field">
+                        <p class="title animate__animated animate__slideInUp">Kontrol Retail Anda Dimanapun dan Kapanpun</p>
+                    </div>
+                    <p class="animate__animated animate__slideInUp">Atur produk, pegawai dan transaksi lebih mudah dan buat toko anda lebih maju.</p>
+                    <div class="buttons mt-5">
+                        <a href="/owner/registration" class="button is-medium animate__animated animate__slideInUp">Daftar Gratis Sekarang</a>
+                        <a href="/" class="button is-info is-medium animate__animated animate__slideInUp">Pelajari</a>
+                    </div>
+                </div>
+                <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile is-hidden-mobile">
+                    <div class="box has-shadow animate__animated animate__slideInUp">
+                        <figure class="image is-3by2">
+                            <img src="/static/image/hero-main.svg" alt="">
+                        </figure>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</body>
-</html>
+</section>
+
+<!-- Section 2 : Who Is Us ? -->
+<section class="hero is-white">
+    <div class="hero-body">
+        <div class="container">
+            <div class="columns is-multiline">
+                <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-hidden-mobile">
+                    <figure class="image is-2by1 animate__animated animate__fadeIn">
+                        <img src="/static/image/hero-2.svg" alt="">
+                    </figure>
+                </div>
+                <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd">
+                   <div class="columns">
+                        <div class="column">
+                            <article class="media box has-shadow animate__animated animate__fadeIn">
+                                <figure class="media-left mt-2">
+                                    <i class="fa fa-hands-helping fa-2x"></i>      
+                                </figure>
+                                <div class="media-content">
+                                    <div class="content">
+                                        <p class="subtitle is-4">Mudah</p>
+                                        <p>Alingan memudahkan dalam melakukan manajemen produk, toko dan transaksi anda.</p>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                   </div>
+                   <div class="columns">
+                        <div class="column">
+                            <article class="media box has-shadow animate__animated animate__fadeIn">
+                                <figure class="media-left mt-2">
+                                    <i class="fa fa-desktop fa-2x"></i>      
+                                </figure>
+                                <div class="media-content">
+                                    <div class="content">
+                                        <p class="subtitle is-4">Modern</p>
+                                        <p>Alingan menggunakan teknologi cloud terbaru yang menjamin sistem alingan berjalan tanpa hambatan walau di akses dari manapun.</p>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                   </div>
+                   <div class="columns">
+                        <div class="column">
+                            <article class="media box has-shadow animate__animated animate__fadeIn">
+                                <figure class="media-left mt-2">
+                                    <i class="fa fa-chart-bar fa-2x"></i>
+                                </figure>
+                                <div class="media-content">
+                                    <div class="content">
+                                        <p class="subtitle is-4">Maksimal</p>
+                                        <p>Alingan membantu memaksimalkan penjualan dengan menyediakan laporan penjualan produk dan toko yang akurat.</p>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Section 3 : Promotional Video -->
+<div class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <div class="columns">
+                <div class="column">
+                    <div class="container has-text-centered">
+                        <div class="tag is-medium is-white is-large animate__animated animate__fadeIn">
+                            <p class="has-text-primary">Lihat Bagaimana Kami Membantu Anda</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column">
+                    <div class="container has-text-centered">
+                        <figure class="image is-16by9">
+                            <iframe class="has-ratio" width="640" height="360" src="https://www.youtube.com/embed/ThYGrYiyvA8" frameborder="0" allowfullscreen></iframe>
+                        </figure>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Section 4 : Alingan Mobile Promotion -->
+<div class="hero is-white">
+    <div class="hero-body">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile animate__animated animate__fadeIn">
+                    <p class="subtitle is-4 ">
+                        Alingan Mobile
+                    </p>
+                    <p>Alingan mobile hadir untuk membantu mendistribusikan sistem alingan ke setiap toko, menjadikan biaya operasional lebih terjangkau.</p>
+                    <a class="button is-primary is-outlined mt-6">
+                        Download Sekarang Di Play Store
+                    </a>
+                </div>
+                <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile is-hidden-mobile has-text-centered animate__animated animate__fadeIn">
+                    <figure class="image is-2by1">
+                        <img src="/static/image/easy.svg" alt="">
+                    </figure>
+                </div> 
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ end }}

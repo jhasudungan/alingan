@@ -132,7 +132,9 @@ func main() {
 		AuthMiddleware: authMiddleware,
 	}
 
-	publicController := &controller.PublicController{}
+	publicController := &controller.PublicController{
+		ErrorHandler: errorHandler,
+	}
 
 	// router and handler
 	r := &mux.Router{}

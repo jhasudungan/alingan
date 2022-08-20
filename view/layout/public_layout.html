@@ -1,0 +1,71 @@
+{{ define "public-layout" }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alingan - Kendalikan Retailmu Kapanpun Di Manapun</title>
+
+    <!-- Bulma - Alingan CSS -->
+    <link rel="stylesheet" href="/static/alingan/css/bulma-alingan.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/static/font-awesome/css/all.min.css">
+
+    <!-- Animate -->
+    <link rel="stylesheet" href="/static/animate/css/animate.min.css">
+
+</head>
+<body>
+    
+    <!-- Public Navbar -->
+    <div class="navbar has-shadow">
+
+        <!-- Navbar Brand -->
+        <div class="navbar-brand">
+            <div class="navbar-item">
+                <!-- Logo Alingan -->
+            </div>
+            <div class="navbar-burger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="/">
+                    <i class="fa fa-home mr-2"></i>Beranda
+                </a>
+                <a class="navbar-item" href="/about">
+                    <i class="fa fa-book mr-2"></i>Tentang Kami
+                </a>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <a class="button is-primary" href="/owner/login">Masuk</a>
+                </div>
+                <div class="navbar-item">
+                    <a class="button is-info" href="/agent/login">Agen</a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    {{ template "container" . }}
+
+    <!-- Footer -->
+    <section class="hero is-small is-primary">
+        <div class="hero-body">
+            <div class="container has-text-centered">
+                <p>Pejuang Masa Depan &copy; 2022</p>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
+{{ end }}
