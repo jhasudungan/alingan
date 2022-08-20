@@ -13,7 +13,7 @@ func (e *ErrorHandler) WebErrorHandlerForOwnerPublicRoute(w *http.ResponseWriter
 	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/owner/public_error.html"))
 
 	if err != nil {
-		panic(err.Error())
+		http.Error(*w, err.Error(), 500)
 	}
 
 	data := make(map[string]interface{})
@@ -22,7 +22,7 @@ func (e *ErrorHandler) WebErrorHandlerForOwnerPublicRoute(w *http.ResponseWriter
 	err = templateErrorPublic.Execute(*w, data)
 
 	if err != nil {
-		panic(err.Error())
+		http.Error(*w, err.Error(), 500)
 	}
 }
 
@@ -31,7 +31,7 @@ func (e *ErrorHandler) WebErrorHandlerForOwnerAuthMiddleware(w *http.ResponseWri
 	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/owner/public_error.html"))
 
 	if err != nil {
-		panic(err.Error())
+		http.Error(*w, err.Error(), 500)
 	}
 
 	data := make(map[string]interface{})
@@ -40,7 +40,7 @@ func (e *ErrorHandler) WebErrorHandlerForOwnerAuthMiddleware(w *http.ResponseWri
 	err = templateErrorPublic.Execute(*w, data)
 
 	if err != nil {
-		panic(err.Error())
+		http.Error(*w, err.Error(), 500)
 	}
 }
 
@@ -49,7 +49,7 @@ func (e *ErrorHandler) WebErrorHandlerForOwnerPrivateRoute(w *http.ResponseWrite
 	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/owner/private_error.html"), path.Join("view", "/layout/owner_layout.html"))
 
 	if err != nil {
-		panic(err.Error())
+		http.Error(*w, err.Error(), 500)
 	}
 
 	data := make(map[string]interface{})
@@ -59,7 +59,7 @@ func (e *ErrorHandler) WebErrorHandlerForOwnerPrivateRoute(w *http.ResponseWrite
 	err = templateErrorPublic.Execute(*w, data)
 
 	if err != nil {
-		panic(err.Error())
+		http.Error(*w, err.Error(), 500)
 	}
 
 }
@@ -69,7 +69,7 @@ func (e *ErrorHandler) WebErrorHandlerForAgentPublicRoute(w *http.ResponseWriter
 	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/agent/public_error.html"))
 
 	if err != nil {
-		panic(err.Error())
+		http.Error(*w, err.Error(), 500)
 	}
 
 	data := make(map[string]interface{})
@@ -78,7 +78,7 @@ func (e *ErrorHandler) WebErrorHandlerForAgentPublicRoute(w *http.ResponseWriter
 	err = templateErrorPublic.Execute(*w, data)
 
 	if err != nil {
-		panic(err.Error())
+		http.Error(*w, err.Error(), 500)
 	}
 }
 
@@ -87,7 +87,7 @@ func (e *ErrorHandler) WebErrorHandlerForAgentAuthMiddleware(w *http.ResponseWri
 	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/agent/public_error.html"))
 
 	if err != nil {
-		panic(err.Error())
+		http.Error(*w, err.Error(), 500)
 	}
 
 	data := make(map[string]interface{})
@@ -96,7 +96,7 @@ func (e *ErrorHandler) WebErrorHandlerForAgentAuthMiddleware(w *http.ResponseWri
 	err = templateErrorPublic.Execute(*w, data)
 
 	if err != nil {
-		panic(err.Error())
+		http.Error(*w, err.Error(), 500)
 	}
 }
 
@@ -105,7 +105,7 @@ func (e *ErrorHandler) WebErrorHandlerForAgentPrivateRoute(w *http.ResponseWrite
 	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/agent/private_error.html"), path.Join("view", "/layout/owner_layout.html"))
 
 	if err != nil {
-		panic(err.Error())
+		http.Error(*w, err.Error(), 500)
 	}
 
 	data := make(map[string]interface{})
@@ -115,7 +115,11 @@ func (e *ErrorHandler) WebErrorHandlerForAgentPrivateRoute(w *http.ResponseWrite
 	err = templateErrorPublic.Execute(*w, data)
 
 	if err != nil {
-		panic(err.Error())
+		http.Error(*w, err.Error(), 500)
 	}
 
+}
+
+func (e *ErrorHandler) FinalUnhandlerError(w *http.ResponseWriter, err error) {
+	http.Error(*w, err.Error(), 500)
 }
