@@ -35,7 +35,7 @@ func (a *AuthController) ShowLoginForm(w http.ResponseWriter, r *http.Request) {
 
 func (a *AuthController) ShowAgentLoginForm(w http.ResponseWriter, r *http.Request) {
 
-	template, err := template.ParseFiles(path.Join("view", "agent/login.html"))
+	template, err := template.ParseFiles(path.Join("view", "agent/login.html"), path.Join("view", "layout/public_layout.html"))
 
 	if err != nil {
 		a.ErrorHandler.WebErrorHandlerForAgentPublicRoute(&w, err.Error())
