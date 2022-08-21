@@ -104,7 +104,7 @@ class UI {
         td5.appendChild(document.createTextNode(item.subtotal))
         const tr = document.createElement("tr");
 
-        const textRemove = document.createTextNode("remove");
+        const textRemove = document.createTextNode("x");
         const buttonRemove = document.createElement("button");
         buttonRemove.classList.add("button");
         buttonRemove.classList.add("is-danger");
@@ -148,7 +148,7 @@ class UI {
         }
 
         const grandTotalWrapper = document.getElementById("transaction-list-grand-total-wrapper");
-        var total = document.createTextNode(this.grandTotal);
+        var total = document.createTextNode("Total : "+this.grandTotal);
         var p = document.createElement("p");
         p.setAttribute("id", "transaction-grand-total")
         p.appendChild(total);

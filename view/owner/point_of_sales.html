@@ -1,102 +1,128 @@
 {{ template "owner-layout" .}}
 {{ define "container" }}
-<div class="columns">
-    <div class="column">
-        <div class="block">
-            <p class="title is-4">New Transaction</p>
-        </div> 
-    </div>
-</div>
-<div class="columns is-multiline">
-    <div class="column">
-        <div class="field">
-            <label class="label">Source</label>
-            <div class="control">
-                <input class="input" type="text" value="owner" id="pos-input-source"  readonly>
-            </div>
-        </div>
-        <div class="field">
-            <label for="" class="label">Agent</label>
-            <div class="select">
-                <select name="pos-input-agent-id" id="pos-input-agent-id">
-                    <option selected>select agent</option>
-                    {{  range .agents }}
-                        <option value="{{ .AgentId }}">{{ .AgentName }}</option>
-                    {{ end }}
-                </select>
-            </div>
-        </div>
-        <div class="field">
-            <label for="" class="label">Agent Assigned Store</label>
-            <div class="select">
-                <select name="pos-input-store-id" id="pos-input-store-id">
-                    <option selected>select agent store</option>
-                    {{  range .stores }}
-                        <option value="{{ .StoreId }}">{{ .StoreName }}</option>
-                    {{ end }}
-                </select>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="columns">
-    <div class="column">
-        <div class="block">
-            <p class="is-5">Available Products</p>
-        </div>
-        <div class="columns is-multiline" id="list-of-products">
-            {{ range .products }}
-            <div class="column is-6">
-                <article class="media">
-                    <figure class="media-left">
-                        <p class="image is-128x128">
-                          <img src="{{ .ImageUrl }}">
-                        </p>
-                    <div class="media-content">
-                        <p class="title is-6">{{ .ProductName }}</p>
-                        <p class="subtitle is-6">{{ .ProductPrice   }}</p>
-                        <p class="subtitle is-6">{{ .ProductMeasurementUnit }}</p>
-                        <p style="display: none;">{{ .ProductId }}</p>
-                        {{ if .IsActive }}
-                            <button class="button is-info is-small my-2 choose-btn">add</button>
-                        {{ else }}
-                            <div class="tag is-danger is-small">
-                                <p>product inactive</p>
-                            </div>
-                        {{ end }}
-                    </div>
-                </article>
-            </div>
-            {{ end }}
-        </div>
-    </div>
-    <div class="column">
-        <div class="block">
-            <p class="is-5">Transaction Item</p>
-        </div>
-        <table class="table" id="transaction-list-table">
-            <thead>
-                <tr>
-                    <th style="display: none;">Id</th>
-                    <th>Product</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Sub Total</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="transaction-list-table-body">
+<div class="column">
 
-            </tbody>
-        </table>
-        <div class="block">
-            <div id="transaction-list-grand-total-wrapper">
-                <p id="transaction-grand-total">0</p>
+    <div class="columns animate__animated animate__fadeIn">
+        <div class="column">
+            <label for="" class="label">Sumber Transaksi</label>
+            <div class="control">
+                <input class="input" type="text" value="Pemilik" id="pos-input-source"  readonly>
             </div>
         </div>
-        <div class="block">
-            <button class="button is-primary" id="save-transaction">save</button>
+    </div>
+
+    <div class="columns animate__animated animate__fadeIn">
+        <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+            <label for="" class="label">Nama Agen</label>
+            <div class="control">
+                <div class="select is-primary is-fullwidth">
+                    <select name="pos-input-agent-id" id="pos-input-agent-id">
+                        <option selected>Pilih Agen</option>
+                        {{  range .agents }}
+                            <option value="{{ .AgentId }}">{{ .AgentName }}</option>
+                        {{ end }}
+                    </select>
+                </div>
+            </div>
         </div>
+        <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+            <label for="" class="label">Nama Toko</label>
+            <div class="control">
+                <div class="select is-primary is-fullwidth">
+                    <select name="pos-input-store-id" id="pos-input-store-id">
+                        <option selected>Pilih Toko</option>
+                        {{  range .stores }}
+                            <option value="{{ .StoreId }}">{{ .StoreName }}</option>
+                        {{ end }}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="columns">
+        <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+            <div class="columns is-multiline" id="list-of-products">
+                {{ range .products }}
+                    <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+                        <div class="card equal-high animate__animated animate__fadeIn">
+
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    {{ .ProductName }}
+                                </p>
+                            </header>
+
+                            <div class="card-image has-text-centered">
+                                <figure class="image is-128x128 is-inline-block my-5">
+                                    <img src="{{ .ImageUrl }}" alt="Placeholder image">
+                                </figure>
+                            </div>
+
+                            <div class="card-content">
+                                <p><i class="fa fa-money-bill mr-2"></i>{{ .ProductPrice }}</p>
+                                <p><i class="fa fa-balance-scale mr-2"></i>{{ .ProductMeasurementUnit }}</p>
+                                <p style="display: none;">{{ .ProductId }}</p>
+                            </div>
+
+                            <div class="card-footer">
+                                <div class="card-footer-item">
+                                    {{ if .IsActive }}
+                                        <button class="button is-primary is-small choose-btn"><i class="fa fa-cart-arrow-down mr-2"></i>Tambah</button>
+                                    {{ else }}
+                                        <div class="tag is-dark is-small">
+                                            <p>Produk Tidak Bisa Digunakan</p>
+                                        </div>
+                                    {{ end }}
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                {{ end }}
+            </div>
+        </div>
+
+        <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+            <div class="columns">
+                <div class="column">
+                    <table class="table is-hoverable is-fullwidth animate__animated animate__fadeIn" id="transaction-list-table">
+                        <thead>
+                            <tr>
+                                <th>Produk</th>
+                                <th>Harga</th>
+                                <th>Jumlah</th>
+                                <th>Sub-Total</th>
+                                <th>Hapus</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transaction-list-table-body">
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="columns">
+                <div class="column">
+                    <nav class="level">
+                        <div class="level-left">
+                            <div class="level-item">
+                                <span class="tag is-medium is-primary is-rounded animate__animated animate__fadeIn" id="transaction-list-grand-total-wrapper">
+                                    <p id="transaction-grand-total" >Total : 0</p>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="level-right">
+                            <div class="level-item">
+                                <button class="button is-info is-small animate__animated animate__fadeIn" id="save-transaction"><i class="fa fa-save mr-2"></i> Simpan</button>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div> 
     </div>
 </div>
 {{ end }}

@@ -10,12 +10,16 @@ const saveTransactionButton = document.getElementById("save-transaction")
 listOfProducts.addEventListener("click", (e) => {
 
     if (e.target.classList.contains("choose-btn")) {
-        
-        const mediaContentChilds = e.target.parentNode.childNodes;
-        const productName = mediaContentChilds[1].textContent;
-        const productPrice = parseFloat(mediaContentChilds[3].textContent);
-        const productMsu = mediaContentChilds[5].textContent;
-        const productId = mediaContentChilds[7].textContent;
+
+        const cardHeader = e.target.parentNode.parentNode.parentNode.childNodes[1];
+        const cardHeaderChilds = cardHeader.childNodes;
+        const productName = cardHeaderChilds[1].innerText;
+    
+        const cardContent = e.target.parentNode.parentNode.parentNode.childNodes[5];
+        const cardContentChilds = cardContent.childNodes;
+        const productPrice = parseFloat(cardContentChilds[1].childNodes[1].textContent);
+        const productMsu = cardContentChilds[3].childNodes[1].textContent;
+        const productId = cardContentChilds[5].textContent;
         ui.addDataToAddProductModal(productId,productName,productPrice, productMsu)
         ui.openAddProductModal();
     }
