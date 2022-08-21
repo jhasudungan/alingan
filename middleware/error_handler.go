@@ -10,7 +10,7 @@ type ErrorHandler struct{}
 
 func (e *ErrorHandler) WebErrorHandlerForOwnerPublicRoute(w *http.ResponseWriter, errorMessage string) {
 
-	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/owner/public_error.html"))
+	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/owner/public_error.html"), path.Join("view", "layout/public_layout.html"))
 
 	if err != nil {
 		http.Error(*w, err.Error(), 500)
@@ -28,7 +28,7 @@ func (e *ErrorHandler) WebErrorHandlerForOwnerPublicRoute(w *http.ResponseWriter
 
 func (e *ErrorHandler) WebErrorHandlerForOwnerAuthMiddleware(w *http.ResponseWriter, errorMessage string) {
 
-	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/owner/public_error.html"))
+	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/owner/public_error.html"), path.Join("view", "layout/public_layout.html"))
 
 	if err != nil {
 		http.Error(*w, err.Error(), 500)
@@ -66,7 +66,7 @@ func (e *ErrorHandler) WebErrorHandlerForOwnerPrivateRoute(w *http.ResponseWrite
 
 func (e *ErrorHandler) WebErrorHandlerForAgentPublicRoute(w *http.ResponseWriter, errorMessage string) {
 
-	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/agent/public_error.html"))
+	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/agent/public_error.html"), path.Join("view", "/layout/public_layout.html"))
 
 	if err != nil {
 		http.Error(*w, err.Error(), 500)
@@ -84,7 +84,7 @@ func (e *ErrorHandler) WebErrorHandlerForAgentPublicRoute(w *http.ResponseWriter
 
 func (e *ErrorHandler) WebErrorHandlerForAgentAuthMiddleware(w *http.ResponseWriter, errorMessage string) {
 
-	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/agent/public_error.html"))
+	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/agent/public_error.html"), path.Join("view", "/layout/public_layout.html"))
 
 	if err != nil {
 		http.Error(*w, err.Error(), 500)
