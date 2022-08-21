@@ -204,7 +204,7 @@ func (a *AuthController) HandleAgentLogOutRequest(w http.ResponseWriter, r *http
 
 func (a *AuthController) ShowRegistrationSuccessPage(w http.ResponseWriter, r *http.Request) {
 
-	template, err := template.ParseFiles(path.Join("view", "public/success_registration.html"))
+	template, err := template.ParseFiles(path.Join("view", "public/success_registration.html"), path.Join("view", "layout/public_layout.html"))
 
 	if err != nil {
 		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
