@@ -37,3 +37,15 @@ func (p *PublicController) ShowNotFoundPage(w http.ResponseWriter, r *http.Reque
 	template.Execute(w, nil)
 
 }
+
+func (p *PublicController) ShowAboutPage(w http.ResponseWriter, r *http.Request) {
+
+	template, err := template.ParseFiles(path.Join("view", "public/about.html"), path.Join("view", "layout/public_layout.html"))
+
+	if err != nil {
+		p.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
+	}
+
+	template.Execute(w, nil)
+
+}
