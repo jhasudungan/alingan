@@ -52,7 +52,7 @@ func (a *AuthController) ShowAgentLoginForm(w http.ResponseWriter, r *http.Reque
 
 func (a *AuthController) ShowRegistrationForm(w http.ResponseWriter, r *http.Request) {
 
-	template, err := template.ParseFiles(path.Join("view", "owner/registration.html"))
+	template, err := template.ParseFiles(path.Join("view", "owner/registration.html"), path.Join("view", "layout/public_layout.html"))
 
 	if err != nil {
 		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
