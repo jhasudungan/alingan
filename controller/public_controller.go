@@ -3,7 +3,6 @@ package controller
 import (
 	"alingan/middleware"
 	"html/template"
-	"log"
 	"net/http"
 	"path"
 )
@@ -17,24 +16,22 @@ func (p *PublicController) ShowIndexPage(w http.ResponseWriter, r *http.Request)
 	template, err := template.ParseFiles(path.Join("view", "public/index.html"), path.Join("view", "layout/public_layout.html"))
 
 	if err != nil {
-		p.ErrorHandler.FinalUnhandlerError(&w, err)
+		p.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
 	}
 
 	err = template.Execute(w, nil)
 
 	if err != nil {
-		p.ErrorHandler.FinalUnhandlerError(&w, err)
+		p.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
 	}
 }
 
 func (p *PublicController) ShowNotFoundPage(w http.ResponseWriter, r *http.Request) {
 
-	template, err := template.ParseFiles(path.Join("view", "public/not_found.html"))
+	template, err := template.ParseFiles(path.Join("view", "public/not_found.html"), path.Join("view", "layout/public_layout.html"))
 
 	if err != nil {
-		log.Println(err.Error())
-		http.Error(w, "Something Went Wrong - Parse Files ", 500)
-		return
+		p.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
 	}
 
 	template.Execute(w, nil)
