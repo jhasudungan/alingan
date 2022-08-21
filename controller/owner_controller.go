@@ -33,7 +33,7 @@ func (o *OwnerController) ShowDashboard(w http.ResponseWriter, r *http.Request) 
 	dashboardReportData, err := o.ReportService.WebDashboardReport(ownerId)
 
 	if err != nil {
-		o.ErrorHandler.WebErrorHandlerForAgentPrivateRoute(&w, err.Error(), "/owner/dashboard")
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/dashboard")
 		return
 	}
 
@@ -43,14 +43,14 @@ func (o *OwnerController) ShowDashboard(w http.ResponseWriter, r *http.Request) 
 	template, err := template.ParseFiles(path.Join("view", "owner/dashboard.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
-		o.ErrorHandler.WebErrorHandlerForAgentPrivateRoute(&w, err.Error(), "/owner/dashboard")
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/dashboard")
 		return
 	}
 
 	err = template.Execute(w, templateData)
 
 	if err != nil {
-		o.ErrorHandler.WebErrorHandlerForAgentPrivateRoute(&w, err.Error(), "/owner/dashboard")
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/dashboard")
 		return
 	}
 

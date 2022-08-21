@@ -1,87 +1,105 @@
-{{ template "owner-layout" .}}
+{{ template "owner-layout" . }}
 {{ define "container" }}
 <div class="column">
-    <div class="block">
-        <p class="is-size-4">Transaction</p>
+    <div class="columns">
+        <!-- Product By Revenue -->
+        <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+            <div class="box has-shadow animate__animated animate__fadeIn">
+                <div class="tag is-medium is-primary mb-5">
+                    Produk Terbaik ( Jumlah Pemasukan Rupiah  )
+                </div>
+                <table class="table is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Produk</th>
+                            <th>Keuntungan</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {{ range .dashboardReports.OwnerMostPurchasedProductByRevenue }}
+                            <tr>
+                                <td>{{ .ProductName }}</td>
+                                <td>{{ .TotalRevenue }}</td>
+                            </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Product By Quantity -->
+        <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+            <div class="box has-shadow animate__animated animate__fadeIn">
+                <div class="tag is-medium is-primary mb-5">
+                    Produk Terbaik ( Jumlah Terjual )
+                </div>
+                <table class="table is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Produk</th>
+                            <th>Jumlah Terjual</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ range .dashboardReports.OwnerMostPurchasedProductByQuantity }}
+                            <tr>
+                                <td>{{ .ProductName }}</td>
+                                <td>{{ .TotalPurchased }}</td>
+                            </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <div class="block">
-        <p>Below is the report of your account</p>
+    <div class="columns">
+        <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+            <div class="box has-shadow animate__animated animate__fadeIn">
+                <div class="tag is-medium is-primary mb-5">
+                    Agen Terbaik
+                </div>
+                <table class="table is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Nama Agen</th>
+                            <th>Jumlah Transaksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ range .dashboardReports.OwnerAgentWithTheMostTransaction }}
+                            <tr>
+                                <td>{{ .AgentName }}</td>
+                                <td>{{ .TotalTransactionHandled }}</td>
+                            </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+            <div class="box has-shadow animate__animated animate__fadeIn">
+                <div class="tag is-medium is-primary mb-5">
+                    Toko Terbaik
+                </div>
+                <table class="table is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Nama Toko</th>
+                            <th>Jumlah Transaksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ range .dashboardReports.OwnerStoreWithTheMostTransaction }}
+                            <tr>
+                                <td>{{ .StoreName }}</td>
+                                <td>{{ .StoreTotalTransaction }}</td>
+                            </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <!-- Most Purcahased Product By Quantity -->
-    <table class="table is-hoverable is-fullwidth">
-        <thead>
-            <tr>
-                <th>Product Id</th>
-                <th>Product Name</th>
-                <th>Total Quantity Purcahased</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{ range .dashboardReports.OwnerMostPurchasedProductByQuantity }}
-                <tr>
-                    <td>{{ .ProductId }}</td>
-                    <td>{{ .ProductName }}</td>
-                    <td>{{ .TotalPurchased }}</td>
-                </tr>
-            {{ end }}
-        </tbody>
-    </table>
-    <!-- Most Purcahased Product By Revenue -->
-    <table class="table is-hoverable is-fullwidth">
-        <thead>
-            <tr>
-                <th>Product Id</th>
-                <th>Product Name</th>
-                <th>Total Revenue</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{ range .dashboardReports.OwnerMostPurchasedProductByRevenue }}
-                <tr>
-                    <td>{{ .ProductId }}</td>
-                    <td>{{ .ProductName }}</td>
-                    <td>{{ .TotalRevenue }}</td>
-                </tr>
-            {{ end }}
-        </tbody>
-    </table>
-    <!-- Top Store -->
-    <table class="table is-hoverable is-fullwidth">
-        <thead>
-            <tr>
-                <th>Store Id</th>
-                <th>Store Name</th>
-                <th>Total Transaction Handled</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{ range .dashboardReports.OwnerStoreWithTheMostTransaction }}
-                <tr>
-                    <td>{{ .StoreId }}</td>
-                    <td>{{ .StoreName }}</td>
-                    <td>{{ .StoreTotalTransaction }}</td>
-                </tr>
-            {{ end }}
-        </tbody>
-    </table>
-    <!-- Top Agent -->
-    <table class="table is-hoverable is-fullwidth">
-        <thead>
-            <tr>
-                <th>Agent Id</th>
-                <th>Agent Name</th>
-                <th>Total Transaction Handled</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{ range .dashboardReports.OwnerAgentWithTheMostTransaction }}
-                <tr>
-                    <td>{{ .AgentId }}</td>
-                    <td>{{ .AgentName }}</td>
-                    <td>{{ .TotalTransactionHandled }}</td>
-                </tr>
-            {{ end }}
-        </tbody>
-    </table>
 </div>
 {{ end }}

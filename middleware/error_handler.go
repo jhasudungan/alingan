@@ -46,7 +46,7 @@ func (e *ErrorHandler) WebErrorHandlerForOwnerAuthMiddleware(w *http.ResponseWri
 
 func (e *ErrorHandler) WebErrorHandlerForOwnerPrivateRoute(w *http.ResponseWriter, errorMessage string, backUrl string) {
 
-	templateErrorPublic, err := template.ParseFiles(path.Join("view", "/owner/private_error.html"), path.Join("view", "/layout/owner_layout.html"))
+	templateErrorPublic, err := template.ParseFiles(path.Join("view", "owner/private_error.html"), path.Join("view", "layout/owner_layout.html"))
 
 	if err != nil {
 		http.Error(*w, err.Error(), 500)

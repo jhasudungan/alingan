@@ -1,17 +1,24 @@
 {{ template "owner-layout" .}}
 {{ define "container" }}
 <div class="column">
-    <div class="block">
-        <p class="is-size-4">Error</p>
-    </div>
-    <article class="message is-danger">
-        <div class="message-header">
-          <p>Error</p>
-          <a class="button is-small is-dark" href="{{ .backurl }}">back</a>
-        </div>
-        <div class="message-body">
-          {{ .error }}
-        </div>
-    </article>
+  <div class="columns">
+      <div class="column has-text-centered">
+          <figure class="image is-128x128 is-inline-block animate__animated animate__fadeIn">
+              <img src="/static/image/error.svg" alt="">
+          </figure>
+      </div>
+  </div>
+  <div class="columns">
+      <div class="column has-text-centered">
+          <div class="notification is-danger is-light is-medium animate__animated animate__fadeIn">
+              <p>{{ .error }}</p>
+          </div>
+      </div>
+  </div>
+  <div class="columns">
+      <div class="column">
+          <a href="{{ .backurl }}" class="button is-info animate__animated animate__fadeIn"><i class="fa fa-angle-left mr-2"></i>Kembali</a>
+      </div>
+  </div>
 </div>
 {{ end }}
