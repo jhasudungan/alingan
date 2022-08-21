@@ -17,7 +17,7 @@ type AuthController struct {
 
 func (a *AuthController) ShowLoginForm(w http.ResponseWriter, r *http.Request) {
 
-	template, err := template.ParseFiles(path.Join("view", "owner/login.html"))
+	template, err := template.ParseFiles(path.Join("view", "owner/login.html"), path.Join("view", "layout/public_layout.html"))
 
 	if err != nil {
 		a.ErrorHandler.WebErrorHandlerForOwnerPublicRoute(&w, err.Error())
