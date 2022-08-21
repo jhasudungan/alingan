@@ -1,35 +1,47 @@
 {{ template "owner-layout" .}}
 {{ define "container" }}
-<div class="column">
-    <div class="block">
-        <p class="is-size-4">New Store</p>
-    </div>
-    <div class="block">
-        <p>Once a store is created , you can assign agent to that store and start a transaction</p>
-    </div>
-    <form action="/owner/new/store/submit" method="POST">
-        <div class="columns">
-            <div class="column">
-                <label for="" class="label">Store Name</label>
-                <div class="control">
-                    <input class="input" name="store-name" placeholder="My First Shop" >
-                </div>
+<div class="column animate__animated animate__fadeIn">
+    <h1 class="title">Toko</h1>
+    <p>Buat toko anda untuk mulai melakukan transaksi</p>
+
+    <!-- Form -->
+    <form class="mt-5" action="/owner/new/store/submit" method="POST">
+      <div class="field">
+        <div class="columns is-multiline">
+          <div
+            class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile"
+          >
+            <label for="" class="label">Nama Toko</label>
+            <div class="control">
+              <input class="input" type="text" name="store-name" />
             </div>
-            <div class="column">
-                <label for="" class="label">Store Address</label>
-                <div class="control">
-                    <input class="input" name="store-address" placeholder="Jakarta, Indonesia">
-                </div>
+          </div>
+          <div
+            class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile"
+          >
+            <label for="" class="label">Alamat Toko</label>
+            <div class="control">
+              <input
+                class="input"
+                type="text"
+                name="store-address"
+              />
             </div>
+          </div>
         </div>
+
         <div class="columns">
-            <div class="column">
-                <div class="buttons are-small">
-                    <a href="/owner/store" class="button is-dark"><i class="fa fa-arrow-left"></i></a>
-                    <button class="button is-primary" type="submit" name="submit">save</button>
-                </div>
+          <div class="column">
+            <div class="buttons">
+              <a href="/owner/store" class="button is-small is-dark"
+                ><i class="fa fa-angle-left mr-2"></i>Kembali</a
+              >
+              <button type="submit" class="button is-small is-info"
+                ><i class="fa fa-save mr-2"></i>Simpan</button>
             </div>
+          </div>
         </div>
+      </div>
     </form>
 </div>
 {{ end }}

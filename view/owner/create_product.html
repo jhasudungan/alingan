@@ -1,40 +1,38 @@
 {{ template "owner-layout" .}}
 {{ define "container" }}
-<div class="column">
-    <div class="block">
-        <p class="is-size-4">New Product</p>
-    </div>
-    <div class="block">
-        <p>Once a product is created , you can use it in a transaction</p>
-    </div>
-    <form method="POST" action="/owner/new/product/submit">
-        <div class="columns">
-            <div class="column">
-                <label for="" class="label">Product Name</label>
-                <div class="control">
-                    <input class="input" name="product-name" >
+<div class="column animate__animated animate__fadeIn">
+    <h1 class="title">Produk</h1>
+    <p>Setelah produk dibuat, produk akan tersedia untuk transaksi di setiap toko anda.</p>
+
+    <!-- Form -->
+    <form class="mt-5" method="post" action="/owner/new/product/submit" >
+        <div class="field">
+            <div class="columns is-multiline">
+                <div class="column is-4-tablet is-4-desktop is-4-widescreen is-4-fullhd is-12-mobile">
+                    <label for="" class="label">Nama Produk</label>
+                    <div class="control">
+                        <input class="input" type="text" name="product-name"  >
+                    </div>
+                </div>
+                <div class="column is-4-tablet is-4-desktop is-4-widescreen is-4-fullhd is-12-mobile">
+                    <label for="" class="label">Harga</label>
+                    <div class="control">
+                        <input class="input" type="number" name="product-price"  >
+                    </div>
+                </div>
+                <div class="column is-4-tablet is-4-desktop is-4-widescreen is-4-fullhd is-12-mobile">
+                    <label for="" class="label">Satuan</label>
+                    <div class="control">
+                        <input class="input" type="text" name="product-measurement-unit"  >
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <label for="" class="label">Product Measurement Unit</label>
-                <div class="control">
-                    <input class="input" name="product-measurement-unit" >
-                </div>
-            </div>
-            <div class="column">
-                <label for="" class="label">Product Price</label>
-                <div class="control">
-                    <input class="input" type="number" name="product-price" >
-                </div>
-            </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <div class="buttons are-small">
-                    <a href="/owner/product" class="button is-dark"><i class="fa fa-arrow-left"></i></a>
-                    <button class="button is-primary" type="submit" name="submit">save</button>
+            <div class="columns">
+                <div class="column">
+                    <div class="buttons">
+                        <a href="/owner/product" class="button is-small is-dark"><i class="fa fa-angle-left mr-2"></i>Kembali</a>
+                        <button type="submit" class="button is-small is-info"><i class="fa fa-save mr-2"></i>Simpan</button>
+                    </div>
                 </div>
             </div>
         </div>
