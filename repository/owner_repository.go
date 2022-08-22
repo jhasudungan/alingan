@@ -76,7 +76,7 @@ func (o *OwnerRepositoryImpl) UpdatePassword(data entity.Owner, ownerId string) 
 		return err
 	}
 
-	sql := "update core.owner set password = $1 last_modified= now() WHERE owner_id=$2"
+	sql := "update core.owner set password = $1 , last_modified= now() WHERE owner_id=$2"
 
 	_, err = con.Exec(sql,
 		data.Password,
