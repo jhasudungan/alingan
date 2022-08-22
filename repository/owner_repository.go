@@ -8,6 +8,7 @@ import (
 type OwnerRepository interface {
 	Insert(data entity.Owner) error
 	Update(data entity.Owner, ownerId string) error
+	UpdatePassword(data entity.Owner, ownerId string) error
 	FindById(ownerId string) (entity.Owner, error)
 	FindByOwnerEmail(ownerId string) (entity.Owner, error)
 	CheckExist(ownerId string) (bool, error)
@@ -52,11 +53,32 @@ func (o *OwnerRepositoryImpl) Update(data entity.Owner, ownerId string) error {
 		return err
 	}
 
-	sql := "update core.owner set owner_name=$1, owner_type=$2, password=$3, last_modified= now() WHERE owner_id=$4"
+	sql := "update core.owner set owner_name=$1, owner_type=$2, last_modified= now() WHERE owner_id=$3"
 
 	_, err = con.Exec(sql,
 		data.OwnerName,
 		data.OwnerType,
+		ownerId)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *OwnerRepositoryImpl) UpdatePassword(data entity.Owner, ownerId string) error {
+
+	con, err := config.CreateDBConnection()
+	defer con.Close()
+
+	if err != nil {
+		return err
+	}
+
+	sql := "update core.owner set password = $1 last_modified= now() WHERE owner_id=$2"
+
+	_, err = con.Exec(sql,
 		data.Password,
 		ownerId)
 

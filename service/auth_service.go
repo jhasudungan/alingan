@@ -241,11 +241,9 @@ func (a *AuthServiceImpl) UpdateOwnerPassword(request model.UpdateOwnerPassword)
 
 	newOwnerData := entity.Owner{}
 	newOwnerData.OwnerId = owner.OwnerId
-	newOwnerData.OwnerName = owner.OwnerName
-	newOwnerData.OwnerType = owner.OwnerType
 	newOwnerData.Password = string(passwordBytes)
 
-	err = a.OwnerRepo.Update(newOwnerData, owner.OwnerId)
+	err = a.OwnerRepo.UpdatePassword(newOwnerData, owner.OwnerId)
 
 	if err != nil {
 		return err

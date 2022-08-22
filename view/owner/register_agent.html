@@ -1,53 +1,57 @@
 {{ template "owner-layout" .}}
 {{ define "container" }}
-<div class="column">
-    <div class="block">
-        <p class="is-size-4">New Agent</p>
-    </div>
-    <div class="block">
-        <p>Create a new agent to start a transaction</p>
-    </div>
-    <form method="POST" action="/owner/new/agent/submit">
-        <div class="columns">
-            <div class="column">
-                <label for="" class="label">Agent Name</label>
-                <div class="control">
-                    <input class="input" name="agent-name" >
+<div class="column animate__animated animate__fadeIn">
+    <h1 class="title">Agen</h1>
+    <p>Setelah agen di daftarkan , maka agen dapat menggunakan akun nya untuk login di web maupun aplikasi mobile. </p>
+
+    <!-- Form -->
+    <form class="mt-5" method="POST" action="/owner/new/agent/submit">
+        <div class="field">
+
+            <div class="columns is-multiline">
+                <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+                    <label for="" class="label">Nama Agen</label>
+                    <div class="control">
+                        <input class="input" type="text" name="agent-name"  >
+                    </div>
+                </div>
+                <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+                    <label for="" class="label">Email</label>
+                    <div class="control">
+                        <input class="input" type="email" name="agent-email"  >
+                    </div>
                 </div>
             </div>
-            <div class="column">
-                <label for="" class="label">Agent Assigned Store</label>
-                <div class="select">
-                    <select name="agent-store">
-                        <option selected>select agent store</option>
-                        {{  range .stores }}
-                            <option value="{{ .StoreId }}">{{ .StoreName }}</option>
-                        {{ end }}
-                    </select>
+
+            <div class="columns">
+                <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+                    <label for="" class="label">Password</label>
+                    <div class="control">
+                        <input class="input" type="password" name="agent-password" >
+                    </div>
+                </div>
+                <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+                    <label for="" class="label">Toko Agen</label>
+                    <div class="select is-fullwidth">
+                        <select name="agent-store">
+                            <option selected>Pilih Toko</option>
+                            {{  range .stores }}
+                                <option value="{{ .StoreId }}">{{ .StoreName }}</option>
+                            {{ end }}
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <label for="" class="label">Agent Email</label>
-                <div class="control">
-                    <input class="input" name="agent-email" >
+
+            <div class="columns">
+                <div class="column">
+                    <div class="buttons">
+                        <a href="/owner/agen" class="button is-small is-dark"><i class="fa fa-angle-left mr-2"></i>Kembali</a>
+                        <button type="submit" class="button is-small is-info"><i class="fa fa-save mr-2"></i>Simpan</button>
+                    </div>
                 </div>
             </div>
-            <div class="column">
-                <label for="" class="label">Agent Login Password</label>
-                <div class="control">
-                    <input class="input" type="password" name="agent-password" >
-                </div>
-            </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <div class="buttons are-small">
-                    <a href="/owner/agent" class="button is-dark"><i class="fa fa-arrow-left"></i></a>
-                    <button class="button is-primary" type="submit" name="submit">save</button>
-                </div>
-            </div>
+
         </div>
     </form>
 </div>
