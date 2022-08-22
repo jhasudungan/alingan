@@ -1,19 +1,26 @@
 {{ template "owner-layout" .}}
 {{ define "container" }}
-<div class="column">
-    <div class="block">
-        <p class="is-size-4">Transaction</p>
-    </div>
-    <div class="block">
-        <p>Below is the list of your transaction, you can create a new transaction by clicking on "create a new transaction" button</p>
-    </div>
-    <table class="table is-hoverable is-fullwidth">
+<div class="column animate__animated animate__fadeIn">
+    <h1 class="title">Transaksi</h1>
+    <p>Berikut merupakan transaksi yang telah terjadi di seluruh toko anda.</p>
+
+    <nav class="level mt-5">
+    <div class="level-left"></div>
+    <div class="level-right">
+            <div class="level-item">
+                <a href="/owner/new/transaction" class="button is-primary is-small"><i class="fa fa-money-check-alt mr-2"></i> Buat Transaksi Baru</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Grid -->
+    <table class="table is-hoverable is-fullwidth mt-5">
         <thead>
             <tr>
-                <th>Transaction Date</th>
-                <th>Store Name</th>
-                <th>Agent In Charge</th>
-                <th>Action</th>
+                <th>Tanggal Transaksi</th>
+                <th>Toko</th>
+                <th>Agen</th>
+                <th>Lihat</th>
             </tr>
         </thead>
         <tbody>
@@ -22,13 +29,10 @@
                     <td>{{ .TransactionDate }}</td>
                     <td>{{ .StoreName }}</td>
                     <td>{{ .AgentName }}</td>
-                    <td><a class="button is-info is-small" href="/owner/transaction/{{.TransactionId}}" > view</a></td>
+                    <td><a class="button is-info is-small" href="/owner/transaction/{{.TransactionId}}" ><i class="fa fa-edit mr-2"></i> Lihat</a></td>
                 </tr>
             {{ end }}
         </tbody>
     </table>
-    <div class="block">
-        <a class="button is-success" href="/owner/new/transaction" >create new transaction</a>
-    </div>
 </div>
 {{ end }}

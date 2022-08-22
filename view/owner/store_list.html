@@ -1,18 +1,25 @@
 {{ template "owner-layout" .}}
 {{ define "container" }}
-<div class="column">
-    <div class="block">
-        <p class="is-size-4">Store</p>
-    </div>
-    <div class="block">
-        <p>Below is the list of your store, you can create a new store by clicking on "create a new store" button</p>
-    </div>
-    <table class="table is-hoverable is-fullwidth">
+<div class="column animate__animated animate__fadeIn">
+    <h1 class="title">Toko</h1>
+    <p>Berikut merupakan datfar toko milik anda. Anda dapat menambahkan toko baru, atau mengubah yang telah ada.</p>
+
+    <nav class="level mt-5">
+    <div class="level-left"></div>
+    <div class="level-right">
+            <div class="level-item">
+                <a href="/owner/new/store" class="button is-primary is-small"><i class="fa fa-store mr-2"></i> Buat Toko Baru</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Grid -->
+    <table class="table is-hoverable is-fullwidth mt-5">
         <thead>
             <tr>
-                <th>StoreName</th>
+                <th>Nama Toko</th>
                 <th>Status</th>
-                <th>Action</th>
+                <th>Lihat</th>
             </tr>
         </thead>
         <tbody>
@@ -32,13 +39,10 @@
                             </span>
                         </td>
                     {{ end }}
-                    <td><a class="button is-info is-small" href="/owner/store/{{.StoreId}}" > view</a></td>
+                    <td><a class="button is-info is-small" href="/owner/store/{{.StoreId}}" ><i class="fa fa-edit mr-2"></i> Lihat</a></td>
                 </tr>
             {{ end }}
         </tbody>
     </table>
-    <div class="block">
-        <a class="button is-success" href="/owner/new/store" >create new store</a>
-    </div>
 </div>
 {{ end }}
