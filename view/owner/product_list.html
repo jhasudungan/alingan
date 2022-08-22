@@ -1,18 +1,25 @@
 {{ template "owner-layout" .}}
 {{ define "container" }}
-<div class="column">
-    <div class="block">
-        <p class="is-size-4">Product</p>
-    </div>
-    <div class="block">
-        <p>Below is the list of your product, you can create a new product by clicking on "create a new product" button</p>
-    </div>
-    <table class="table is-hoverable is-fullwidth">
+<div class="column animate__animated animate__fadeIn">
+    <h1 class="title">Produk</h1>
+    <p>Berikut merupakan produk yang tersedia di toko-toko anda. Anda dapat menambahkan produk baru, atau mengubah yang telah ada.</p>
+
+    <nav class="level mt-5">
+    <div class="level-left"></div>
+    <div class="level-right">
+            <div class="level-item">
+                <a href="/owner/new/product" class="button is-primary is-small"><i class="fa fa-dice-d6 mr-2"></i> Buat Produk Baru</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Grid -->
+    <table class="table is-hoverable is-fullwidth mt-5">
         <thead>
             <tr>
-                <th>Product Name</th>
+                <th>Nama Produk</th>
                 <th>Status</th>
-                <th>Action</th>
+                <th>Lihat</th>
             </tr>
         </thead>
         <tbody>
@@ -32,13 +39,10 @@
                             </span>
                         </td>
                     {{ end }}
-                    <td><a class="button is-info is-small" href="/owner/product/{{.ProductId}}" > view</a></td>
+                    <td><a class="button is-info is-small" href="/owner/product/{{.ProductId}}" ><i class="fa fa-edit mr-2"></i> Lihat</a></td>
                 </tr>
             {{ end }}
         </tbody>
     </table>
-    <div class="block">
-        <a class="button is-success" href="/owner/new/product" >create new product</a>
-    </div>
 </div>
 {{ end }}
