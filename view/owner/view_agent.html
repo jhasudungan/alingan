@@ -1,68 +1,74 @@
 {{ template "owner-layout" .}}
 {{ define "container" }}
-<div class="column">
-    <div class="block">
-        <p class="is-size-4">View Agent</p>
-    </div>
-    <div class="block">
-        <p>You can update your agent data or set your agent inactive here</p>
-    </div>
-    <form action="/owner/update/agent/submit" method="POST">
-        <div class="columns">
-            <div class="column">
-                <label for="" class="label">Agent Id</label>
-                <div class="control">
-                    <input class="input" value="{{ .agent.AgentId }}" name="agent-id" readonly="true" >
+<div class="column animate__animated animate__fadeIn">
+    <h1 class="title">Agen</h1>
+    <p>Anda dapat mengganti email, nama dan password. Anda juga dapat menon-aktif kan agen ini. Jika agen di non-aktifkan maka agen tidak dapat melakukan transaksi atau masuk ke dalam akun-nya.</p>
+
+    <!-- Form -->
+    <form class="mt-5" action="/owner/update/agent/submit" method="POST">
+        <div class="field">
+
+            <div class="columns">
+                <div class="column">
+                    <label for="" class="label">ID Agen</label>
+                    <div class="control">
+                        <input class="input" type="text" value="{{ .agent.AgentId }}" name="agent-id" readonly="true" >
+                    </div>
                 </div>
             </div>
-            <div class="column">
-                <label for="" class="label">Agent Name</label>
-                <div class="control">
-                    <input class="input" value="{{ .agent.AgentName }}" name="update-agent-name" >
+
+            <div class="columns is-multiline">
+                <div class="column is-4-tablet is-4-desktop is-4-widescreen is-4-fullhd is-12-mobile">
+                    <label for="" class="label">Nama Agen</label>
+                    <div class="control">
+                        <input class="input" type="text" value="{{ .agent.AgentName }}" name="update-agent-name" >
+                    </div>
+                </div>
+                <div class="column is-4-tablet is-4-desktop is-4-widescreen is-4-fullhd is-12-mobile">
+                    <label for="" class="label">Email</label>
+                    <div class="control">
+                        <input class="input" type="email" value="{{ .agent.AgentEmail }}" name="update-agent-email" >
+                    </div>
+                </div>
+                <div class="column is-4-tablet is-4-desktop is-4-widescreen is-4-fullhd is-12-mobile">
+                    <label for="" class="label">Password</label>
+                    <div class="control">
+                        <input class="input" type="password" value="{{ .agent.AgentPassword }}" name="update-agent-password" >
+                    </div>
                 </div>
             </div>
+
+            <div class="columns is-multiline">
+                <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+                    <label for="" class="label">Tanggal Di Daftarkan</label>
+                    <div class="control">
+                        <input class="input" type="text" value="2022-08-07 19:12:12" disabled>
+                    </div>
+                </div>
+                <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+                    <label for="" class="label">Terakhir Diperbarui</label>
+                    <div class="control">
+                        <input class="input" type="text" value="2022-08-07 19:12:12" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <div class="columns">
+                <div class="column">
+                    <div class="buttons">
+                        <a href="/owner/agent" class="button is-small is-dark"><i class="fa fa-angle-left mr-2"></i>Kembali</a>
+                        <button type="submit" class="button is-small is-info"><i class="fa fa-save mr-2"></i>Simpan</button>
+                        {{ if .agent.IsActive }}
+                            <a href="/owner/inactive/agent/{{.agent.AgentId }}" class="button is-danger is-small"><i class="fa fa-user mr-2"></i>Non-aktifkan agen</a>
+                        {{ else }}
+                            <a href="/owner/reactive/agent/{{.agent.AgentId }}" class="button is-success is-small"><i class="fa fa-user mr-2"></i>Aktifkan agen</a>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div class="columns">
-            <div class="column">
-                <label for="" class="label">Agent Email</label>
-                <div class="control">
-                    <input class="input" value="{{ .agent.AgentEmail }}" name="update-agent-email" >
-                </div>
-            </div>
-            <div class="column">
-                <label for="" class="label">Agent Login Password</label>
-                <div class="control">
-                    <input class="input" type="password" value="{{ .agent.AgentPassword }}" name="update-agent-password" >
-                </div>
-            </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <label for="" class="label">Last Modified</label>
-                <div class="control">
-                    <input class="input" value="{{ .agent.LastModified }}" disabled>
-                </div>
-            </div>
-            <div class="column">
-                <label for="" class="label">Created Date </label>
-                <div class="control">
-                    <input class="input" value="{{ .agent.CreatedDate }}" disabled>
-                </div>
-            </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <div class="buttons are-small">
-                    <a href="/owner/agent" class="button is-dark"><i class="fa fa-arrow-left"></i></a>
-                    {{ if .agent.IsActive }}
-                        <a href="/owner/inactive/agent/{{.agent.AgentId }}" class="button is-danger">deactive this agent</a>
-                    {{ else }}
-                        <a href="/owner/reactive/agent/{{.agent.AgentId }}" class="button is-success">reactive this agent</a>
-                    {{ end }}
-                    <button type="submit" name="submit" class="button is-primary">save change</button>
-                </div>
-            </div>
-        </div>
+        
     </form>
 </div>
 {{ end }}
