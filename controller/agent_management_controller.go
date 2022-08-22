@@ -232,7 +232,6 @@ func (a *AgentManagamentController) HandleReactiveAgentRequest(w http.ResponseWr
 		return
 	}
 
-	// storeId
 	params := mux.Vars(r)
 	agentId := params["agentId"]
 
