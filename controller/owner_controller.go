@@ -55,3 +55,61 @@ func (o *OwnerController) ShowDashboard(w http.ResponseWriter, r *http.Request) 
 	}
 
 }
+
+func (o *OwnerController) ShowGuidePage(w http.ResponseWriter, r *http.Request) {
+
+	isAuthenticated, err, _ := o.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
+		return
+	}
+
+	if isAuthenticated == false {
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
+		return
+	}
+
+	template, err := template.ParseFiles(path.Join("view", "owner/guide.html"), path.Join("view", "layout/owner_layout.html"))
+
+	if err != nil {
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/dashboard")
+		return
+	}
+
+	err = template.Execute(w, nil)
+
+	if err != nil {
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/dashboard")
+		return
+	}
+}
+
+func (o *OwnerController) ShowMobileAppPage(w http.ResponseWriter, r *http.Request) {
+
+	isAuthenticated, err, _ := o.AuthMiddleware.AuthenticateOwner(r)
+
+	if err != nil {
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
+		return
+	}
+
+	if isAuthenticated == false {
+		o.ErrorHandler.WebErrorHandlerForOwnerAuthMiddleware(&w, err.Error())
+		return
+	}
+
+	template, err := template.ParseFiles(path.Join("view", "owner/mobile.html"), path.Join("view", "layout/owner_layout.html"))
+
+	if err != nil {
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/dashboard")
+		return
+	}
+
+	err = template.Execute(w, nil)
+
+	if err != nil {
+		o.ErrorHandler.WebErrorHandlerForOwnerPrivateRoute(&w, err.Error(), "/owner/dashboard")
+		return
+	}
+}

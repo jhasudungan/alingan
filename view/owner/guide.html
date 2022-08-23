@@ -1,0 +1,35 @@
+{{ template "owner-layout" . }}
+{{ define "container" }}
+<div class="column">
+    <div class="box has-shadow animate__animated animate__fadeIn">
+        <div class="tag is-primary is-medium my-5">
+            <p class="subtitle is-5 has-text-weight-semibold has-text-white">Awali Dengan Toko</p>
+        </div>
+        <p>Langkah pertama yang harus di lakukan adalah membuat toko pertama anda. Masuk ke menu <strong>Manajemen > Toko </strong> dan klik tombol <strong>Buat Toko Baru</strong>. Isi data di form dengan data toko , dan klik simpan. Toko pertama anda akan tampil di daftar toko dengan status <strong>aktif</strong>.</p>
+    </div>
+    <div class="box has-shadow animate__animated animate__fadeIn">
+        <div class="tag is-primary is-medium my-5">
+            <p class="subtitle is-5 has-text-weight-semibold has-text-white">Buat Produk</p>
+        </div>
+        <p>Setelah toko pertama anda selesai, sekarang saat nya membuat produk pertama anda. Masuk ke menu <strong>Manajemen > Produk</strong> dan klik tombol <strong>Buat Produk Baru</strong>. Isikan semua data produk anda dengan benar dan klik simpan. Produk pertama anda akan tampil di daftar produk dengan status <strong>aktif</strong>.</p>
+    </div>
+    <div class="box has-shadow animate__animated animate__fadeIn">
+        <div class="tag is-primary is-medium my-5">
+            <p class="subtitle is-5 has-text-weight-semibold has-text-white">Daftarkan Agen Anda</p>
+        </div>
+        <p>Masuk ke menu <strong>Manajemen > Agen</strong> lalu klik tombol <strong>Daftarkan Agen Baru</strong>. Isi semua data agen anda dan <strong>pilih toko dari agen tersebut sesuai dengan ketetapan anda.</strong> Setiap transaksi yang dilakukan agen akan masuk ke transaksi toko agen tersebut.</p> Setelah anda klik simpan maka agen akan masuk di daftar dengan status aktif.
+    </div>
+    <div class="box has-shadow animate__animated animate__fadeIn">
+        <div class="tag is-primary is-medium my-5">
+            <p class="subtitle is-5 has-text-weight-semibold has-text-white">Login Agen Dan Transaksi</p>
+        </div>
+        <p>Sekarang semua agen bisa login ke <strong>https:/alingan.id/login/agen</strong>. Dan mulai melakukan transaksi. Pantau transaksi yang terjadi di setiap toko anda lewat menu <strong>Manajemen > Transaksi.</strong></p> 
+    </div>
+    <div class="box has-shadow animate__animated animate__fadeIn">
+        <div class="tag is-primary is-medium my-5">
+            <p class="subtitle is-5 has-text-weight-semibold has-text-white">Analisa Penjualan</p>
+        </div>
+        <p>Pada bagian <strong>Manajemen > Transaksi</strong> anda bisa melihat laporan dari transaksi di setiap toko anda. Dan pada menu <strong>Manajemen > Dasbor</strong> anda bisa melihat analisa dan laporan alingan untuk setiap produk, toko dan agen anda.</p>
+    </div>
+</div>
+{{ end }}
