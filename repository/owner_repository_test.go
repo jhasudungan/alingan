@@ -10,6 +10,11 @@ import (
 
 func TestOwnerRepository(t *testing.T) {
 
+	/**
+	- run alingan-test-source-script.sql on "core" schema before run below test
+	- .env need to be present in "repository" package in order to run go test
+	*/
+
 	t.Run("TestFindById", func(t *testing.T) {
 
 		ownerRepository := &OwnerRepositoryImpl{}
@@ -22,18 +27,16 @@ func TestOwnerRepository(t *testing.T) {
 		}
 
 		assert.Equal(t, "owner-001", owner.OwnerId)
-		assert.Equal(t, "Smart Veggies Mart", owner.OwnerName)
-		assert.Equal(t, "admin@smartveggiesmart.com", owner.OwnerEmail)
+		assert.Equal(t, "Toko Prima", owner.OwnerName)
+		assert.Equal(t, "tokoprima@gmail.co.id", owner.OwnerEmail)
 		assert.Equal(t, "organization", owner.OwnerType)
-		assert.Equal(t, "smartveggies", owner.Password)
-
 	})
 
 	t.Run("TestFindByOwnerEmail", func(t *testing.T) {
 
 		ownerRepository := &OwnerRepositoryImpl{}
 
-		owner, err := ownerRepository.FindByOwnerEmail("admin@smartveggiesmart.com")
+		owner, err := ownerRepository.FindByOwnerEmail("tokoprima@gmail.co.id")
 
 		if err != nil {
 			log.Fatal("Error Test : " + err.Error())
@@ -41,10 +44,9 @@ func TestOwnerRepository(t *testing.T) {
 		}
 
 		assert.Equal(t, "owner-001", owner.OwnerId)
-		assert.Equal(t, "Smart Veggies Mart", owner.OwnerName)
-		assert.Equal(t, "admin@smartveggiesmart.com", owner.OwnerEmail)
+		assert.Equal(t, "Toko Prima", owner.OwnerName)
+		assert.Equal(t, "tokoprima@gmail.co.id", owner.OwnerEmail)
 		assert.Equal(t, "organization", owner.OwnerType)
-		assert.Equal(t, "smartveggies", owner.Password)
 
 	})
 
