@@ -2,18 +2,17 @@
 {{ define "container" }}
 <div class="column">
 
-    <div class="columns animate__animated animate__fadeIn">
+    <div class="columns is-hidden">
         <div class="column">
-            <label for="" class="label">Sumber Transaksi</label>
             <div class="control">
-                <input class="input" type="text" value="Pemilik" id="pos-input-source"  readonly>
+                <input class="input" type="text" value="owner" id="pos-input-source" readonly>
             </div>
         </div>
     </div>
 
     <div class="columns animate__animated animate__fadeIn">
         <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
-            <label for="" class="label">Nama Agen</label>
+            <label for="" class="label">Agen</label>
             <div class="control">
                 <div class="select is-primary is-fullwidth">
                     <select name="pos-input-agent-id" id="pos-input-agent-id">
@@ -26,7 +25,7 @@
             </div>
         </div>
         <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
-            <label for="" class="label">Nama Toko</label>
+            <label for="" class="label">Toko</label>
             <div class="control">
                 <div class="select is-primary is-fullwidth">
                     <select name="pos-input-store-id" id="pos-input-store-id">
