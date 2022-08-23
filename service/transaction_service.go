@@ -226,6 +226,7 @@ func (t *TransactionServiceImpl) GetTransactionInformation(transactionId string)
 	result.StoreName = transaction.StoreName
 	result.AgentId = transaction.AgentId
 	result.AgentName = transaction.AgentName
+	result.TransactionTotal = transaction.TransactionTotal
 	result.TransactionDate = transaction.TransactionDate.Format("2006-01-02 15:04:05")
 
 	transactionItems, err := t.JoinRepo.FindTransactionItemAndProductByTransactionId(transactionId)

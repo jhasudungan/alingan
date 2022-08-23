@@ -1,63 +1,68 @@
 {{ template "owner-layout" .}}
 {{ define "container" }}
-<div class="column">
-    <div class="block">
-        <p class="is-size-4">View Store</p>
-    </div>
-    <div class="block">
-        <p>You can update your store data or set your store inactive here</p>
-    </div>
-    <form method="POST" action="/owner/update/store/submit">
-        <div class="columns">
-            <div class="column">
-                <label for="" class="label">Store Id</label>
-                <div class="control">
-                    <input class="input" value="{{ .store.StoreId }}" name="store-id" readonly="true" >
-                </div>
-            </div>
-            <div class="column">
-                <label for="" class="label">Store Name</label>
-                <div class="control">
-                    <input class="input" value="{{ .store.StoreName }}" name="update-store-name" >
-                </div>
-            </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <label for="" class="label">Store Address</label>
-                <div class="control">
-                    <input class="input" value="{{ .store.StoreAddress }}" name="update-store-address" >
-                </div>
-            </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <label for="" class="label">Last Modified</label>
-                <div class="control">
-                    <input class="input" value="{{ .store.LastModified }}" disabled>
-                </div>
-            </div>
-            <div class="column">
-                <label for="" class="label">Created Date </label>
-                <div class="control">
-                    <input class="input" value="{{ .store.CreatedDate }}" disabled>
-                </div>
-            </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <div class="buttons are-small">
-                    <a href="/owner/store" class="button is-dark"><i class="fa fa-arrow-left"></i></a>
-                    <button class="button is-primary" type="submit" name="submit">save change</button>
+<div class="column animate__animated animate__fadeIn">
+    <h1 class="title">Lihat Toko</h1>
+    <p>Anda dapat megganti nama dan alamat dari toko ini. Anda juga dapat menon-aktifkan toko ini. Jika toko di non-aktifkan maka anda tidak dapat mendaftarkan agen baru dan melakukan transaksi di toko tersebut.</p>
 
-                    {{ if .store.IsActive }}
-                        <a href="/owner/inactive/store/{{.store.StoreId }}" class="button is-danger">deactive this store</a>
-                    {{ else }}
-                        <a href="/owner/reactive/store/{{.store.StoreId }}" class="button is-success">reactivate this store</a>
-                    {{ end }}
+    <!-- Form -->
+    <form class="mt-5" method="POST" action="/owner/update/store/submit">
+        <div class="field">
+
+            <div class="columns">
+                <div class="column">
+                    <label for="" class="label">ID Toko</label>
+                    <div class="control">
+                        <input class="input" type="text" value="{{ .store.StoreId }}" name="store-id"  >
+                    </div>
                 </div>
             </div>
+
+            <div class="columns is-multiline">
+                <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+                    <label for="" class="label">Nama Toko</label>
+                    <div class="control">
+                        <input class="input" type="text" value="{{ .store.StoreName }}" name="update-store-name" >
+                    </div>
+                </div>
+                <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+                    <label for="" class="label">Alamat Toko</label>
+                    <div class="control">
+                        <input class="input" type="text" value="{{ .store.StoreAddress }}" name="update-store-address" >
+                    </div>
+                </div>
+            </div>
+
+            <div class="columns is-multiline">
+                <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+                    <label for="" class="label">Tanggal Dibuat</label>
+                    <div class="control">
+                        <input class="input" value="{{ .store.CreatedDate }}"  disabled>
+                    </div>
+                </div>
+                <div class="column is-6-tablet is-6-desktop is-6-widescreen is-6-fullhd is-12-mobile">
+                    <label for="" class="label">Terakhir Diperbarui</label>
+                    <div class="control">
+                        <input class="input" value="{{ .store.LastModified }}"  disabled>
+                    </div>
+                </div>
+            </div>
+
+            <div class="columns">
+                <div class="column">
+                    <div class="buttons">
+                        <a href="/owner/store" class="button is-small is-dark"><i class="fa fa-angle-left mr-2"></i>Kembali</a>
+                        <button type="submit" class="button is-small is-info"><i class="fa fa-save mr-2"></i>Simpan</button>
+                        {{ if .store.IsActive }}
+                            <a href="/owner/inactive/store/{{.store.StoreId }}" class="button is-danger is-small"><i class="fa fa-store mr-2"></i> Nonaktifkan Toko</a>
+                        {{ else }}
+                            <a href="/owner/reactive/store/{{.store.StoreId }}" class="button is-success is-small"><i class="fa fa-store mr-2"></i> Aktifkan Toko</a>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
+
         </div>
+        
     </form>
 </div>
 {{ end }}
