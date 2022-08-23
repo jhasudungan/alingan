@@ -11,9 +11,8 @@ import (
 func TestStoreRepostiry(t *testing.T) {
 
 	/**
-	Make sure below data available in core.store
-		- str-001 (Store 1 Smart Veggies)
-		- str-002 (Store 2 Smart Veggies) and this one should be the last inserted
+	- run alingan-test-source-script.sql on "core" schema before run below test
+	- .env need to be present in "repository" package in order to run go test
 	*/
 
 	t.Run("TestFindStoresByOwnerId", func(t *testing.T) {
@@ -28,8 +27,8 @@ func TestStoreRepostiry(t *testing.T) {
 		}
 
 		assert.Equal(t, "str-002", stores[0].StoreId)
-		assert.Equal(t, "Store 2 Smart Veggies", stores[0].StoreName)
-		assert.Equal(t, true, stores[0].IsActive)
+		assert.Equal(t, "Toko Prima 2 - Kramat Raya", stores[0].StoreName)
+
 	})
 
 	t.Run("TestFindStoreById", func(t *testing.T) {
@@ -44,7 +43,7 @@ func TestStoreRepostiry(t *testing.T) {
 		}
 
 		assert.Equal(t, "str-001", store.StoreId)
-		assert.Equal(t, "Store 1 Smart Veggies", store.StoreName)
+		assert.Equal(t, "Toko Prima 1 - Salemba", store.StoreName)
 
 	})
 

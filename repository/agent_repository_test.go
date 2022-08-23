@@ -10,6 +10,11 @@ import (
 
 func TestAgentRepository(t *testing.T) {
 
+	/**
+	- run alingan-test-source-script.sql on "core" schema before run below test
+	- .env need to be present in "repository" package in order to run go test
+	*/
+
 	t.Run("TestFindAgentById", func(t *testing.T) {
 
 		agentRepository := &AgentRepositoryImpl{}
@@ -22,7 +27,7 @@ func TestAgentRepository(t *testing.T) {
 		}
 
 		assert.Equal(t, "agent-001", agent.AgentId)
-		assert.Equal(t, "Jeremiah H.S", agent.AgentName)
+		assert.Equal(t, "Budi", agent.AgentName)
 
 	})
 
@@ -30,7 +35,7 @@ func TestAgentRepository(t *testing.T) {
 
 		agentRepository := &AgentRepositoryImpl{}
 
-		agent, err := agentRepository.FindAgentByEmail("jeremiahhs@smartveggiesmart.com")
+		agent, err := agentRepository.FindAgentByEmail("budi@gmial.com")
 
 		if err != nil {
 			log.Fatal("Error Test : " + err.Error())
@@ -38,7 +43,7 @@ func TestAgentRepository(t *testing.T) {
 		}
 
 		assert.Equal(t, "agent-001", agent.AgentId)
-		assert.Equal(t, "Jeremiah H.S", agent.AgentName)
+		assert.Equal(t, "Budi", agent.AgentName)
 
 	})
 
