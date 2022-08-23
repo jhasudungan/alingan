@@ -1,71 +1,87 @@
 {{ template "agent-layout" .}}
 {{ define "container" }}
-<div class="column">
-    <div class="block">
-        <p class="is-size-4">Transaction </p>
-    </div>
-    <div class="block">
-        <p>Below Is The Transaction Detail</p>
-    </div>
-    <form action="">
-        <div class="columns">
-            <div class="column">
-                <label for="" class="label">Transaction Id</label>
-                <div class="control">
-                    <input class="input" value="{{ .transaction.TransactionId }}" disabled>
+<div class="column animate__animated animate__fadeIn">
+    <h1 class="title">Detail Transaksi</h1>
+    <p>Berikut merupakan detail transaksi. Harga yang tercantum , merupakan harga produk saat transaksi, bukan harga terkini.</p>
+
+
+    <!-- Form -->
+    <form class="mt-5">
+        <div class="field">
+
+            <div class="columns">
+                <div class="column">
+                    <label for="" class="label">ID Transaksi</label>
+                    <div class="control">
+                        <input class="input" type="text" value="{{ .transaction.TransactionId }}" readonly>
+                    </div>
                 </div>
             </div>
-            <div class="column">
-                <label for="" class="label">Transaction Date</label>
-                <div class="control">
-                    <input class="input" value="{{ .transaction.TransactionDate }}" disabled>
+
+            <div class="columns">
+                <div class="column is-4-tablet is-4-desktop is-4-widescreen is-4-fullhd is-12-mobile">
+                    <label for="" class="label">Tanggal Transaksi</label>
+                    <div class="control">
+                        <input class="input" type="text" value="{{ .transaction.TransactionDate }}" readonly>
+                    </div>
+                </div>
+                <div class="column is-4-tablet is-4-desktop is-4-widescreen is-4-fullhd is-12-mobile">
+                    <label for="" class="label">Toko</label>
+                    <div class="control">
+                        <input class="input" type="text" value="{{ .transaction.StoreName }}" readonly>
+                    </div>
+                </div>
+                <div class="column is-4-tablet is-4-desktop is-4-widescreen is-4-fullhd is-12-mobile">
+                    <label for="" class="label">Agen</label>
+                    <div class="control">
+                        <input class="input" type="text" value="{{ .transaction.AgentName }}" readonly>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <label for="" class="label">Store</label>
-                <div class="control">
-                    <input class="input" value="{{ .transaction.StoreName }}" disabled>
+
+            <div class="columns">
+                <div class="column">
+                    <label for="" class="label">Total Transaksi</label>
+                    <div class="control">
+                        <input class="input" type="number" value="{{ .transaction.TransactionTotal }}" readonly>
+                    </div>
                 </div>
             </div>
-            <div class="column">
-                <label for="" class="label">Agent In Charge</label>
-                <div class="control">
-                    <input class="input" value="{{ .transaction.AgentName }}" disabled>
-                </div>
-            </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <label for="" class="label">items</label>
-                <table class="table is-hoverable is-fullwidth">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Used Price</th>
-                            <th>Buy Quantity</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{ range .transaction.Items }}
+
+            <div class="columns">
+                <div class="column">
+                    <label for="" class="label">Daftar Produk Transaksi</label>
+                    <table class="table is-hoverable is-fullwidth mt-5">
+                        <thead>
                             <tr>
-                                <td>{{ .ProductName }}</td>
-                                <td>{{ .UsedPrice }}</td>
-                                <td>{{ .BuyQuantity }}</td>
+                                <th>Nama Produk</th>
+                                <th>Harga Beli</th>
+                                <th>Jumlah</th>
                             </tr>
-                        {{ end }}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <div class="buttons are-small">
-                    <a href="/agent/transaction" class="button is-dark"><i class="fa fa-arrow-left"></i></a>
+                        </thead>
+                        <tbody>
+                            {{ range .transaction.Items }}
+                                <tr>
+                                    <td>{{ .ProductName }}</td>
+                                    <td>{{ .UsedPrice }}</td>
+                                    <td>{{ .BuyQuantity }}</td>
+                                </tr>
+                            {{ end }}
+                        </tbody>
+                    </table>
                 </div>
             </div>
+
+            <div class="columns">
+                <div class="column">
+                    <div class="buttons">
+                        <a href="/agent/transaction" class="button is-small is-dark"><i class="fa fa-angle-left mr-2"></i>Kembali</a>
+                    </div>
+                </div>
+            </div>
+
         </div>
+        
     </form>
 </div>
 {{ end }}
