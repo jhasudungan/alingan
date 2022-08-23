@@ -22,4 +22,5 @@ func TestCreateDbConnection(t *testing.T) {
 	}
 
 	log.Print("Success create connection ")
+
 }

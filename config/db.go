@@ -11,7 +11,7 @@ import (
 
 func CreateDBConnection() (*sql.DB, error) {
 
-	err := godotenv.Load()
+	err := godotenv.Load(".env")
 
 	if err != nil {
 		return nil, err

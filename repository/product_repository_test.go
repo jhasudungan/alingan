@@ -11,15 +11,13 @@ import (
 func TestProductRepository(t *testing.T) {
 
 	/**
-	Make sure below data available in core.store
-		- prd-001 (Kapal Api)
-		- prd-002 (Torabika Creamy Latte)
-		- PRDa543809e-f36f-443a-a815-64c0e2f0e09c (Abc Susu) and this one should be the last inserted
+	- run alingan-test-source-script.sql on "core" schema before run below test
+	- .env need to be present in "repository" package in order to run go test
 	*/
 
 	t.Run("TestFindProductsByOwnerId", func(t *testing.T) {
 
-		productRepository := &ProductRepositoryImpl{}
+		productRepository := ProductRepositoryImpl{}
 
 		products, err := productRepository.FindProductsByOwnerId("owner-001")
 
@@ -28,8 +26,8 @@ func TestProductRepository(t *testing.T) {
 			t.FailNow()
 		}
 
-		assert.Equal(t, "PRDa543809e-f36f-443a-a815-64c0e2f0e09c", products[0].ProductId)
-		assert.Equal(t, "Abc Susu ", products[0].ProductName)
+		assert.Equal(t, "prd-002", products[0].ProductId)
+		assert.Equal(t, "Telur Ayam", products[0].ProductName)
 	})
 
 	t.Run("TestFindProductById", func(t *testing.T) {
@@ -44,7 +42,7 @@ func TestProductRepository(t *testing.T) {
 		}
 
 		assert.Equal(t, "prd-001", product.ProductId)
-		assert.Equal(t, "Kapal Api ", product.ProductName)
+		assert.Equal(t, "Indomie Goreng", product.ProductName)
 
 	})
 
