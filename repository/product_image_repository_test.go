@@ -15,9 +15,9 @@ func TestProductImageRepository(t *testing.T) {
 		productImageRepository := &ProductImageRepositoryImpl{}
 
 		productImage := entity.ProductImage{}
-		productImage.ProductImageId = "prd-image-002"
+		productImage.ProductImageId = "prd-image-test"
 		productImage.ProductId = "prd-001"
-		productImage.LocationPath = "/alingan"
+		productImage.LocationPath = "https://via.placeholder.com/300"
 
 		err := productImageRepository.Insert(productImage)
 
@@ -32,16 +32,16 @@ func TestProductImageRepository(t *testing.T) {
 
 		productImageRepository := &ProductImageRepositoryImpl{}
 
-		result, err := productImageRepository.FindProductImageById("prd-image-002")
+		result, err := productImageRepository.FindProductImageById("prd-image-test")
 
 		if err != nil {
 			log.Fatal("Error Test : " + err.Error())
 			t.FailNow()
 		}
 
-		assert.Equal(t, "prd-image-002", result.ProductImageId)
+		assert.Equal(t, "prd-image-test", result.ProductImageId)
 		assert.Equal(t, "prd-001", result.ProductId)
-		assert.Equal(t, "/alingan", result.LocationPath)
+		assert.Equal(t, "https://via.placeholder.com/300", result.LocationPath)
 	})
 
 	t.Run("TestFindProductImageByProductId", func(t *testing.T) {
@@ -56,15 +56,15 @@ func TestProductImageRepository(t *testing.T) {
 		}
 
 		assert.Equal(t, "prd-001", results[0].ProductId)
-		assert.Equal(t, "prd-image-002", results[0].ProductImageId)
-		assert.Equal(t, "/alingan", results[0].LocationPath)
+		assert.Equal(t, "prd-image-test", results[0].ProductImageId)
+		assert.Equal(t, "https://via.placeholder.com/300", results[0].LocationPath)
 	})
 
 	t.Run("TestDelete", func(t *testing.T) {
 
 		productImageRepository := &ProductImageRepositoryImpl{}
 
-		err := productImageRepository.Delete("prd-image-002")
+		err := productImageRepository.Delete("prd-image-test")
 
 		if err != nil {
 			log.Fatal("Error Test : " + err.Error())

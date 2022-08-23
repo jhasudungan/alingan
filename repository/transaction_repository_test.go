@@ -11,6 +11,11 @@ import (
 
 func TestTransactionRepository(t *testing.T) {
 
+	/**
+	- run alingan-test-source-script.sql on "core" schema before run below test
+	- .env need to be present in "repository" package in order to run go test
+	*/
+
 	t.Run("TestFindById", func(t *testing.T) {
 
 		transactionRepository := &TransactionRepositoryImpl{}
@@ -23,7 +28,8 @@ func TestTransactionRepository(t *testing.T) {
 		}
 
 		assert.Equal(t, "trx-001", transaction.TransactionId)
-
+		assert.Equal(t, "agent-001", transaction.AgentId)
+		assert.Equal(t, "str-001", transaction.StoreId)
 	})
 
 	t.Run("TestInsert", func(t *testing.T) {
@@ -78,7 +84,7 @@ func TestTransactionRepository(t *testing.T) {
 		assert.Equal(t, "trx-item-001", items[0].TransactionItemId)
 		assert.Equal(t, "prd-001", items[0].ProductId)
 		assert.Equal(t, int64(2), items[0].BuyQuantity)
-		assert.Equal(t, float64(15000), items[0].UsedPrice)
+		assert.Equal(t, float64(2500), items[0].UsedPrice)
 
 	})
 
@@ -107,6 +113,15 @@ func TestTransactionRepository(t *testing.T) {
 		assert.Equal(t, "prd-001", items[0].ProductId)
 		assert.Equal(t, int64(3), items[0].BuyQuantity)
 		assert.Equal(t, float64(15000), items[0].UsedPrice)
+
+	})
+
+	t.Run("CleanUpTransaction", func(t *testing.T) {
+
+		testingRepository := &TestingRepository{}
+
+		testingRepository.DeleteTransactionById("trx-test")
+		testingRepository.DeleteTransactionItemByTransactionId("trx-test")
 
 	})
 }
