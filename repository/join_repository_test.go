@@ -9,6 +9,11 @@ import (
 
 func TestJoinRepository(t *testing.T) {
 
+	/**
+	- run alingan-test-source-script.sql on "core" schema before run below test
+	- .env need to be present in "repository" package in order to run go test
+	*/
+
 	t.Run("TestFindTransactionByOwnerId", func(t *testing.T) {
 
 		joinRepository := &JoinRepositoryImpl{}
@@ -20,7 +25,7 @@ func TestJoinRepository(t *testing.T) {
 			t.FailNow()
 		}
 
-		assert.Equal(t, "TRX2b40ee07-f8dd-4b80-9956-e65b3a364443", results[0].TransactionId)
+		assert.Equal(t, "trx-002", results[0].TransactionId)
 		assert.Equal(t, "agent-001", results[0].AgentId)
 		assert.Equal(t, "str-001", results[0].StoreId)
 	})
@@ -29,14 +34,14 @@ func TestJoinRepository(t *testing.T) {
 
 		joinRepository := &JoinRepositoryImpl{}
 
-		results, err := joinRepository.FindTransactionAgentAndStoreByTransactionId("TRX0a63cfe6-2761-4c12-a2c0-42051edcde10")
+		results, err := joinRepository.FindTransactionAgentAndStoreByTransactionId("trx-002")
 
 		if err != nil {
 			log.Fatal("Error Test : " + err.Error())
 			t.FailNow()
 		}
 
-		assert.Equal(t, "TRX0a63cfe6-2761-4c12-a2c0-42051edcde10", results.TransactionId)
+		assert.Equal(t, "trx-002", results.TransactionId)
 		assert.Equal(t, "agent-001", results.AgentId)
 		assert.Equal(t, "str-001", results.StoreId)
 	})
@@ -53,7 +58,8 @@ func TestJoinRepository(t *testing.T) {
 		}
 
 		assert.Equal(t, "trx-001", results[0].TransactionId)
-		assert.Equal(t, "Kapal Api ", results[0].ProductName)
+		assert.Equal(t, "prd-001", results[0].ProductId)
+		assert.Equal(t, "Indomie Goreng", results[0].ProductName)
 	})
 
 	t.Run("TestFindAgentByOwnerId", func(t *testing.T) {
@@ -69,8 +75,8 @@ func TestJoinRepository(t *testing.T) {
 
 		assert.Equal(t, "agent-001", results[0].AgentId)
 		assert.Equal(t, "str-001", results[0].StoreId)
-		assert.Equal(t, "Jeremiah H.S", results[0].AgentName)
-		assert.Equal(t, "Store 1 Smart Veggies", results[0].StoreName)
+		assert.Equal(t, "Budi", results[0].AgentName)
+		assert.Equal(t, "Toko Prima 1 - Salemba", results[0].StoreName)
 
 	})
 
@@ -78,7 +84,7 @@ func TestJoinRepository(t *testing.T) {
 
 		joinRepository := &JoinRepositoryImpl{}
 
-		result, err := joinRepository.FindOwnerByAgentId("AGT454497b9-74d1-4bb0-8753-962a962e31f6")
+		result, err := joinRepository.FindOwnerByAgentId("agent-001")
 
 		if err != nil {
 			log.Fatal("Error Test : " + err.Error())
@@ -86,8 +92,8 @@ func TestJoinRepository(t *testing.T) {
 		}
 
 		assert.Equal(t, "owner-001", result.OwnerId)
-		assert.Equal(t, "admin@smartveggiesmart.com", result.OwnerEmail)
-		assert.Equal(t, "Smart Veggies Mart", result.OwnerName)
+		assert.Equal(t, "tokoprima@gmail.co.id", result.OwnerEmail)
+		assert.Equal(t, "Toko Prima", result.OwnerName)
 
 	})
 }
