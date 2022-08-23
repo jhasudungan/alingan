@@ -115,7 +115,7 @@ func (p *ProductServiceImpl) FindProductByOwnerId(ownerId string) ([]model.FindP
 		}
 
 		if len(listImages) == 0 {
-			data.ImageUrl = "http://localhost:8080" + "/static/image/no-image-icon.png"
+			data.ImageUrl = "https://via.placeholder.com/300"
 		} else {
 			data.ImageUrl = listImages[0].LocationPath
 		}
