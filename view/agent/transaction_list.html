@@ -1,63 +1,65 @@
 {{ template "agent-layout" .}}
 {{ define "container" }}
-<div class="columns">
-    <div class="column">
-        <div class="block">
-            <p class="is-size-4">Transaction Store</p>
-        </div>
-        <div class="block">
-            <p>Below is the list of your store transaction</p>
-        </div>
-        <table class="table is-hoverable is-fullwidth">
-            <thead>
-                <tr>
-                    <th>Transaction Date</th>
-                    <th>Store Name</th>
-                    <th>Agent In Charge</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{ range .storeTransactions }}
+<div class="column">
+    <div class="columns">
+        <div class="column">
+            <div class="block">
+                <p class="is-size-4">Transaksi Toko Anda</p>
+            </div>
+            <div class="block">
+                <p>Di bawah ini merupakan transaksi yang terjadi di toko anda.</p>
+            </div>
+            <table class="table is-hoverable is-fullwidth">
+                <thead>
                     <tr>
-                        <td>{{ .TransactionDate }}</td>
-                        <td>{{ .StoreName }}</td>
-                        <td>{{ .AgentName }}</td>
-                        <td><a class="button is-info is-small" href="/agent/transaction/{{.TransactionId}}" > view</a></td>
+                        <th>Tanggal Transaksi</th>
+                        <th>Toko</th>
+                        <th>Agen</th>
+                        <th>Lihat</th>
                     </tr>
-                {{ end }}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {{ range .storeTransactions }}
+                        <tr>
+                            <td>{{ .TransactionDate }}</td>
+                            <td>{{ .StoreName }}</td>
+                            <td>{{ .AgentName }}</td>
+                            <td><a class="button is-info is-small" href="/agent/transaction/{{.TransactionId}}" ><i class="fa fa-edit mr-2"></i> Lihat</a></td>
+                        </tr>
+                    {{ end }}
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-<div class="columns">
-    <div class="column">
-        <div class="block">
-            <p class="is-size-4">Your Transaction</p>
-        </div>
-        <div class="block">
-            <p>Below is the list of your transaction</p>
-        </div>
-        <table class="table is-hoverable is-fullwidth">
-            <thead>
-                <tr>
-                    <th>Transaction Date</th>
-                    <th>Store Name</th>
-                    <th>Agent In Charge</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{ range .agentTransactions }}
+    <div class="columns">
+        <div class="column">
+            <div class="block">
+                <p class="is-size-4">Transaksi Anda</p>
+            </div>
+            <div class="block">
+                <p>Berikut merupakan transaksi yang anda lakukan.</p>
+            </div>
+            <table class="table is-hoverable is-fullwidth">
+                <thead>
                     <tr>
-                        <td>{{ .TransactionDate }}</td>
-                        <td>{{ .StoreName }}</td>
-                        <td>{{ .AgentName }}</td>
-                        <td><a class="button is-info is-small" href="/agent/transaction/{{.TransactionId}}" > view</a></td>
+                        <th>Tanggal Transaksi</th>
+                        <th>Toko</th>
+                        <th>Agen</th>
+                        <th>Lihat</th>
                     </tr>
-                {{ end }}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {{ range .agentTransactions }}
+                        <tr>
+                            <td>{{ .TransactionDate }}</td>
+                            <td>{{ .StoreName }}</td>
+                            <td>{{ .AgentName }}</td>
+                            <td><a class="button is-info is-small" href="/agent/transaction/{{.TransactionId}}" ><i class="fa fa-edit mr-2"></i> Lihat</a></td>
+                        </tr>
+                    {{ end }}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 {{ end }}
