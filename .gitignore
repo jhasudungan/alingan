@@ -1,2 +1,7 @@
-/uploaded/*
 .env
+
+# For Go Test  
+/config/.env
+/repository/.env
+/service/.env
+
