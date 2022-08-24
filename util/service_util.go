@@ -8,7 +8,7 @@ import (
 
 func GenerateId(key string) string {
 
-	id := fmt.Sprintf("%v%v", key, uuid.New().String())
+	id := fmt.Sprintf("%v%v-", key, uuid.New().String())
 
 	return id
 }
