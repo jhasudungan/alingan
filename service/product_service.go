@@ -115,7 +115,7 @@ func (p *ProductServiceImpl) FindProductByOwnerId(ownerId string) ([]model.FindP
 		}
 
 		if len(listImages) == 0 {
-			data.ImageUrl = "https://via.placeholder.com/300"
+			data.ImageUrl = "https://res.cloudinary.com/jhasudungan/image/upload/v1661248452/alingan_static_asset/no-image-icon_slkrmf.png"
 		} else {
 			data.ImageUrl = listImages[0].LocationPath
 		}
